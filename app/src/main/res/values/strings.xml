@@ -1,0 +1,118 @@
+<resources>
+    <string name="app_name">Zentech Hotel Booker</string>
+
+    <string name="application_name">ZENTECH HOTEL BOOKER</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_location">Location/Address</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_city">City</string>
+    <string name="hint_campus">Campus</string>
+    <string name="hint_tel">Mob. Number</string>
+    <string name="hint_phone">Phone Number</string>
+    <string name="hint_username">Username</string>
+    <string name="link_reset_password">Forgot Password?</string>
+    <string name="text_gender">Gender</string>
+    <string name="add_rooms">Add Rooms</string>
+    <string name="add_rooms_sub_text">add rooms available to the system</string>
+    <string name="delete_rooms">Delete Rooms</string>
+    <string name="delete_rooms_sub_text">delete rooms which are not needed</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_password_sub_text">Noticed any unauthorised access? then reset password</string>
+    <string name="edit_credentials">Edit Credentials</string>
+    <string name="edit_credentials_sub_text">lets edit your credentials if necessary</string>
+    <string name="check_payment_info">Check Payment Info</string>
+    <string name="check_payment_sub_text">check payments made by users</string>
+    <string name="sign_out">Signout</string>
+    <string name="logout_sub_text">done? lets exit the system</string>
+    <string name="admin_dash_board">ADMIN DASHBOARD</string>
+    <string name="about_us_title">About Us-</string>
+    <string name="about_us_sub_title">YOKA LOGDE is a mobile application specification android,
+        developed by iCODE Labs to help this guest house keep with its management.
+        iCODE Labs was established in the year 2017 to undertake the development
+        of mobile application for institutions or societies in need. It consists of
+        professional android developers from campuses across the country. Below is our contact information:
+        Mob.+233245134112/+233209062445
+        Email: alisampson2@gmail.com
+        Location: located at Amamorley-Canada near the Anyaa-Pokuase Street.
+        Thank you for using this application.
+    </string>
+
+    <!--Error Text -->
+    <string name="error_empty_email">Email field cannot be left empty</string>
+    <string name="error_empty_password">Password field cannot be left empty</string>
+    <string name="email_invalid">Enter a valid email address</string>
+    <string name="email_registered">Enter your registered email id</string>
+    <string name="error_password_length">Password length cannot be less than 6</string>
+    <string name="error_empty_phone">Phone Number field cannot be left empty</string>
+    <string name="phone_invalid">Enter a valid phone number</string>
+    <string name="sign_up_successful">Sign Up Successful</string>
+    <string name="login_successful">Login Successful</string>
+    <string name="error_empty_field">Field cannot left empty</string>
+    <string name="error_empty_username">Username is a required field</string>
+    <string name="error_text_hostel">Enter your hostel name to better locate you</string>
+    <string name="error_text_room_number">Enter your room number"</string>
+    <string name="error_text_phone_number">Telephone number is a required field</string>
+
+    <!-- String progress dialog -->
+    <string name="text_uploading_details">Uploading Details</string>
+    <string name="text_please_wait">Please wait...</string>
+
+    <!-- Reset password string -->
+    <string name="instruct_reset_password">"We have sent you instructions to reset your password!"</string>
+
+    <!-- Home activity menu items -->
+    <string name="text_about">About Us</string>
+    <string name="text_contact">Contact Us</string>
+    <string name="text_sign_out">Sign out</string>
+    <string name="text_exit">Exit</string>
+
+    <!-- Navigation drawer menu -->
+    <string name="dummy_username">Username : username</string>
+    <string name="dummy_email">Email : username@gmail.com </string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="address">Address</string>
+    <string name="orders">Orders</string>
+    <string name="home">Home</string>
+    <string name="logout">Logout</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="logout_msg">Are you sure you want to logout?</string>
+
+
+    <!-- Navigation drawer strings -->
+    <string name="profile">Profile</string>
+    <string name="payment">Payment</string>
+    <string name="booked_rooms">Booked Rooms</string>
+    <string name="settings">Settings</string>
+    <string name="hint_enter_current_username">enter your username</string>
+    <string name="hint_enter_current_password">enter your password</string>
+    <string name="slide_description">Slider Description</string>
+    <string name="make_payment">MAKE PAYMENT</string>
+    <string name="text_payment_method">Payment Method</string>
+    <string name="update_credentials">UPDATE CREDENTIALS</string>
+    <string name="update_text">UPDATE</string>
+    <string name="room_number">Room Number</string>
+    <string name="add_rooms_title">Add Available Rooms to the System</string>
+    <string name="delete_rooms_title">Delete a Room from the System</string>
+    <string name="text_add">Add Room</string>
+    <string name="text_delete">Delete Room</string>
+    <string name="price">Price</string>
+    <string name="room_image">Upload Room Image here...</string>
+    <string name="welcome">WELCOME TO YOKA LODGE!</string>
+    <string name="welcome_admin">WELCOME ADMIN</string>
+    <string name="welcome_msg">Hope you enjoy the stay</string>
+    <string name="sign_up_link">Not yet a user? Sign Up</string>
+    <string name="admin_login_link">Already an Admin? Login</string>
+    <string name="login_link">Already a user? Login</string>
+    <string name="login">Login</string>
+    <string name="sign_in">Sign In</string>
+    <string name="signUp">Sign Up</string>
+    <string name="splash_text">powered by iCODE Studios</string>
+    <string name="lbl_forgot_password">!! Forgot Password !!</string>
+    <string name="msg_forgot_password">Please enter your email address to reset password</string>
+    <string name="btn_reset_password">RESET PASSWORD</string>
+    <string name="btn_back">GO BACK</string>
+
+</resources>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.DeleteRoomsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:minHeight="?android:attr/actionBarSize"
+        android:fitsSystemWindows="true"
+        android:background="@color/green">
+    </android.support.v7.widget.Toolbar>
+
+    <!-- material design LinearLayout -->
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/delete_rooms_title"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textColor="@color/green"/>
+
+        <TextView
+            android:id="@+id/key"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textColor="@color/green"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
+            <!--TextView View for Candidate's Picture-->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewPicture"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:text="@string/room_image"
+                android:textSize="19sp"
+                android:textColor="@color/green"
+                android:layout_marginLeft="37dp"
+                android:layout_marginTop="4dp"/>
+
+            <!--ImageButton to select candidate Picture from gallery-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:src="@mipmap/first_icon"
+                android:layout_weight="0"
+                android:minHeight="130dp"
+                android:minWidth="130dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"/>
+        </RelativeLayout>
+
+        <!-- TextInputLayout and AppCompatEdiText for Username -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_below="@+id/toolbar"
+            android:id="@+id/textInputLayoutRoomNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:textColorHint="@color/green">
+            <EditText
+                android:id="@+id/editTextRoomNumber"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_room"
+                android:textColor="@color/green"
+                android:textColorHint="@color/green"
+                android:hint="@string/room_number"
+                android:inputType=""
+                android:maxLines="1"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- TextInputLayout and AppCompatEdiText for Price -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textInputLayoutRoomNumber"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:textColorHint="@color/green">
+            <EditText
+                android:id="@+id/editTextPrice"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/green"
+                android:textColorHint="@color/green"
+                android:drawableLeft="@drawable/ic_payment"
+                android:hint="@string/price"
+                android:inputType=""
+                android:maxLines="1"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Delete Room Button  -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appCompatButtonDelete"
+            android:layout_marginTop="50dp"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_below="@+id/textInputLayoutPrice"
+            android:text="@string/text_delete"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:textAlignment="center"
+            android:background="@drawable/round_corner_button_login"
+            android:onClick="onDeleteRoomButtonClick"
+            tools:ignore="OnClick" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</RelativeLayout>

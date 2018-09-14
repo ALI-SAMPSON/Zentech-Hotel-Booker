@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="payment_method">
+        <item>MTN Mobile Money</item>
+        <item>Vodafone Cash</item>
+        <item>Tigo Cash</item>
+        <item>Airtel Money</item>
+    </string-array>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_home_white"
+        android:orderInCategory="100">
+    </item>
+
+    <item
+        android:id="@+id/menu_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_person_white"
+        android:orderInCategory="200">
+    </item>
+
+    <item
+        android:id="@+id/menu_payment"
+        android:title="@string/payment"
+        android:icon="@drawable/ic_payment_white"
+        android:orderInCategory="300">
+    </item>
+
+    <!--<item
+        android:id="@+id/menu_booked_rooms"
+        android:title="@string/history"
+        android:icon="@drawable/ic_room_white"
+        android:orderInCategory="400">
+    </item> -->
+
+    <item
+        android:id="@+id/menu_contact"
+        android:title="@string/text_contact"
+        android:icon="@drawable/ic_contact_us_white"
+        android:orderInCategory="500">
+    </item>
+
+    <item
+        android:id="@+id/menu_sign_out"
+        android:title="@string/text_sign_out"
+        android:icon="@drawable/ic_logout_app_black_24dp"
+        android:orderInCategory="600">
+    </item>
+
+</menu>

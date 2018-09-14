@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.zentechhotelbooker">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/app_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/app_icon_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".activities.HomeActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.AdminLoginActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ResetPasswordActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.AdminDashBoardActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.AddRoomsActivity" />
+        <activity android:name=".activities.ViewAddedRoomsActivity" />
+        <activity android:name=".activities.ResetAdminPasswordActivity" />
+        <activity android:name=".activities.CheckPaymentInfoActivity" />
+        <activity android:name=".activities.SliderViewActivity" />
+        <activity android:name=".activities.SplashScreenActivity" />
+        <activity android:name=".activities.ResetUserPasswordActivity" />
+        <activity android:name=".activities.MakePaymentActivity" />
+        <activity android:name=".activities.DeleteRoomsActivity" />
+        <activity android:name=".activities.AboutUsAdminActivity" />
+        <activity android:name=".activities.AboutUsUserActivity"></activity>
+    </application>
+
+</manifest>

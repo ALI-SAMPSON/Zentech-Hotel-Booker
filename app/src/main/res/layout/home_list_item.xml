@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!--  room imageView -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/room_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:src="@mipmap/first_icon"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
+
+        <!--  <com.master.glideimageview.GlideImageView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:id="@+id/glideImageView"
+             android:layout_margin="10dp"
+             android:background="@mipmap/candidate_image"
+             android:scaleType="centerCrop"
+             app:error_res="@mipmap/candidate_image"
+             app:placeholder_res="@mipmap/candidate_image"
+             app:show_progress="true"/> -->
+
+        <TextView
+            android:id="@+id/room_number"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_below="@+id/room_number"
+            android:id="@+id/price"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</LinearLayout>

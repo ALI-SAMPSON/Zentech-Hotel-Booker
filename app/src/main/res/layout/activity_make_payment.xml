@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_ui"
+    android:id="@+id/relativeLayout"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context=".activities.MakePaymentActivity">
+
+    <!-- Toolbar -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@color/green"
+        android:minHeight="?android:attr/actionBarSize"
+        android:elevation="4dp">
+    </android.support.v7.widget.Toolbar>
+
+
+
+    <!-- Linear Layout for the UI elements -->
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- TextInputLayout and AppCompatEdiText for Username -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="0dp"
+            android:textAlignment="center"
+            android:textColorHint="@color/colorWhite">
+            <EditText
+                android:id="@+id/editTextUsername"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="0dp"
+                android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+                android:hint="@string/hint_username"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:inputType="text"
+                android:maxLines="1"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- TextInputLayout and AppCompatEdiText for Room number -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutRoomNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="0dp"
+            android:textAlignment="center"
+            android:textColorHint="@color/colorWhite">
+            <EditText
+                android:id="@+id/editTextRoomNumber"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="0dp"
+                android:drawableLeft="@drawable/ic_add_room_black_24dp"
+                android:hint="@string/room_number"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:inputType="text"
+                android:maxLines="1"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- TextInputLayout and AppCompatEdiText for Price -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="0dp"
+            android:textAlignment="center"
+            android:textColorHint="@color/colorWhite">
+            <EditText
+                android:id="@+id/editTextPrice"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="0dp"
+                android:drawableLeft="@drawable/ic_payment_white_24dp"
+                android:hint="@string/price"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!--TextInputLayout and LinearLayout and spinner View for Voter's Gender-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="0dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="320dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:weightSum="1">
+                <!--TextView View  and Spinner View for Voter's Gender-->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewPaymentMethod"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:text="@string/text_payment_method"
+                    android:textSize="19sp"
+                    android:gravity=""
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.11" />
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:orientation="horizontal"
+                    android:layout_height="40dp"
+                    android:weightSum="1"
+                    android:layout_marginRight="10dp">
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spinnerPaymentMethod"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- TextInputLayout and AppCompatEdiText for Tel. Number -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutMobileNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="0dp"
+            android:textAlignment="center"
+            android:textColorHint="@color/colorWhite">
+            <EditText
+                android:id="@+id/editTextMobileNumber"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="0dp"
+                android:hint="@string/hint_tel"
+                android:drawableLeft="@drawable/ic_format_list_numbered_black_24dp"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:inputType="phone"
+                android:maxLength="16"
+                android:maxLines="1"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Make payment Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appCompatButtonPayment"
+            android:layout_marginTop="30dp"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/textInputLayoutTelNumber"
+            android:text="@string/make_payment"
+            android:textColor="@color/colorVioletDeep"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:textAlignment="center"
+            android:background="@drawable/round_corner_button_signup"
+            android:onClick="onMakePaymentButtonClick"/>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</RelativeLayout>

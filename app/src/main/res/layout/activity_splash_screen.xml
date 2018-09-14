@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SplashScreenActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/hotel_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ZENTECH HOTEL BOOKER"
+            android:textSize="20sp"
+            android:textColor="@color/colorWhite"
+            android:fontFamily="@font/nunito_extrabold"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/splash_image"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:layout_below="@+id/hotel_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="...your home of comfort"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:typeface="serif"
+            android:layout_marginTop="1dp"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+
+</ScrollView>

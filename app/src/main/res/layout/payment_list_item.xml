@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!--  <com.master.glideimageview.GlideImageView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:id="@+id/glideImageView"
+             android:layout_margin="10dp"
+             android:background="@mipmap/candidate_image"
+             android:scaleType="centerCrop"
+             app:error_res="@mipmap/candidate_image"
+             app:placeholder_res="@mipmap/candidate_image"
+             app:show_progress="true"/> -->
+
+        <!-- Text View for Username-->
+        <TextView
+            android:id="@+id/user_name"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Text View for Room Number-->
+        <TextView
+            android:layout_below="@+id/user_name"
+            android:id="@+id/room_number"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Text View for price-->
+        <TextView
+            android:layout_below="@+id/room_number"
+            android:id="@+id/price"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Text View for mobile number-->
+        <TextView
+            android:layout_below="@+id/price"
+            android:id="@+id/mobile_number"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</LinearLayout>

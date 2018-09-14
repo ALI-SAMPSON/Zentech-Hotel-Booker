@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "433348679552",
+    "firebase_url": "https://zentech-hotel-booker.firebaseio.com",
+    "project_id": "zentech-hotel-booker",
+    "storage_bucket": "zentech-hotel-booker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433348679552:android:cde9f99b6e392884",
+        "android_client_info": {
+          "package_name": "io.zentechhotelbooker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433348679552-mbpn0jbstuk3fgutqqmca4smgv1b9nu9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.zentechhotelbooker",
+            "certificate_hash": "cb8c0af6f657780058faa47307fa5bf4e11d4fcd"
+          }
+        },
+        {
+          "client_id": "433348679552-e91dqo9c47ua0ov0ovipg68qcjr69lo8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzb9MfYWtK7s40YNnIoKi-62kyVZYGEwU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433348679552-e91dqo9c47ua0ov0ovipg68qcjr69lo8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
