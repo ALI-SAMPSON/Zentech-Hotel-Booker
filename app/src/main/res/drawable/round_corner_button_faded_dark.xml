@@ -3,8 +3,8 @@
 
     <!-- sets the border parameters for the shape -->
     <stroke
-        android:width="0.5dp"
-        android:color="@color/colorWhite"/>
+        android:width="0.8dp"
+        android:color="@color/white_ghost"/>
 
     <gradient
         android:angle="225"

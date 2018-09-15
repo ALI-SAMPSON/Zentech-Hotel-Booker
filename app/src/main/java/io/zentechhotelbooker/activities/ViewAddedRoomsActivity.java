@@ -3,40 +3,48 @@ package io.zentechhotelbooker.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapter;
 import io.zentechhotelbooker.models.Rooms;
 
 public class ViewAddedRoomsActivity extends AppCompatActivity {
 
-    ListView listView;
+    // Creating DatabaseReference.
+    DatabaseReference databaseReference;
 
+    // Creating RecyclerView.
+    RecyclerView recyclerView;
 
-    private StorageReference storageReference;
+    // Creating RecyclerViewAdapter
+    RecyclerViewAdapter recyclerViewAdapter;
 
-    Rooms rooms;
+    // Creating List of ImageUploadInfo class.
+    List<Rooms> roomsList = new ArrayList<>();
 
-    //ArrayList<Rooms> arrayList;
-
-    //ArrayAdapter<Rooms> arrayAdapter;
-
-    FirebaseListAdapter firebaseListAdapter;
-
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +58,26 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        listView = findViewById(R.id.view_rooms_listView);
+        // Assign id to RecyclerView.
+        recyclerView = findViewById(R.id.recyclerView);
 
-        rooms = new Rooms();
+        // Setting RecyclerView size true.
+        recyclerView.setHasFixedSize(true);
 
-        storageReference = FirebaseStorage.getInstance().getReference();
+        // Setting RecyclerView layout as LinearLayout.
+        recyclerView.setLayoutManager(new LinearLayoutManager(ViewAddedRoomsActivity.this));
 
-        viewRooms();
+        // Assign activity this to progress bar.
+        progressBar = findViewById(R.id.progressBar);
+
+        // displays the progress bar
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Setting up Firebase image upload folder path in databaseReference.
+        // The path is already defined in MainActivity.
+        databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
+
+        //viewRooms();
     }
 
 
@@ -64,69 +85,18 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
     //methods for getting available rooms from db and populating on the listView
     public void viewRooms(){
 
-        //creating and initializing query from the database
-        Query query = FirebaseDatabase.getInstance().getReference().child("Rooms");
-
-        //listOptions to get the query and layout resource file to populate the data
-        FirebaseListOptions<Rooms> options = new FirebaseListOptions.Builder<Rooms>()
-                .setLayout(R.layout.room_list_item)
-                .setQuery(query,Rooms.class)
-                .build();
-
-        //list adapter to populate the various views with their respective mapped data from the database
-        firebaseListAdapter = new FirebaseListAdapter(options) {
-            @Override
-            protected void populateView(View v, Object model, int position) {
-
-                //TextView and imageView to populate the data from the database
-                TextView room_number = v.findViewById(R.id.room_number);
-                TextView price = v.findViewById(R.id.room_price);
-                CircleImageView circleImageView = v.findViewById(R.id.room_image);
-
-                //instance of the room Class and type casting to the Object model
-                Rooms rooms = (Rooms)model;
-
-                //setting the text from the database to the TextViews
-                room_number.setText(" Room Number: " + rooms.getRoom_number().toString());
-                price.setText(" Price: GHS " + rooms.getPrice().toString());
-
-                /*Glide.with(getApplicationContext())
-                        .load(rooms.getRoom_image().toString())
-                        .into(circleImageView);*/
-                //picasso library to load the image into the imageView
-                //Picasso.with(ViewAddedRoomsActivity.this).load(rooms.getRoom_image().toString()).into(circleImageView);
-
-            }
-        };
-
-        listView.setAdapter(firebaseListAdapter);
-
-        //onclick listener for listView , listening for event
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Rooms rooms = (Rooms) adapterView.getItemAtPosition(i);
-                //starts the deleteRoomsActivity
-                Intent intentDelete = new Intent(ViewAddedRoomsActivity.this,DeleteRoomsActivity.class);
-                intentDelete.putExtra("room_number",rooms.getRoom_number());
-                intentDelete.putExtra("price",rooms.getPrice());
-                intentDelete.putExtra("room_image", rooms.getRoom_image());
-                intentDelete.putExtra("key", rooms.getRoom_number());
-                startActivity(intentDelete);
-            }
-        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseListAdapter.startListening();
+        //firebaseListAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        firebaseListAdapter.stopListening();
+        //firebaseListAdapter.stopListening();
     }
 
     @Override

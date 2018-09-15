@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +30,8 @@ public class AdminDashBoardActivity extends AppCompatActivity {
 
     private DatabaseReference currentAdminRef;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +46,14 @@ public class AdminDashBoardActivity extends AppCompatActivity {
 
         //instantiation of the class
 
-        currentAdminRef = FirebaseDatabase.getInstance().getReference().child("CurrentAdmin");
+        mAuth = FirebaseAuth.getInstance();
 
-        cardViewMethod();//call to the method
+        cardViewMethods();//call to the method
 
     }
 
     //method to handle the onClickListeners of the CardViews
-    public void cardViewMethod(){
+    public void cardViewMethods(){
         //onclickListener for carView1
         cardView1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +85,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         cardView4.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                startActivity(new Intent(AdminDashBoardActivity.this, CheckPaymentInfoActivity.class));
+                startActivity(new Intent(AdminDashBoardActivity.this, CheckPaymentActivity.class));
             }
         });
 
@@ -111,6 +113,9 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                         },10000);
                         //removes the field when user logs out
                         currentAdminRef.removeValue();
+
+                        mAuth.signOut();
+                        AdminDashBoardActivity.this.finish();
                         //logs Admin out of the system and navigate him back to the Login Page
                         startActivity(new Intent(AdminDashBoardActivity.this, AdminLoginActivity.class));
                     }

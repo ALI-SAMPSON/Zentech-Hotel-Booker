@@ -1,90 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollView"
+    android:background="@color/colorSilver"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.DeleteRoomsActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:minHeight="?android:attr/actionBarSize"
-        android:fitsSystemWindows="true"
-        android:background="@color/green">
-    </android.support.v7.widget.Toolbar>
-
     <!-- material design LinearLayout -->
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_below="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_marginTop="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/delete_rooms_title"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:typeface="serif"
-            android:textColor="@color/green"/>
-
-        <TextView
-            android:id="@+id/key"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:typeface="serif"
-            android:textColor="@color/green"/>
-
+        <!-- Relative layout to place the progressBar at the center of the circular ImageView-->
         <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp">
-            <!--TextView View for Candidate's Picture-->
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/textViewPicture"
-                android:layout_width="80dp"
-                android:layout_height="60dp"
-                android:text="@string/room_image"
-                android:textSize="19sp"
-                android:textColor="@color/green"
-                android:layout_marginLeft="37dp"
-                android:layout_marginTop="4dp"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
-            <!--ImageButton to select candidate Picture from gallery-->
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageView"
+                android:id="@+id/circularImageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="25dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:src="@mipmap/first_icon"
-                android:layout_weight="0"
-                android:minHeight="130dp"
-                android:minWidth="130dp"
+                android:layout_margin="10dp"
                 android:scaleType="centerCrop"
-                android:adjustViewBounds="true"/>
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/add_room_icon_1"
+                app:civ_border_width="1.5dp"
+                app:civ_border_color="@color/colorViolet">
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:visibility="gone"/>
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/room_image"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/circularImageView"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:textColor="@color/buttonDark"
+                android:padding="5dp"/> -->
+
         </RelativeLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Username -->
         <android.support.design.widget.TextInputLayout
-            android:layout_below="@+id/toolbar"
+            android:layout_below="@+id/relativeLayout"
             android:id="@+id/textInputLayoutRoomNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,22 +70,20 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:textAlignment="center"
-            android:textColorHint="@color/green">
+            android:textColorHint="@color/buttonDark">
             <EditText
                 android:id="@+id/editTextRoomNumber"
-                android:layout_width="320dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:drawableLeft="@drawable/ic_room"
-                android:textColor="@color/green"
-                android:textColorHint="@color/green"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:textColor="@color/buttonDark"
+                android:textColorHint="@color/buttonLight"
                 android:hint="@string/room_number"
-                android:inputType=""
-                android:maxLines="1"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:textSize="16sp"
+                android:inputType="text"
+                android:maxLines="1"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Price -->
@@ -122,30 +97,42 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:textAlignment="center"
-            android:textColorHint="@color/green">
+            android:textColorHint="@color/buttonDark">
             <EditText
                 android:id="@+id/editTextPrice"
-                android:layout_width="320dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/green"
-                android:textColorHint="@color/green"
+                android:textColor="@color/buttonDark"
+                android:textColorHint="@color/buttonLight"
                 android:drawableLeft="@drawable/ic_payment"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:textSize="16sp"
                 android:hint="@string/price"
-                android:inputType=""
-                android:maxLines="1"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
-
+                android:inputType="numberDecimal"
+                android:maxLines="1"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Delete Room Button  -->
+        <!--<de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circularImageViewAdd"
+            android:layout_below="@+id/textInputLayoutPrice"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="40dp"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_add_room"
+            android:onClick="onAddRoomButtonClick"
+            app:civ_border_width="1.5dp"
+            app:civ_border_color="@color/buttonDark">
+        </de.hdodenhof.circleimageview.CircleImageView> -->
+
+        <!-- Add Button  -->
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/appCompatButtonDelete"
-            android:layout_marginTop="50dp"
-            android:layout_width="320dp"
+            android:id="@+id/appCompatButtonLogin"
+            android:layout_marginTop="40dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
@@ -155,10 +142,29 @@
             android:textSize="16sp"
             android:textStyle="normal"
             android:textAlignment="center"
-            android:background="@drawable/round_corner_button_login"
-            android:onClick="onDeleteRoomButtonClick"
-            tools:ignore="OnClick" />
+            android:background="@drawable/round_corner_button_login_admin"
+            android:onClick="onDeleteRoomButtonClick"/>
 
-    </android.support.v7.widget.LinearLayoutCompat>
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
 
-</RelativeLayout>
+    </LinearLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        app:rippleColor="@color/buttonLight"
+        app:fabSize="normal"
+        android:src="@drawable/ic_about">
+    </android.support.design.widget.FloatingActionButton> -->
+
+</android.support.v4.widget.NestedScrollView>

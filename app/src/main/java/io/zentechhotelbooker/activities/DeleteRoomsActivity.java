@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Rooms;
 
@@ -32,7 +33,7 @@ public class DeleteRoomsActivity extends AppCompatActivity {
     private EditText editTextRoomNumber;
     private EditText editTextPrice;
 
-    private ImageView imageView;
+    private CircleImageView circleImageView;
 
     Rooms rooms;
 
@@ -47,13 +48,9 @@ public class DeleteRoomsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_rooms);
 
-        //getting reference to the Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("DELETE ROOMS");
-
         //checks if there is an actionBar
         if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle("DELETE ROOMS");
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -61,7 +58,7 @@ public class DeleteRoomsActivity extends AppCompatActivity {
 
         editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
-        imageView = findViewById(R.id.imageView);
+        circleImageView = findViewById(R.id.circularImageView);
 
         rooms = new Rooms();
 
@@ -74,7 +71,7 @@ public class DeleteRoomsActivity extends AppCompatActivity {
 
         editTextRoomNumber.setText(getIntent().getStringExtra("room_number"));
         editTextPrice.setText(getIntent().getStringExtra("price"));
-        Picasso.with(DeleteRoomsActivity.this).load(rooms.getRoom_image()).into(imageView);
+        Picasso.with(DeleteRoomsActivity.this).load(rooms.getRoom_image()).into(circleImageView);
 
         roomRef = FirebaseDatabase.getInstance().getReference().child("Rooms").child(key);
 
@@ -161,4 +158,5 @@ public class DeleteRoomsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

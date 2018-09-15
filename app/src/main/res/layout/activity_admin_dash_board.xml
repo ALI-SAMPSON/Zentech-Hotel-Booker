@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/cardview_bg"
     android:fitsSystemWindows="true"
     android:padding="10dp"
-    android:background="@drawable/cardview_bg"
     tools:context=".activities.AdminDashBoardActivity">
 
     <TextView
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/admin_dash_board"
-        android:fontFamily="@font/nunito_extrabold"
+        app:fontFamily="@font/nunito_extrabold"
         android:textColor="@color/materialGreen"
         android:textStyle="normal"
         android:textSize="25sp"
@@ -36,6 +36,7 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_margin="0dp"
+            android:background="@color/colorSilver"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:layout_alignParentLeft="true"
@@ -50,6 +51,7 @@
                 <ImageView
                     android:layout_width="65dp"
                     android:layout_height="65dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/circular_background_deep_purple"
                     android:padding="10dp"
                     android:src="@drawable/ic_add_room_black_24dp" />
@@ -59,8 +61,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/add_rooms"
+                    app:fontFamily="@font/nunito_semibold"
                     android:textAllCaps="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGray"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -75,8 +79,8 @@
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="@string/add_rooms_sub_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorGray" />
+                    app:fontFamily="@font/nunito_semibold"
+                    android:textAlignment="center" />
 
             </LinearLayout>
 
@@ -87,6 +91,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:layout_below="@+id/cardView1"
+            android:background="@color/colorSilver"
             android:layout_alignParentBottom="false"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -105,6 +110,7 @@
                 <ImageView
                     android:layout_width="65dp"
                     android:layout_height="65dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/circular_background_material_green"
                     android:padding="10dp"
                     android:src="@drawable/ic_delete_room_black_24dp" />
@@ -113,9 +119,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    app:fontFamily="@font/nunito_semibold"
                     android:text="@string/delete_rooms"
                     android:textAllCaps="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGray"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -129,9 +137,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="5dp"
+                    app:fontFamily="@font/nunito_semibold"
                     android:text="@string/delete_rooms_sub_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorGray" />
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
@@ -144,6 +152,7 @@
             android:layout_below="@+id/cardView1"
             android:layout_alignParentBottom="false"
             android:layout_alignParentLeft="true"
+            android:background="@color/colorSilver"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginLeft="0dp"
@@ -159,6 +168,7 @@
                 <ImageView
                     android:layout_width="65dp"
                     android:layout_height="65dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/circular_background_color_primary_dark"
                     android:padding="10dp"
                     android:src="@drawable/ic_lock_black_24dp" />
@@ -167,9 +177,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    app:fontFamily="@font/nunito_semibold"
                     android:textAllCaps="true"
                     android:text="@string/reset_password"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGray"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -182,10 +194,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    app:fontFamily="@font/nunito_semibold"
                     android:padding="5dp"
                     android:text="@string/reset_password_sub_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorGray" />
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
@@ -198,6 +210,7 @@
             android:layout_below="@+id/cardView1"
             android:layout_alignParentBottom="false"
             android:layout_alignParentRight="true"
+            android:background="@color/colorSilver"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginRight="0dp"
@@ -213,6 +226,7 @@
                 <ImageView
                     android:layout_width="65dp"
                     android:layout_height="65dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/circular_background_back_color"
                     android:padding="10dp"
                     android:src="@drawable/ic_payment_black_24dp" />
@@ -221,9 +235,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    app:fontFamily="@font/nunito_semibold"
                     android:textAllCaps="true"
-                    android:text="@string/check_payment_info"
-                    android:textStyle="bold" />
+                    android:text="@string/check_payments"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGray"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -236,10 +252,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    app:fontFamily="@font/nunito_semibold"
                     android:padding="5dp"
                     android:text="@string/check_payment_sub_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorGray" />
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
@@ -250,6 +266,7 @@
             android:layout_below="@+id/cardView4"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
+            android:background="@color/colorSilver"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
@@ -266,6 +283,7 @@
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/circular_background_blue"
                     android:padding="10dp"
                     android:src="@drawable/ic_logout_app_black_24dp" />
@@ -274,9 +292,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    app:fontFamily="@font/nunito_semibold"
                     android:text="@string/logout"
                     android:textAllCaps="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGray"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -289,10 +309,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    app:fontFamily="@font/nunito_semibold"
                     android:padding="5dp"
                     android:text="@string/logout_sub_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorGray" />
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 

@@ -31,7 +31,7 @@ public class ResetUserPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reset_password);
+        setContentView(R.layout.activity_reset_user_password);
 
         // getting reference to the view objects
         editTextEmail = findViewById(R.id.email);
@@ -41,6 +41,13 @@ public class ResetUserPasswordActivity extends AppCompatActivity {
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         mAuth = FirebaseAuth.getInstance();
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
     }
 

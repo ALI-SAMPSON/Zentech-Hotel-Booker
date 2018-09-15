@@ -1,9 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollView"
+    android:background="@color/colorSilver"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.AddRoomsActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- material design LinearLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Relative layout to place the progressBar at the center of the circular ImageView-->
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circularImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:scaleType="centerCrop"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/add_room_icon_1"
+                android:onClick="onSelectImage"
+                app:civ_border_width="1.5dp"
+                app:civ_border_color="@color/colorViolet">
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/room_image"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/circularImageView"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:textColor="@color/buttonDark"
+                android:padding="5dp"/>
+
+        </RelativeLayout>
+
+        <!-- TextInputLayout and AppCompatEdiText for Username -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_below="@+id/relativeLayout"
+            android:id="@+id/textInputLayoutRoomNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:textColorHint="@color/buttonDark">
+            <EditText
+                android:id="@+id/editTextRoomNumber"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_room"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:textColor="@color/buttonDark"
+                android:textColorHint="@color/buttonLight"
+                android:hint="@string/room_number"
+                android:textSize="16sp"
+                android:inputType="text"
+                android:maxLines="1"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- TextInputLayout and AppCompatEdiText for Price -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textInputLayoutRoomNumber"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:textColorHint="@color/buttonDark">
+            <EditText
+                android:id="@+id/editTextPrice"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/buttonDark"
+                android:textColorHint="@color/buttonLight"
+                android:drawableLeft="@drawable/ic_payment"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:textSize="16sp"
+                android:hint="@string/price"
+                android:inputType="numberDecimal"
+                android:maxLines="1"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!--<de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circularImageViewAdd"
+            android:layout_below="@+id/textInputLayoutPrice"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="40dp"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_add_room"
+            android:onClick="onAddRoomButtonClick"
+            app:civ_border_width="1.5dp"
+            app:civ_border_color="@color/buttonDark">
+        </de.hdodenhof.circleimageview.CircleImageView> -->
+
+        <!-- Add Button  -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appCompatButtonLogin"
+            android:layout_marginTop="40dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_below="@+id/textInputLayoutPrice"
+            android:text="@string/text_add"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:textAlignment="center"
+            android:background="@drawable/round_corner_button_login_admin"
+            android:onClick="onAddRoomButtonClick"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        app:rippleColor="@color/buttonLight"
+        app:fabSize="normal"
+        android:src="@drawable/ic_about">
+    </android.support.design.widget.FloatingActionButton> -->
+
+</android.support.v4.widget.NestedScrollView>

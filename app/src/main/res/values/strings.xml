@@ -15,14 +15,15 @@
     <string name="link_reset_password">Forgot Password?</string>
     <string name="text_gender">Gender</string>
     <string name="add_rooms">Add Rooms</string>
+    <string name="room_added_successful">Room Added Successfully</string>
     <string name="add_rooms_sub_text">add rooms available to the system</string>
     <string name="delete_rooms">Delete Rooms</string>
     <string name="delete_rooms_sub_text">delete rooms which are not needed</string>
     <string name="reset_password">Reset Password</string>
-    <string name="reset_password_sub_text">Noticed any unauthorised access? then reset password</string>
+    <string name="reset_password_sub_text">Noticed any unauthorised access? then reset pass</string>
     <string name="edit_credentials">Edit Credentials</string>
     <string name="edit_credentials_sub_text">lets edit your credentials if necessary</string>
-    <string name="check_payment_info">Check Payment Info</string>
+    <string name="check_payments">Check Payments</string>
     <string name="check_payment_sub_text">check payments made by users</string>
     <string name="sign_out">Signout</string>
     <string name="logout_sub_text">done? lets exit the system</string>

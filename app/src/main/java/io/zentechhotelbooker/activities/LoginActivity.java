@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
-        progressDialog = ProgressDialog.show(this,"","Please wait...",true,true);
+        //progressDialog = ProgressDialog.show(this,"","Please wait...",true,true);
 
         mAuth = FirebaseAuth.getInstance();
 

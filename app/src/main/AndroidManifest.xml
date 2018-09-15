@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.zentechhotelbooker">
+    package="io.zentechhotelbooker"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -19,11 +26,6 @@
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.SignUpActivity"
@@ -35,31 +37,51 @@
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activities.AdminDashBoardActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.AdminDashBoard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.ResetPasswordActivity"
+        <activity android:name=".activities.AddRoomsActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.AdminDashBoardActivity"
+            android:theme="@style/AppTheme.AdminComponents">
+        </activity>
+        <activity android:name=".activities.ViewAddedRoomsActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.AddRoomsActivity" />
-        <activity android:name=".activities.ViewAddedRoomsActivity" />
-        <activity android:name=".activities.ResetAdminPasswordActivity" />
-        <activity android:name=".activities.CheckPaymentInfoActivity" />
+            android:theme="@style/AppTheme.AdminComponents">
+        </activity>
+        <activity android:name=".activities.ResetAdminPasswordActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".activities.ResetUserPasswordActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".activities.CheckPaymentActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.AdminComponents">
+        </activity>
+        <activity android:name=".activities.DeleteRoomsActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.AdminComponents">
+        </activity>
         <activity android:name=".activities.SliderViewActivity" />
         <activity android:name=".activities.SplashScreenActivity" />
-        <activity android:name=".activities.ResetUserPasswordActivity" />
         <activity android:name=".activities.MakePaymentActivity" />
-        <activity android:name=".activities.DeleteRoomsActivity" />
         <activity android:name=".activities.AboutUsAdminActivity" />
         <activity android:name=".activities.AboutUsUserActivity"></activity>
     </application>
