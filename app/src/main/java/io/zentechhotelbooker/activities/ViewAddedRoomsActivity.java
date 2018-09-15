@@ -3,6 +3,7 @@ package io.zentechhotelbooker.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,12 +14,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -65,10 +70,20 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         // Setting RecyclerView layout as LinearLayout.
-        recyclerView.setLayoutManager(new LinearLayoutManager(ViewAddedRoomsActivity.this));
+        recyclerView.setLayoutManager(new GridLayoutManager(ViewAddedRoomsActivity.this,2));
 
         // Assign activity this to progress bar.
         progressBar = findViewById(R.id.progressBar);
+
+        //viewRooms();
+
+        // Calling the method to loadUploadedRooms in firebase database
+        loadUploadedRoomDetails();
+    }
+
+
+    // Method to load rooms uploaded into database
+    private void loadUploadedRoomDetails(){
 
         // displays the progress bar
         progressBar.setVisibility(View.VISIBLE);
@@ -77,10 +92,41 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
         // The path is already defined in MainActivity.
         databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
-        //viewRooms();
+
+        // Adding Add Value Event Listener to databaseReference.
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+
+                    Rooms rooms = postSnapshot.getValue(Rooms.class);
+
+                    roomsList.add(rooms);
+                }
+
+                recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(),roomsList);
+
+                recyclerView.setAdapter(recyclerViewAdapter);
+
+                // Hiding the progress bar.
+                progressBar.setVisibility(View.GONE);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                // Hiding the progress bar.
+                progressBar.setVisibility(View.GONE);
+
+                // displays a DatabaseError exception if error occurs
+                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
-
-
 
     //methods for getting available rooms from db and populating on the listView
     public void viewRooms(){

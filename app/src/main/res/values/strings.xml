@@ -99,6 +99,7 @@
     <string name="delete_rooms_title">Delete a Room from the System</string>
     <string name="text_add">Add Room</string>
     <string name="text_delete">Delete Room</string>
+    <string name="text_delete_body">Are you sure you want to delete this room?</string>
     <string name="price">Price</string>
     <string name="room_image">Upload Room Image here...</string>
     <string name="welcome">WELCOME TO YOKA LODGE!</string>

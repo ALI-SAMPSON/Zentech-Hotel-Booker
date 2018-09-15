@@ -60,13 +60,6 @@ public class AddRoomsActivity extends AppCompatActivity {
     StorageReference storageReference;
     DatabaseReference databaseReference;
 
-    /*StorageReference storage;
-
-    //for image location
-    String imageLocation;
-
-    StorageReference imagePath;
-    */
     private Rooms rooms;
 
 
@@ -93,13 +86,6 @@ public class AddRoomsActivity extends AppCompatActivity {
         circleImageView = findViewById(R.id.circularImageView);
         editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
-
-        /*rooms = new Rooms();
-        roomdB = FirebaseDatabase.getInstance();
-        roomRef = roomdB.getReference().child("Rooms");
-
-        storage = FirebaseStorage.getInstance().getReference();
-        */
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -146,7 +132,7 @@ public class AddRoomsActivity extends AppCompatActivity {
     }
 
     // Creating Method to get the selected image file Extension from File Path URI.
-    public String GetFileExtention(Uri uri){
+    public String GetFileExtension(Uri uri){
 
         ContentResolver contentResolver = getContentResolver();
 
@@ -168,7 +154,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
             StorageReference storageReference2nd = storageReference
                     .child(Storage_Path + System.currentTimeMillis() +
-                            "." + GetFileExtention(FilePathUri));
+                            "." + GetFileExtension(FilePathUri));
 
             // Adding addOnSuccessListener to second StorageReference.
             storageReference2nd.putFile(FilePathUri)
@@ -183,11 +169,6 @@ public class AddRoomsActivity extends AppCompatActivity {
 
                             // displays the progressBar
                             progressBar.setVisibility(View.GONE);
-
-                            // setting fields to the object og the class Rooms
-                            //Rooms rooms = new Rooms(taskSnapshot.getDownloadUrl().toString(),room_number,price);
-
-
 
                             // setting fields to the object og the class Rooms
                             rooms.setRoom_number(room_number);
