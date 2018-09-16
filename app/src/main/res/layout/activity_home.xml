@@ -8,18 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.HomeActivity">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        app:headerLayout="@layout/nav_header"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/white_dim"
-        app:itemTextColor="@color/colorLightBlue"
-        app:itemIconTint="@color/colorLightBlue"
-        app:menu="@menu/drawer_menu"
-        android:layout_gravity="start">
-    </android.support.design.widget.NavigationView>
-
     <!-- Relative layout for Recycler view and progressBar -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -43,5 +31,17 @@
         android:visibility="visible"/>
 
     </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/nav_header"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/colorSilver"
+        app:itemTextColor="@color/colorLightBlue"
+        app:itemIconTint="@color/colorLightBlue"
+        app:menu="@menu/drawer_menu"
+        android:layout_gravity="start">
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

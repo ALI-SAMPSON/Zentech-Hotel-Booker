@@ -120,6 +120,8 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="logout_msg">Are you sure you want to logout?</string>
+    <string name="text_update">UPDATE</string>
+    <string name="text_update_profile">Update Profile</string>
 
 
     <!-- Navigation drawer strings -->

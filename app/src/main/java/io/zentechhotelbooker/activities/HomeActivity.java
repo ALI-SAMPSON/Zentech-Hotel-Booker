@@ -113,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mAuth = FirebaseAuth.getInstance();
 
         // call to the method to load user details into their respective views
-        loadUserInfo();
+        //loadUserInfo();
 
         // call to the method to load rooms from Firbase Database
         loadUploadedRoomDetails();
@@ -231,6 +231,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_about_us:
                 // open AboutUsUserActivity activity
                 startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
+                break;
+            case R.id.menu_exit:
+                // call to the method to exit the application
+                exitApplication();
+                default:
+                    break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -242,7 +248,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 // open this activity
                 break;
             case R.id.menu_profile:
-                // open this activity
+                // open UpdateUserProfileActivity activity
+                startActivity(new Intent(HomeActivity.this,UpdateUserProfileActivity.class));
                 break;
             case R.id.menu_payment:
                 // open this activity
@@ -356,7 +363,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
 
     }
 }

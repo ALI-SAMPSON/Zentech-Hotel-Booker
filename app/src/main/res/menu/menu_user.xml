@@ -5,7 +5,7 @@
     <item
         android:id="@+id/menu_about_us"
         android:orderInCategory="100"
-        android:title="About Us"
+        android:title="@string/text_about"
         app:showAsAction="never">
     </item>
 
@@ -15,5 +15,12 @@
         android:orderInCategory="100"
         app:showAsAction="never">
     </item> -->
+
+    <item
+       android:id="@+id/menu_exit"
+       android:title="@string/text_exit"
+       android:orderInCategory="200"
+       app:showAsAction="never">
+   </item>
 
 </menu>

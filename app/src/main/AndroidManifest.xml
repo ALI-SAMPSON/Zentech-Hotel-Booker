@@ -32,8 +32,7 @@
             android:name=".activities.LoginActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.SignUpActivity"
             android:configChanges="screenSize"
@@ -104,8 +103,21 @@
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar" />
-        <activity android:name=".activities.ContactUsUserActivity" />
-        <activity android:name=".activities.ContactUsAdminActivity"></activity>
+        <activity
+            android:name=".activities.ContactUsUserActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar"></activity>
+        <activity
+            android:name=".activities.ContactUsAdminActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar"></activity>
+        <activity android:name=".activities.UpdateUserProfileActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar">
+        </activity>
     </application>
 
 </manifest>
