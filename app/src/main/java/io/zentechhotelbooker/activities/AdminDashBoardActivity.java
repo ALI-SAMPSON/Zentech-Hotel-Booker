@@ -96,9 +96,9 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                 //alert Dialog to alert the admin of logging out of the system
                 AlertDialog.Builder builder = new AlertDialog.Builder(AdminDashBoardActivity.this);
                 builder.setTitle("Signout");
-                builder.setMessage("Are you sure you want to exit the system");
+                builder.setMessage("Are you sure you want to signout of the system");
 
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         progressDialog = ProgressDialog.show(AdminDashBoardActivity.this,"",null,true,true);
@@ -112,7 +112,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                             }
                         },10000);
                         //removes the field when user logs out
-                        currentAdminRef.removeValue();
+                        //currentAdminRef.removeValue();
 
                         mAuth.signOut();
                         AdminDashBoardActivity.this.finish();
@@ -124,13 +124,14 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        // hides the dialogInterface
                         dialogInterface.dismiss();
                     }
                 });
 
                 //create a new alert Dialog and displays it
-                AlertDialog alert = builder.create();
-                alert.show();
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
             }
         });

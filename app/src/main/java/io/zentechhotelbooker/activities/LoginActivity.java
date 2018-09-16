@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
@@ -31,7 +32,6 @@ import io.zentechhotelbooker.models.Users;
 public class LoginActivity extends AppCompatActivity {
 
     // global or class variables
-    ProgressDialog progressDialog;
 
     ProgressBar progressBar;
 
@@ -62,8 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         nestedScrollView = findViewById(R.id.nestedScrollView);
 
         progressBar = findViewById(R.id.progressBar);
-
-        //progressDialog = ProgressDialog.show(this,"","Please wait...",true,true);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -101,12 +99,12 @@ public class LoginActivity extends AppCompatActivity {
         //checks if text entered are valid and textfields are not empty
         if(email.isEmpty()){
             editTextEmail.setError(getString(R.string.error_empty_email));
-            editTextEmail.requestFocus();
+            //editTextEmail.requestFocus();
             return;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             editTextEmail.setError(getString(R.string.email_invalid));
-            editTextEmail.requestFocus();
+            //editTextEmail.requestFocus();
             return;
         }
         else if(password.isEmpty()){
@@ -123,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this,"Email and Password are required fields",Toast.LENGTH_LONG).show();
         }
         else{
+            // call to the LoginUser method
             loginUser();
         }
 

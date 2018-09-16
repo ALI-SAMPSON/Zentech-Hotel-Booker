@@ -9,12 +9,11 @@
         app:showAsAction="never">
     </item>
 
-    <item
+    <!--<item
         android:id="@+id/menu_sign_out"
         android:title="Sign Out"
         android:orderInCategory="100"
         app:showAsAction="never">
-
-    </item>
+    </item> -->
 
 </menu>

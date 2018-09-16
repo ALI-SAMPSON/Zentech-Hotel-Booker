@@ -4,35 +4,24 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
-import io.zentechhotelbooker.adapters.RecyclerViewAdapter;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
 import io.zentechhotelbooker.models.Rooms;
 
 public class ViewAddedRoomsActivity extends AppCompatActivity {
@@ -43,10 +32,10 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
     // Creating RecyclerView.
     RecyclerView recyclerView;
 
-    // Creating RecyclerViewAdapter
-    RecyclerViewAdapter recyclerViewAdapter;
+    // Creating RecyclerViewAdapterAdmin
+    RecyclerViewAdapterAdmin recyclerViewAdapterAdmin;
 
-    // Creating List of ImageUploadInfo class.
+    // Creating List of Rooms class.
     List<Rooms> roomsList = new ArrayList<>();
 
     ProgressBar progressBar;
@@ -77,10 +66,28 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
 
         //viewRooms();
 
-        // Calling the method to loadUploadedRooms in firebase database
+        // Calling the method to display rooms in the firebase database
         loadUploadedRoomDetails();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Calling the method to delete rooms in the firebase database
+        //deleteRoom();
+
+    }
+
+    // method to delete a selected room from database
+    /*private void deleteRoom(){
+
+        // Creating an object of the RecyclerAdapter
+        recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(getApplicationContext(),roomsList);
+
+
+    }
+    */
 
     // Method to load rooms uploaded into database
     private void loadUploadedRoomDetails(){
@@ -91,7 +98,6 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
         databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
-
 
         // Adding Add Value Event Listener to databaseReference.
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -105,13 +111,13 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
                     roomsList.add(rooms);
                 }
 
-                recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(),roomsList);
+                // Creating an object of the RecyclerAdapter
+                recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(ViewAddedRoomsActivity.this,roomsList);
 
-                recyclerView.setAdapter(recyclerViewAdapter);
+                recyclerView.setAdapter(recyclerViewAdapterAdmin);
 
                 // Hiding the progress bar.
                 progressBar.setVisibility(View.GONE);
-
 
             }
 
@@ -128,22 +134,6 @@ public class ViewAddedRoomsActivity extends AppCompatActivity {
         });
     }
 
-    //methods for getting available rooms from db and populating on the listView
-    public void viewRooms(){
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //firebaseListAdapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //firebaseListAdapter.stopListening();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

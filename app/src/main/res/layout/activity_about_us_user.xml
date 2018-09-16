@@ -8,16 +8,6 @@
     android:background="@drawable/my_login_ui"
     tools:context=".activities.AboutUsUserActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:minHeight="?android:attr/actionBarSize"
-        android:background="@color/green"
-        android:elevation="4dp">
-    </android.support.v7.widget.Toolbar>
-
     <LinearLayout
         android:layout_marginTop="90dp"
         android:layout_below="@+id/toolbar"

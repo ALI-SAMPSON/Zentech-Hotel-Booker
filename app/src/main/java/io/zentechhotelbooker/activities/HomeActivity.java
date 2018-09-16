@@ -11,19 +11,34 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterUser;
+import io.zentechhotelbooker.models.Rooms;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -36,6 +51,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
 
     private ProgressDialog progressDialog;
+
+    // Creating DataReference
+    DatabaseReference databaseReference;
+
+    // Creating RecyclerView
+    RecyclerView recyclerView;
+
+    // Creating RecyclerViewAdapterAdmin
+    RecyclerViewAdapterUser recyclerViewAdapterUser;
+
+    // Creating List of Rooms class.
+    List<Rooms> roomsList = new ArrayList<>();
+
+    // Creating progressBar
+    ProgressBar progressBar;
 
     // object to inflate the views of the navigation drawer
     private CircleImageView circleImageView;
@@ -61,17 +91,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mToggle.syncState();
 
         if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(getString(R.string.home));
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        progressDialog = ProgressDialog.show(this,"","Please wait...",true,true);
+        // Assign id to RecyclerView.
+        recyclerView = findViewById(R.id.recyclerView);
 
+        // Setting RecyclerView size true.
+        recyclerView.setHasFixedSize(true);
+
+        // Sets the Layout of the Recycler View and uses a spanCount of 2
+        recyclerView.setLayoutManager(new GridLayoutManager(HomeActivity.this,2));
+
+        // Assign id to ProgressBar
+        progressBar = findViewById(R.id.progressBar);
+
+        // Getting instance of the FirbaseAuth class
         mAuth = FirebaseAuth.getInstance();
 
         // call to the method to load user details into their respective views
         loadUserInfo();
+
+        // call to the method to load rooms from Firbase Database
+        loadUploadedRoomDetails();
 
     }
 
@@ -128,6 +173,49 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void loadUploadedRoomDetails(){
+
+        // displays the progress bar
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Setting up Firebase image upload folder path in databaseReference.
+        // The path is already defined in MainActivity.
+        databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
+
+        // Adding Add Value Event Listener to databaseReference.
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // getting snapshot of rooms available in the database
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+
+                    Rooms rooms = postSnapshot.getValue(Rooms.class);
+                    // adding the rooms to the List of rooms
+                    roomsList.add(rooms);
+                }
+
+                recyclerViewAdapterUser = new RecyclerViewAdapterUser(HomeActivity.this,roomsList);
+
+                recyclerView.setAdapter(recyclerViewAdapterUser);
+
+                // Hiding the progress bar.
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Hiding the progress Bar
+                progressBar.setVisibility(View.GONE);
+
+                // displays an error message from the database
+                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_user,menu);
@@ -138,6 +226,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item)){
             return true;
+        }
+        switch (item.getItemId()){
+            case R.id.menu_about_us:
+                // open AboutUsUserActivity activity
+                startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -158,7 +251,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 // open this activity
                 break;*/
             case R.id.menu_contact:
-                // open this activity
+                // open ContactUsUserActivity activity
+                startActivity(new Intent(HomeActivity.this,ContactUsUserActivity.class));
                 break;
             case R.id.menu_sign_out:
                 // log user out of the system
@@ -247,7 +341,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 },10000);
                 // logs current user out of the system
-                FirebaseAuth.getInstance().signOut();
+                mAuth.signOut();
                 HomeActivity.this.finish();
                 startActivity(new Intent(HomeActivity.this,LoginActivity.class));
             }

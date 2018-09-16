@@ -15,12 +15,9 @@ public class AboutUsUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us_user);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("ABOUT US");
-
         //checks if there is a toolbar, if yes it set the Home Button on it
         if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(getString(R.string.text_about));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);

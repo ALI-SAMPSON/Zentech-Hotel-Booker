@@ -20,13 +20,28 @@
         android:layout_gravity="start">
     </android.support.design.widget.NavigationView>
 
+    <!-- Relative layout for Recycler view and progressBar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <!--<ProgressBar
+        <!-- RecyclerView to displays rooms available -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+        </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_marginTop="10dp"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_gravity="center_horizontal"
-        android:visibility="visible"/>-->
+        android:layout_centerInParent="true"
+        android:visibility="visible"/>
+
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

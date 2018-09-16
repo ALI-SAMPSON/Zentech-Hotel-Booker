@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
@@ -16,12 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,16 +42,18 @@ import io.zentechhotelbooker.models.Users;
 public class MakePaymentActivity extends AppCompatActivity {
 
     //class variables for various views
-    ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
     Payments payments;
 
     Users users;
 
+    FirebaseAuth mAuth;
+
     private EditText editTextUsername;
     private EditText editTextRoomNumber;
     private EditText editTextPrice;
-    private EditText editTextMobileNumber;
+    private EditText editTextMomoNumber;
 
     private AppCompatSpinner spinnerPaymentMethod;
     private ArrayAdapter<CharSequence> arrayAdapterPaymentMethod;
@@ -56,7 +62,7 @@ public class MakePaymentActivity extends AppCompatActivity {
 
     DatabaseReference usersRef;
 
-    RelativeLayout relativeLayout;
+    NestedScrollView nestedScrollView;
 
 
 
@@ -65,11 +71,8 @@ public class MakePaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_payment);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("MAKE PAYMENT");
-
         if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(getString(R.string.make_payment));
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,7 +82,7 @@ public class MakePaymentActivity extends AppCompatActivity {
         editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
         editTextUsername = findViewById(R.id.editTextUsername);
-        editTextMobileNumber = findViewById(R.id.editTextMobileNumber);
+        editTextMomoNumber = findViewById(R.id.editTextMomoNumber);
 
         //spinner or drop down view and its arrayAdapter instantiation
         spinnerPaymentMethod = findViewById(R.id.spinnerPaymentMethod);
@@ -87,22 +90,22 @@ public class MakePaymentActivity extends AppCompatActivity {
         arrayAdapterPaymentMethod.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerPaymentMethod.setAdapter(arrayAdapterPaymentMethod);
 
-        relativeLayout = findViewById(R.id.relativeLayout);
+        nestedScrollView = findViewById(R.id.nestedScrollView);
+
+        progressBar = findViewById(R.id.progressBar);
 
         payments = new Payments();
 
         users = new Users();
 
-        //String key = getIntent().getExtras().get("key").toString();
-
-        //usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+        mAuth = FirebaseAuth.getInstance();
 
         paymentRef = FirebaseDatabase.getInstance().getReference().child("Payments");
 
 
         //editTextUsername.setText(getIntent().getStringExtra("user_name"));
         editTextRoomNumber.setText(getIntent().getStringExtra("room_number"));
-        editTextPrice.setText(getIntent().getStringExtra("price"));
+        editTextPrice.setText(getIntent().getStringExtra("room_price"));
 
         onEditTextClick();
     }
@@ -111,8 +114,16 @@ public class MakePaymentActivity extends AppCompatActivity {
     public void onEditTextClick(){
 
         //error strings
+        final String error_username = "Username field cannot be edited";
         final String error_room_number = "Room number field cannot be edited";
-        final String error_price = "Price field cannot be edited";
+        final String error_room_price = "Price field cannot be edited";
+
+        editTextUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editTextUsername.setError(error_username);
+            }
+        });
 
         editTextRoomNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,9 +135,20 @@ public class MakePaymentActivity extends AppCompatActivity {
         editTextPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editTextPrice.setError(error_price);
+                editTextPrice.setError(error_room_price);
             }
         });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // checks if there the is user logged in
+        if(mAuth.getCurrentUser() != null){
+            FirebaseUser user = mAuth.getCurrentUser();
+            editTextUsername.setText(user.getDisplayName());
+        }
     }
 
     //method for handling make payments
@@ -134,25 +156,26 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         //gets input from the fields
         String user_name = editTextUsername.getText().toString().trim();
-        String mobile_number = editTextMobileNumber.getText().toString().trim();
-
-        //error strings
-        String error_username = "Username is a required field...Please enter valid information to proceed with your payment";
-        String error_mobile_number = "Mobile Number is a required field...Please enter valid information to proceed with your payment";
+        String mobile_number = editTextMomoNumber.getText().toString().trim();
 
         //checks if the fields are not empty
-        if(user_name.equals("")){
-            editTextUsername.setError(error_username);
+        if(user_name.isEmpty()){
+            editTextUsername.setError(getString(R.string.error_empty_username));
+            editTextUsername.requestFocus();
+            return;
         }
-        else if(mobile_number.equals("")){
-            editTextMobileNumber.setError(error_mobile_number);
+        else if(mobile_number.isEmpty()){
+            editTextMomoNumber.setError(getString(R.string.error_empty_momo_number));
+            editTextMomoNumber.requestFocus();
+            return;
         }
-        else if(user_name.equals("") && mobile_number.equals("")){
+        else if(user_name.isEmpty() && mobile_number.isEmpty()){
             //Toast.makeText(MakePaymentActivity.this,"Both username and password are required fields",Toast.LENGTH_LONG).show();
-            Snackbar.make(relativeLayout,"Both username and password are required fields",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(nestedScrollView,"Both username and momo number are required fields",Snackbar.LENGTH_LONG).show();
         }
         else{
-            makePayment(); //method call
+            //method call
+            makePayment();
         }
 
     }
@@ -160,15 +183,14 @@ public class MakePaymentActivity extends AppCompatActivity {
     //method for making the payments
     public void makePayment(){
 
-        //instance of progressDialog and it's instantiation
-        progressDialog = ProgressDialog.show(MakePaymentActivity.this,"",null,true,true);
-        progressDialog.setMessage("Please wait...");
+        // displays the progressBar
+        progressBar.setVisibility(View.VISIBLE);
 
         //gets text from the user
         String user_name = editTextUsername.getText().toString().trim();
         final String room_number = editTextRoomNumber.getText().toString().trim();
         String price = editTextPrice.getText().toString().trim();
-        String mobile_number = editTextMobileNumber.getText().toString().trim();
+        String mobile_number = editTextMomoNumber.getText().toString().trim();
         String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
 
         //sets the values from the EditText Fields to those in the database
@@ -187,17 +209,12 @@ public class MakePaymentActivity extends AppCompatActivity {
                     Payments payments = dataSnapshot.getValue(Payments.class);
                     //checks if room has been booked
                     if (room_number.equals(payments.getRoom_number())) {
-                        final Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                progressDialog.dismiss();
-                                timer.cancel();
-                            }
-                        }, 10000);
+
+                        // hides the progressBar
+                        progressBar.setVisibility(View.GONE);
 
                         //clearBothTextFields(); //call to this method
-                        Snackbar.make(relativeLayout, " Room is already booked by " + payments.getUser_name(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(nestedScrollView, " Room is already booked by " + payments.getUser_name(), Snackbar.LENGTH_LONG).show();
                     }
                 }
 
@@ -208,16 +225,12 @@ public class MakePaymentActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                final Timer timer = new Timer();
-                                timer.schedule(new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        timer.cancel();
-                                    }
-                                }, 5000);
+
+                                // hides the progressBar
+                                progressBar.setVisibility(View.GONE);
+
                                 //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
-                                Snackbar.make(relativeLayout, " Payment made successfully ", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(nestedScrollView, " Payment made successfully ", Snackbar.LENGTH_LONG).show();
 
                                 //sends a notification to the user of voting successfully
                                 Intent intent = new Intent(MakePaymentActivity.this, MakePaymentActivity.class);
@@ -226,7 +239,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 PendingIntent pendingIntent = PendingIntent.getActivity(MakePaymentActivity.this, 0, intent, 0);
                                 Notification notification = new Notification.Builder(MakePaymentActivity.this)
                                         .setSmallIcon(R.mipmap.app_icon_round)
-                                        .setContentTitle("Yoka Logde")
+                                        .setContentTitle("Zentech Hotel Booker")
                                         .setContentText(" You have successfully made payment for room " + room_number)
                                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                                         .setContentIntent(pendingIntent).getNotification();
@@ -238,16 +251,11 @@ public class MakePaymentActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            final Timer timer = new Timer();
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    progressDialog.dismiss();
-                                    timer.cancel();
-                                }
-                            }, 5000);
+                            // hides the progressBar
+                            progressBar.setVisibility(View.GONE);
+
                             //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
-                            Snackbar.make(relativeLayout, e.getStackTrace().toString(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(nestedScrollView, e.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -256,7 +264,8 @@ public class MakePaymentActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(MakePaymentActivity.this, databaseError.toException().toString(),Toast.LENGTH_LONG).show();
+                // display an error message
+                Toast.makeText(MakePaymentActivity.this, databaseError.getMessage(),Toast.LENGTH_LONG).show();
 
             }
         });
@@ -274,5 +283,13 @@ public class MakePaymentActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // method to clear TextViews when user clicks on
+    public void onClearButtonClick(View view) {
+        // clears the fields
+        editTextUsername.setText(null);
+        editTextMomoNumber.setText(null);
+
     }
 }

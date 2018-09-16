@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.zentechhotelbooker"
-    android:installLocation="auto">
+    android:installLocation="auto"
+    android:windowSoftInputMode="adjustResize">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +21,13 @@
             android:name=".activities.HomeActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar" />
+            android:theme="@style/AppTheme.ActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="screenSize"
@@ -36,54 +43,69 @@
             android:name=".activities.AdminLoginActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.AdminDashBoardActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminDashBoard">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activities.AddRoomsActivity"
+            android:theme="@style/AppTheme.AdminDashBoard" />
+        <activity
+            android:name=".activities.AddRoomsActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
-        <activity android:name=".activities.ViewAddedRoomsActivity"
+            android:theme="@style/AppTheme.AdminComponents" />
+        <activity
+            android:name=".activities.ViewAddedRoomsActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
-        <activity android:name=".activities.ResetAdminPasswordActivity"
+            android:theme="@style/AppTheme.AdminComponents" />
+        <activity
+            android:name=".activities.ResetAdminPasswordActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".activities.ResetUserPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ResetUserPasswordActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".activities.CheckPaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CheckPaymentActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
-        <activity android:name=".activities.DeleteRoomsActivity"
+            android:theme="@style/AppTheme.AdminComponents" />
+        <activity
+            android:name=".activities.DeleteRoomsActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
-        <activity android:name=".activities.SliderViewActivity" />
-        <activity android:name=".activities.SplashScreenActivity" />
-        <activity android:name=".activities.MakePaymentActivity" />
-        <activity android:name=".activities.AboutUsAdminActivity" />
-        <activity android:name=".activities.AboutUsUserActivity"></activity>
+            android:theme="@style/AppTheme.AdminComponents" />
+        <activity
+            android:name=".activities.SliderViewActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.SplashScreenActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.MakePaymentActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activities.AboutUsAdminActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activities.AboutUsUserActivity"
+            android:configChanges="screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity android:name=".activities.ContactUsUserActivity" />
+        <activity android:name=".activities.ContactUsAdminActivity"></activity>
     </application>
 
 </manifest>

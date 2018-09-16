@@ -11,6 +11,7 @@
     <string name="hint_campus">Campus</string>
     <string name="hint_tel">Mob. Number</string>
     <string name="hint_phone">Phone Number</string>
+    <string name="hint_momo_number">Mobile Money Number</string>
     <string name="hint_username">Username</string>
     <string name="link_reset_password">Forgot Password?</string>
     <string name="text_gender">Gender</string>
@@ -47,6 +48,7 @@
     <string name="email_registered">Enter your registered email id</string>
     <string name="error_password_length">Password length cannot be less than 6</string>
     <string name="error_empty_phone">Phone Number field cannot be left empty</string>
+    <string name="error_empty_momo_number">Mobile Money Number is a required field</string>
     <string name="phone_invalid">Enter a valid phone number</string>
     <string name="sign_up_successful">Sign Up Successful</string>
     <string name="login_successful">Login Successful</string>
@@ -69,6 +71,44 @@
     <string name="text_sign_out">Sign out</string>
     <string name="text_exit">Exit</string>
 
+
+    <string name="text_about_us">
+        Zentech Hotel Booker is a unique mobile application
+        developed to help clients or users to easily book hotel
+        rooms and make payments instantly through any mobile
+        money payment platform and Credit or Debit Card.
+    </string>
+
+    <string name="text_contact_us">
+        If you have any issues or suggestions regarding
+        the use of the application , feel free to contact
+        us on +233245134112 / +233248906868 / +233247621230
+        or send a mail to zentechgh@gmail.com
+    </string>
+
+    <string name="hint_overview">Overview</string>
+    <string name="hint_mission">Mission</string>
+    <string name="hint_vision">Vision</string>
+
+    <string name="text_overview">
+        Concare GH seeks to remove shyness,
+        which is evident of their (victims\')
+        reluctance to purchase contraceptives;
+        with our business system and strategy,
+        there is relatively much privacy.
+    </string>
+
+    <string name="text_mission">
+        Providing a more conducive environment
+        for our clients in purchasing contraceptives.
+    </string>
+
+    <string name="text_vision">
+        To be the best and leading contraceptive health
+        provider in Ghana and the world at large, and to
+        also ensure mass participation in contraceptive use.
+    </string>
+
     <!-- Navigation drawer menu -->
     <string name="dummy_username">Username : username</string>
     <string name="dummy_email">Email : username@gmail.com </string>
@@ -90,7 +130,7 @@
     <string name="hint_enter_current_username">enter your username</string>
     <string name="hint_enter_current_password">enter your password</string>
     <string name="slide_description">Slider Description</string>
-    <string name="make_payment">MAKE PAYMENT</string>
+    <string name="make_payment">Make Payment</string>
     <string name="text_payment_method">Payment Method</string>
     <string name="update_credentials">UPDATE CREDENTIALS</string>
     <string name="update_text">UPDATE</string>
@@ -116,5 +156,7 @@
     <string name="msg_forgot_password">Please enter your email address to reset password</string>
     <string name="btn_reset_password">RESET PASSWORD</string>
     <string name="btn_back">GO BACK</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_pay">Pay</string>
 
 </resources>

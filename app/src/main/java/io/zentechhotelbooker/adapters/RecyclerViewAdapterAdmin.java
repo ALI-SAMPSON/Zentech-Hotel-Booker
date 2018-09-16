@@ -1,6 +1,7 @@
 package io.zentechhotelbooker.adapters;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
@@ -15,30 +16,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Rooms;
 
 import static io.zentechhotelbooker.activities.AddRoomsActivity.Database_Path;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewAdapterAdmin.ViewHolder> {
 
     // context variable and a list of the Rooms
      Context mCtx;
      List<Rooms> roomsList;
 
-    public RecyclerViewAdapter(Context mCtx, List<Rooms> roomsList ){
+    public RecyclerViewAdapterAdmin(Context mCtx, List<Rooms> roomsList ){
         this.mCtx = mCtx;
         this.roomsList = roomsList;
 
@@ -56,7 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         // getting the position of each room and its details
         final Rooms rooms = roomsList.get(position);
@@ -66,33 +60,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          * or views
          */
         holder.room_number.setText(" Room Number : " + rooms.getRoom_number());
-        holder.room_price.setText(" Price : " + rooms.getPrice());
+        holder.room_price.setText(" Price : GHC " + rooms.getPrice());
 
         //Loading image into Glide using the glide library.
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
 
         // on Click listener for the CardView
-        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 // Create an an alert builder
                 AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
                 // Sets a Title and a Message on it
-                builder.setTitle(mCtx.getString(R.string.text_delete));
-                builder.setMessage(mCtx.getString(R.string.text_delete_body));
+                builder.setTitle("Delete Room");
+                builder.setMessage("Are you sure you want to delete this room");
+                builder.setCancelable(false);
 
                 // sets the positive button on the Alert Dialog
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         // displays the progress bar
                         holder.progressBar.setVisibility(View.VISIBLE);
 
+                        int selectedItem = position;
+                        RecyclerViewAdapterAdmin recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(mCtx,roomsList);
+                        recyclerViewAdapterAdmin.getItemId(selectedItem);
+                        recyclerViewAdapterAdmin.notifyItemRemoved(selectedItem);
+                        holder.recyclerView.invalidate();
+
+                        // Room deleted successfully message
+                        Toast.makeText(mCtx,rooms.getRoom_number() + " deleted Successfully",Toast.LENGTH_LONG).show();
+
                         // getting the ImageUrl from the Rooms class
-                        StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(rooms.getRoom_image());
+                        /*StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(rooms.getRoom_image());
 
                         imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -116,6 +119,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 Toast.makeText(mCtx,e.getMessage(),Toast.LENGTH_LONG).show();
                             }
                         });
+                        */
                     }
                 });
 
@@ -134,7 +138,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             }
         });
-        */
+
 
     }
 
@@ -147,6 +151,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         // Creating object of the classes
+        RecyclerView recyclerView;
         CardView cardView;
         ImageView room_image;
         TextView room_number;
@@ -161,7 +166,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             // settings ids to those in the recyclerview_list.xml file
-            cardView = itemView.findViewById(R.id.cardView);
+
+            recyclerView = itemView.findViewById(R.id.recyclerView);
+
+            cardView = itemView.findViewById(R.id.room_cardView);
 
             room_image = itemView.findViewById(R.id.room_image);
             room_number = itemView.findViewById(R.id.room_number);

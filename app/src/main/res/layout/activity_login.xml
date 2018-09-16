@@ -38,7 +38,7 @@
             android:typeface="normal"
             android:textColor="@color/colorWhite"/>
 
-        <!-- TextInputLayout and AppCompatEdiText for Username -->
+        <!-- TextInputLayout and AppCompatEdiText for Email -->
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutEmail"
             android:layout_width="match_parent"
@@ -53,13 +53,14 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawableLeft="@drawable/ic_email_white"
+                android:drawableStart="@drawable/ic_email_white"
+                android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 app:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_email"
-                android:inputType="textEmailAddress|textAutoComplete|textAutoCorrect"
+                android:inputType="textEmailAddress|textAutoComplete"
                 android:maxLines="1"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -87,9 +88,7 @@
                 android:drawablePadding="@dimen/spacing_normal"
                 app:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_password"
-                android:inputType="textPassword"
-                android:maxLines="1"/>
-
+                android:inputType="textPassword"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Login Button  -->
@@ -171,8 +170,8 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="10dp"
             android:visibility="gone"/>
