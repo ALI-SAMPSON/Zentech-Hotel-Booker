@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -72,6 +73,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TextView username;
     private TextView email;
 
+    // Creating Alert Dialog
+    //AlertDialog.Builder builder;
+
+    AlertDialog alertDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,12 +125,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // call to the method to load rooms from Firbase Database
         loadUploadedRoomDetails();
 
+        // method call to welcomeMessage Method
+        displayWelcomeMessage();
+
     }
 
-    /*@Override
+    @Override
     protected void onStart(){
         super.onStart();
-        if(mAuth.getCurrentUser() == null){
+        /*if(mAuth.getCurrentUser() == null){
             HomeActivity.this.finish();
             // starts the login activity currently logged in user is null(no logged in user)
             startActivity(new Intent(this,LoginActivity.class));
@@ -139,8 +149,118 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     timer.cancel();
                 }
             },2000);
+
+            // method call to welcomeMessage Method
+            displayWelcomeMessage();
         }
-    }*/
+        */
+
+    }
+
+    // Method to display a welcome  message to user when he or she logs in
+    private void displayWelcomeMessage(){
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        // Creating Alert Dialog
+        //AlertDialog.Builder builder;
+
+        if(user != null ) {
+
+            // Checks if the API Version of the phone is 21
+            // and above and set the theme accordingly
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
+                        android.R.style.Theme_Material_Dialog_Alert);
+                builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle(" Welcome, " + user.getDisplayName());
+                builder.setMessage(getString(R.string.welcome_message));
+                builder.setCancelable(false);
+                builder.setIcon(R.drawable.app_logo);
+
+                builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // closes the Alert dialog
+                        dialogInterface.dismiss();
+                    }
+                });
+                // Creates and displays the alert Dialog
+                alertDialog = builder.create();
+                alertDialog.show();
+            }
+            else {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle(" Welcome, " + user.getDisplayName());
+                builder.setMessage(getString(R.string.welcome_message));
+                builder.setCancelable(false);
+                builder.setIcon(R.drawable.app_logo);
+
+                builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // closes the Alert dialog
+                        dialogInterface.dismiss();
+                    }
+                });
+                // Creates and displays the alert Dialog
+                alertDialog = builder.create();
+                alertDialog.show();
+            }
+        }
+        else {
+            //AlertDialog.Builder builder;
+            // Checks if the API Version of the phone is 21
+            // and above and set the theme accordingly
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
+                        android.R.style.Theme_Material_Dialog_Alert);
+                builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle(" Welcome, username");
+                builder.setMessage(getString(R.string.welcome_message));
+                builder.setCancelable(false);
+                builder.setIcon(R.drawable.app_logo);
+
+                builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // closes the Alert dialog
+                        dialogInterface.dismiss();
+                    }
+                });
+                // Creates and displays the alert Dialog
+                alertDialog = builder.create();
+                alertDialog.show();
+            }
+            else {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle(" Welcome, username");
+                builder.setMessage(getString(R.string.welcome_message));
+                builder.setCancelable(false);
+                builder.setIcon(R.drawable.app_logo);
+
+                builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // closes the Alert dialog
+                        dialogInterface.dismiss();
+                    }
+                });
+                // Creates and displays the alert Dialog
+                alertDialog = builder.create();
+                alertDialog.show();
+             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // dismisses any instance of Alert Dialog
+        alertDialog.dismiss();
+    }
 
     private void loadUserInfo(){
 
@@ -343,14 +463,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
                         timer.cancel();
                     }
                 },10000);
                 // logs current user out of the system
                 mAuth.signOut();
                 HomeActivity.this.finish();
-                startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+                startActivity(new Intent(HomeActivity.this,UserLoginActivity.class));
             }
         });
 

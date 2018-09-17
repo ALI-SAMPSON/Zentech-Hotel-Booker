@@ -109,6 +109,14 @@
         also ensure mass participation in contraceptive use.
     </string>
 
+    <string name="welcome_message">
+        Zentech Hotel Booker has a lot to offer you.
+        Open the drawer from the left of the screen
+        to update your profile, checks payments and
+        contact us if needed and freely book a room.
+        Happy Booking and enjoy!
+    </string>
+
     <!-- Navigation drawer menu -->
     <string name="dummy_username">Username : username</string>
     <string name="dummy_email">Email : username@gmail.com </string>

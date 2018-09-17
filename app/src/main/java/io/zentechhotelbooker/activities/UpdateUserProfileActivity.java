@@ -9,10 +9,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -228,5 +230,16 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                // starts the HomeActivity
+                UpdateUserProfileActivity.this.finish();
+                startActivity(new Intent(UpdateUserProfileActivity.this,HomeActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

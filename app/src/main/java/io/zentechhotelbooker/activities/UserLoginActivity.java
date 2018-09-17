@@ -2,16 +2,19 @@ package io.zentechhotelbooker.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,34 +26,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Users;
 
-public class LoginActivity extends AppCompatActivity {
+public class UserLoginActivity extends AppCompatActivity {
 
     // global or class variables
     ProgressBar progressBar;
 
-    private FirebaseDatabase dB;
-    private DatabaseReference dbRef;
-    private Users users;
-
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
 
     //Email and password EditText
     private EditText editTextEmail;
     private EditText editTextPassword;
 
-    NestedScrollView nestedScrollView;
+    private NestedScrollView nestedScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // removes status bar and to make background fit Screen
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -98,12 +95,12 @@ public class LoginActivity extends AppCompatActivity {
         //checks if text entered are valid and textfields are not empty
         if(email.isEmpty()){
             editTextEmail.setError(getString(R.string.error_empty_email));
-            //editTextEmail.requestFocus();
+            // editTextEmail.requestFocus();
             return;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             editTextEmail.setError(getString(R.string.email_invalid));
-            //editTextEmail.requestFocus();
+            // editTextEmail.requestFocus();
             return;
         }
         else if(password.isEmpty()){
@@ -116,9 +113,9 @@ public class LoginActivity extends AppCompatActivity {
             editTextPassword.requestFocus();
             return;
         }
-        else if(email.isEmpty() && password.isEmpty()){
-            Toast.makeText(LoginActivity.this,"Email and Password are required fields",Toast.LENGTH_LONG).show();
-        }
+        /*else if(email.isEmpty() && password.isEmpty()){
+            Toast.makeText(UserLoginActivity.this,"Email and Password are required fields",Toast.LENGTH_LONG).show();
+        }*/
         else{
             // call to the LoginUser method
             loginUser();
@@ -141,12 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             // display a successful login message
-                            Toast.makeText(LoginActivity.this,getString(R.string.login_successful),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserLoginActivity.this,getString(R.string.login_successful),Toast.LENGTH_SHORT).show();
 
                             clearBothTextFields();
                             // finishes this activity and starts a new one
-                            LoginActivity.this.finish();
-                            startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                            UserLoginActivity.this.finish();
+                            startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
                         }
                         else{
                             // display a successful login message
@@ -162,18 +159,18 @@ public class LoginActivity extends AppCompatActivity {
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onSignUpLinkClick(View View){
         // finishes the current activity and open the Sign Up Activity
-        LoginActivity.this.finish();
+        UserLoginActivity.this.finish();
         //starts the Sign Up Activity
-        startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
+        startActivity(new Intent(UserLoginActivity.this,SignUpActivity.class));
 
     }
 
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onAdminLoginButtonLinkClick(View view){
         // finishes the current activity and open the AdminLoginActivity Activity
-        LoginActivity.this.finish();
+        UserLoginActivity.this.finish();
         //starts the AdminLoginActivity
-        startActivity(new Intent(LoginActivity.this,AdminLoginActivity.class));
+        startActivity(new Intent(UserLoginActivity.this,AdminLoginActivity.class));
     }
 
     // clears the Username and Password EditText
@@ -189,8 +186,7 @@ public class LoginActivity extends AppCompatActivity {
     // method to reset user password
     public void onButtonResetPassword(View view) {
         // finishes the current activity and open the resetPassword Activity
-        LoginActivity.this.finish();
-        startActivity(new Intent(LoginActivity.this, ResetUserPasswordActivity.class));
+        UserLoginActivity.this.finish();
+        startActivity(new Intent(UserLoginActivity.this, ResetUserPasswordActivity.class));
     }
-
 }

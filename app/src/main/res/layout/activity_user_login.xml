@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/nestedScrollView"
-    android:background="@drawable/my_login_ui"
+    android:background="@drawable/login_bg"
     android:fitsSystemWindows="true"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.UserLoginActivity">
 
     <!-- material design LinearLayout -->
-    <android.support.v7.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -56,8 +56,7 @@
                 android:textColorHint="@color/colorWhite"
                 app:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_email"
-                android:inputType="textEmailAddress|textAutoComplete"
-                android:maxLines="1"/>
+                android:inputType="textEmailAddress|textAutoComplete"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Password -->
@@ -172,6 +171,6 @@
             android:layout_marginBottom="10dp"
             android:visibility="gone"/>
 
-    </android.support.v7.widget.LinearLayoutCompat>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
