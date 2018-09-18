@@ -6,12 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import io.zentechhotelbooker.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN_DISPLAY_TIME = 3000;
+    private final int SPLASH_SCREEN_DISPLAY_TIME = 3000;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,34 +25,45 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        ActionBar actionBar = getSupportActionBar();
+        // firebase instance
+        mAuth = FirebaseAuth.getInstance();
 
-        if(actionBar != null){
-            actionBar.hide();
-        }
-        //call to the splash screen method
-        splashScreen();
     }
 
-    //method to be called when the application is first started
-    public void splashScreen(){
 
-        Thread timer = new Thread(){
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            // starts the HomeActivity
+            SplashScreenActivity.this.finish();
+            startActivity(new Intent(SplashScreenActivity.this,HomeActivity.class));
+        }
+        else{
+            // open splash screen first
+            splashScreen();
+        }
+    }
+
+    //class to the handle the splash screen activity
+    public void splashScreen() {
+
+        Thread timer = new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 try {
                     sleep(SPLASH_SCREEN_DISPLAY_TIME);
                     //Creates and start the intent of the next activity
-                    Intent intent = new Intent(SplashScreenActivity.this,SliderViewActivity.class);
-                    startActivity(intent); //starts the instance of the Intent Class
-                    finish(); //this prevents the app from going back to the splash screen
+                    Intent intent = new Intent(SplashScreenActivity.this, SliderViewActivity.class);
+                    startActivity(intent);
+                    finish();//this prevents the app from going back to the splash screen
                     super.run();
-                }
-                catch (InterruptedException e){
-                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    Toast.makeText(SplashScreenActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
         };
+        //starts the timer
         timer.start();
     }
 }

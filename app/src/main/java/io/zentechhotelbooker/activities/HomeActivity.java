@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private FirebaseAuth mAuth;
 
-    private ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
     // Creating DataReference
     DatabaseReference databaseReference;
@@ -116,6 +116,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Assign id to ProgressBar
         progressBar = findViewById(R.id.progressBar);
 
+        // displays the progressBsr
+        progressBar.setVisibility(View.VISIBLE);
+
         // Getting instance of the FirbaseAuth class
         mAuth = FirebaseAuth.getInstance();
 
@@ -140,18 +143,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(mAuth.getCurrentUser() != null){
             // starts the home activity if user is already logged in
-            final Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    // hides the progressBar
-                    progressDialog.dismiss();
-                    timer.cancel();
-                }
-            },2000);
+            progressBar.setVisibility(View.GONE);
 
             // method call to welcomeMessage Method
-            displayWelcomeMessage();
+            //displayWelcomeMessage();
         }
 
 
