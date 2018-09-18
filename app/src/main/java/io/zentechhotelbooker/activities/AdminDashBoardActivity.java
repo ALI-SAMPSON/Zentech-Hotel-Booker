@@ -7,6 +7,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,14 +30,18 @@ public class AdminDashBoardActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-    private DatabaseReference currentAdminRef;
-
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dash_board);
+
+        // checks if there is a support actionBar
+        // if there is then it adds a title to it.
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(getString(R.string.admin_dash_board));
+        }
 
         //getting references to the various cardViews
         cardView1 = findViewById(R.id.cardView1);
@@ -50,6 +56,31 @@ public class AdminDashBoardActivity extends AppCompatActivity {
 
         cardViewMethods();//call to the method
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_admin,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.menu_about:
+                // finishes this activity and open the About Us activity
+                AdminDashBoardActivity.this.finish();
+                startActivity(new Intent(AdminDashBoardActivity.this, AboutUsAdminActivity.class));
+                break;
+            case R.id.menu_contact:
+                // finishes this activity and open the About Us activity
+                AdminDashBoardActivity.this.finish();
+                startActivity(new Intent(AdminDashBoardActivity.this, ContactUsAdminActivity.class));
+                break;
+                default:
+                    break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //method to handle the onClickListeners of the CardViews
@@ -68,7 +99,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 //starts the delete rooms activity
-                startActivity(new Intent(AdminDashBoardActivity.this,ViewAddedRoomsActivity.class));
+                startActivity(new Intent(AdminDashBoardActivity.this,DeleteRoomsActivity.class));
             }
         });
 

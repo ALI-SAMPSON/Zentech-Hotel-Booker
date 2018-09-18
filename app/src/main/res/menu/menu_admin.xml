@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/about_us"
+        android:id="@+id/menu_about"
         android:orderInCategory="100"
-        android:title="About Us"
+        android:title="@string/text_about"
+        app:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/menu_contact"
+        android:orderInCategory="200"
+        android:title="@string/text_contact"
         app:showAsAction="never">
     </item>
 

@@ -40,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Users;
 
-public class SignUpActivity extends AppCompatActivity {
+public class UserSignUpActivity extends AppCompatActivity {
 
     //an instance of the Firebase Authentication class
     private FirebaseAuth mAuth;
@@ -75,10 +75,10 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // removes status bar and to make background fit Screen
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_user_sign_up);
 
         // getting reference to the view objects
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -202,8 +202,8 @@ public class SignUpActivity extends AppCompatActivity {
                                             }
                                         },5000);
                                         clearTextFields();
-                                        SignUpActivity.this.finish();
-                                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                        UserSignUpActivity.this.finish();
+                                        startActivity(new Intent(UserSignUpActivity.this, UserLoginActivity.class));
                                     }
                                     else{
                                         progressBar1.setVisibility(View.GONE);
@@ -229,9 +229,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     //link to the User login page
     public void onLoginLinkButtonClick(View view){
-        SignUpActivity.this.finish();
+        UserSignUpActivity.this.finish();
         //starts the LoginActivity when user clicks the button
-        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+        startActivity(new Intent(UserSignUpActivity.this, UserLoginActivity.class));
     }
 
     //clear text from the textfields
@@ -335,7 +335,6 @@ public class SignUpActivity extends AppCompatActivity {
     public void onCircularImageViewClick(View view){
         openGallery();
     }
-
 
 
 }

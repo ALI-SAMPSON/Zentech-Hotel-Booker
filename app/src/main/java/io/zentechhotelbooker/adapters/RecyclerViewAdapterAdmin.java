@@ -16,8 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -85,14 +94,40 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
                         // displays the progress bar
                         holder.progressBar.setVisibility(View.VISIBLE);
 
-                        int selectedItem = position;
-                        RecyclerViewAdapterAdmin recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(mCtx,roomsList);
-                        recyclerViewAdapterAdmin.getItemId(selectedItem);
-                        recyclerViewAdapterAdmin.notifyItemRemoved(selectedItem);
-                        holder.recyclerView.invalidate();
+                        final Rooms selectedRoom = roomsList.get(position);
+                        final String selectedKey = selectedRoom.getKey();
+
+                        // Creating StorageReference and initializing storage reference
+                        StorageReference imageRef = holder.mStorage.getReferenceFromUrl(selectedRoom.getRoom_image());
+                        // code to delete imageRef of the image
+                        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //remove value from FirebaseDatabase
+                                holder.mDatabaseRef.child(selectedKey).removeValue();
+
+                                // dismiss the progress bar
+                                holder.progressBar.setVisibility(View.GONE);
+
+                                 // File deleted successfully message
+                                Toast.makeText(mCtx," Room deleted Successfully ",Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // dismiss the progress bar
+                                holder.progressBar.setVisibility(View.GONE);
+
+                                // File deleted successfully message
+                                Toast.makeText(mCtx,e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
+
 
                         // Room deleted successfully message
-                        Toast.makeText(mCtx,rooms.getRoom_number() + " deleted Successfully",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(mCtx,rooms.getRoom_number() + " deleted Successfully",Toast.LENGTH_LONG).show();
 
                         // getting the ImageUrl from the Rooms class
                         /*StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(rooms.getRoom_image());
@@ -159,7 +194,9 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
         ProgressBar progressBar;
 
-        DatabaseReference databaseReference;
+        DatabaseReference  mDatabaseRef;
+
+        FirebaseStorage mStorage;
 
         // constructor
         public ViewHolder(View itemView){
@@ -177,7 +214,10 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
             progressBar = itemView.findViewById(R.id.progressBar);
 
-            databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference("Rooms");
+
+            // creating an instance of a Firebase Storage
+            mStorage = FirebaseStorage.getInstance();
 
 
         }

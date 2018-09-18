@@ -121,7 +121,7 @@ public class SliderViewActivity extends AppCompatActivity {
                     mNextBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intentLogin = new Intent(SliderViewActivity.this, LoginActivity.class);
+                            Intent intentLogin = new Intent(SliderViewActivity.this, UserLoginActivity.class);
                             startActivity(intentLogin);
                         }
                     });

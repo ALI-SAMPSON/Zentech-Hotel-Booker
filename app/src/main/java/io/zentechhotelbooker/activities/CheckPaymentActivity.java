@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -31,6 +32,8 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
     Payments payments;
 
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +52,15 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.payment_listView);
 
-        populatePayments(); ///call to the method
+        // getting an instance of FirebaseAuth
+        mAuth = FirebaseAuth.getInstance();
+
+        //displayPayments(); ///call to the method
 
     }
 
     //method to populate the listView with payments
-    public void populatePayments(){
+    public void displayPayments(){
 
         Query query = FirebaseDatabase.getInstance().getReference().child("Payments");
 
@@ -103,18 +109,8 @@ public class CheckPaymentActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_admin,menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            //navigates to the aboutUs activity
-            case R.id.about_us:
-                startActivity(new Intent(CheckPaymentActivity.this,AboutUsAdminActivity.class));
-                break;
             //navigates to the AdminDashboard activity
             case android.R.id.home:
                 startActivity(new Intent(CheckPaymentActivity.this,AdminDashBoardActivity.class));

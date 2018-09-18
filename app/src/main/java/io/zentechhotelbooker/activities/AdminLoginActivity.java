@@ -136,7 +136,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     public void onLoginButtonLinkClick(View view){
         //starts the Users LoginActivity
         AdminLoginActivity.this.finish();
-        startActivity(new Intent(AdminLoginActivity.this,LoginActivity.class));
+        startActivity(new Intent(AdminLoginActivity.this,UserLoginActivity.class));
     }
 
     // method to reset admin password

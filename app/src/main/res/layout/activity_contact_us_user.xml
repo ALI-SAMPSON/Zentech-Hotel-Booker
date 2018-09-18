@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/about_us_bg"/>
+        android:src="@drawable/contact_us_bg"/>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         app:fontFamily="@font/nunito_extrabold"
@@ -33,7 +33,7 @@
         android:id="@+id/sub_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         android:text="@string/text_about_us"

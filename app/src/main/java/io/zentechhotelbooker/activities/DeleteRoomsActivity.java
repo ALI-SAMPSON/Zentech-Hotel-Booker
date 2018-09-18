@@ -1,162 +1,160 @@
 package io.zentechhotelbooker.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
 import io.zentechhotelbooker.models.Rooms;
 
 public class DeleteRoomsActivity extends AppCompatActivity {
 
-    //instance variables of the EditText
-    private EditText editTextRoomNumber;
-    private EditText editTextPrice;
+    // Creating DatabaseReference.
+    DatabaseReference mDatabaseRef;
 
-    private CircleImageView circleImageView;
+    // Creating RecyclerView.
+    RecyclerView recyclerView;
 
-    Rooms rooms;
+    // Creating a ValueEvent Listener.
+    private ValueEventListener mDBListener;
 
-    TextView key1;
+    // Creating RecyclerViewAdapterAdmin
+    RecyclerViewAdapterAdmin recyclerViewAdapterAdmin;
 
-    DatabaseReference roomRef;
+    // Creating List of Rooms class.
+    List<Rooms> roomsList;
 
-    ProgressDialog progressDialog;
+    // Creating a progressBar
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_rooms);
 
-        //checks if there is an actionBar
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("DELETE ROOMS");
+            getSupportActionBar().setTitle(getString(R.string.delete_rooms));
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
-        editTextPrice = findViewById(R.id.editTextPrice);
-        circleImageView = findViewById(R.id.circularImageView);
+        // Assign id to RecyclerView.
+        recyclerView = findViewById(R.id.recyclerView);
 
-        rooms = new Rooms();
+        // Setting RecyclerView size true.
+        recyclerView.setHasFixedSize(true);
 
-        //string to store the key value, that is, the room number
-        String key = getIntent().getExtras().get("key").toString();
+        // Setting RecyclerView layout as LinearLayout.
+        recyclerView.setLayoutManager(new GridLayoutManager(DeleteRoomsActivity.this,2));
 
-        //getting reference to the TextView and set its text to key
-        //key1 = findViewById(R.id.key);
-        //key1.setText(key);
+        roomsList = new ArrayList<>();
 
-        editTextRoomNumber.setText(getIntent().getStringExtra("room_number"));
-        editTextPrice.setText(getIntent().getStringExtra("price"));
-        Picasso.with(DeleteRoomsActivity.this).load(rooms.getRoom_image()).into(circleImageView);
+        // Creating an object of the RecyclerAdapter
+        recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,roomsList);
 
-        roomRef = FirebaseDatabase.getInstance().getReference().child("Rooms").child(key);
+        recyclerView.setAdapter(recyclerViewAdapterAdmin);
 
-        onEditTextClick();//call to the method
+        // Assign activity this to progress bar.
+        progressBar = findViewById(R.id.progressBar);
+
+        //viewRooms();
+
+        // Calling the method to display rooms in the firebase database
+        loadUploadedRoomDetails();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Calling the method to delete rooms in the firebase database
+        //deleteRoom();
 
     }
 
+    // Method to load rooms uploaded into database
+    private void loadUploadedRoomDetails(){
 
-    //sets error message on the editTextViews when user clicks on to edit
-    public void onEditTextClick(){
+        // displays the progress bar
+        progressBar.setVisibility(View.VISIBLE);
 
-        //error strings
-        final String error_room_number = "Room number field cannot be edited";
-        final String error_price = "Price field cannot be edited";
+        // Setting up Firebase image upload folder path in databaseReference.
+        // The path is already defined in MainActivity.
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
-        editTextRoomNumber.setOnClickListener(new View.OnClickListener() {
+        // Adding Add Value Event Listener to databaseReference.
+        mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                editTextRoomNumber.setError(error_room_number);
-            }
-        });
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-        editTextPrice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editTextPrice.setError(error_price);
-            }
-        });
-    }
+                // clears the list on data change
+                roomsList.clear();
 
-    //onClickListener for the delete room button
-    public void onDeleteRoomButtonClick(View view){
-
-        progressDialog = ProgressDialog.show(DeleteRoomsActivity.this,"",null,true,true);
-        progressDialog.setMessage("Please wait...");
-
-        roomRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    final Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-                            timer.cancel();
-                        }
-                    },5000);
-                    Toast.makeText(DeleteRoomsActivity.this,"Room deleted successfully",Toast.LENGTH_LONG).show();
-                    DeleteRoomsActivity.this.finish();
-                    //Snackbar.make(,"Room deleted successfully",Snackbar.LENGTH_LONG).show();
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    // gets a snapshot of the rooms in the Rooms class
+                    Rooms rooms = postSnapshot.getValue(Rooms.class);
+                    // get the unique key stored int the Rooms class
+                    rooms.setKey(postSnapshot.getKey());
+                    // adds the rooms to list of rooms(RoomList)
+                    roomsList.add(rooms);
                 }
-                else{
-                    final Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-                            timer.cancel();
-                        }
-                    },5000);
-                    Toast.makeText(DeleteRoomsActivity.this,"Room could not be deleted...Please try again!",Toast.LENGTH_LONG).show();
-                }
+
+                // refreshes the recyclerview after data change
+                recyclerViewAdapterAdmin.notifyDataSetChanged();
+
+                // Hiding the progress bar.
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                // Hiding the progress bar.
+                progressBar.setVisibility(View.GONE);
+
+                // displays a DatabaseError exception if error occurs
+                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
+
             }
         });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_admin,menu);
-        return true;
+    protected void onDestroy() {
+        super.onDestroy();
+        // removes the ValueEventListener anytime the activity is destroyed
+        mDatabaseRef.removeEventListener(mDBListener);
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case R.id.about_us:
-                //starts the aboutUs activity for admin
-                startActivity(new Intent(DeleteRoomsActivity.this,AboutUsAdminActivity.class));
-                break;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
             case android.R.id.home:
-                //send user back to the adminDashboard
-                startActivity(new Intent(DeleteRoomsActivity.this,ViewAddedRoomsActivity.class));
+                //goes back to the AdminDashboard
+                startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
+                break;
+            default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

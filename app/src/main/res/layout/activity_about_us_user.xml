@@ -5,44 +5,196 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/my_login_ui"
     tools:context=".activities.AboutUsUserActivity">
 
-    <LinearLayout
-        android:layout_marginTop="90dp"
-        android:layout_below="@+id/toolbar"
+    <ImageView
+        android:id="@+id/about_us_imageView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:orientation="vertical">
+        android:layout_height="280dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/about_us_bg"/>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        app:fontFamily="@font/nunito_extrabold"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:text="WHO WE ARE"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"/>
 
-            <!-- <TextView
-                 android:id="@+id/about_us_title"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="50dp"
-                 android:padding="30dp"
-                 android:layout_gravity="center"
-                 android:text="@string/about_us_title"
-                 android:textSize="20sp"
-                 android:textStyle="bold"
-                 android:textColor="@color/green"/> -->
+    <TextView
+        android:layout_below="@+id/title"
+        android:id="@+id/sub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/text_about_us"
+        android:textSize="16sp"
+        android:textColor="@color/colorSilver"
+        app:fontFamily="@font/nunito_semibold"
+        android:padding="15dp"
+        android:layout_centerHorizontal="true"/>
 
-            <TextView
-                android:layout_marginTop="30dp"
-                android:id="@+id/about_us_sub_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="40dp"
-                android:layout_gravity="center"
-                android:text="@string/about_us_sub_title"
-                android:textSize="20sp"
-                android:textColor="@color/green"/>
+    <LinearLayout
+        android:layout_below="@+id/about_us_imageView"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@color/colorSilver"
+        android:orientation="horizontal">
 
-        </ScrollView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardViewOverview"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="0dp"
+            android:layout_gravity="start"
+            android:background="@color/colorSilver"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/hint_overview"
+                    android:textSize="18sp"
+                    android:textColor="@color/background_super_dark"
+                    app:fontFamily="@font/nunito_extrabold"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/background_super_dark"
+                    android:padding="10dp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <!-- mission cardView-->
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardViewMission"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/hint_mission"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorAccent"
+                    app:fontFamily="@font/nunito_extrabold"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorAccent"
+                    android:padding="10dp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardViewVision"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="0dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/hint_vision"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorBlue"
+                    app:fontFamily="@font/nunito_extrabold"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorBlue"
+                    android:padding="10dp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sub_text_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/text_overview"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            app:fontFamily="@font/nunito_semibold"
+            android:padding="20dp"/>
 
     </LinearLayout>
 

@@ -10,24 +10,14 @@
     android:padding="10dp"
     tools:context=".activities.AdminDashBoardActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/admin_dash_board"
-        app:fontFamily="@font/nunito_extrabold"
-        android:textColor="@color/materialGreen"
-        android:textStyle="normal"
-        android:textSize="25sp"
-        android:gravity="center"/>
-
     <RelativeLayout
         android:id="@+id/dashboard_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:layout_marginTop="100dp"
-        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:clipToPadding="false"
         android:orientation="horizontal">
 
@@ -39,7 +29,8 @@
             android:background="@color/colorSilver"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:layout_alignParentLeft="true"
+            android:focusable="true"
+            android:layout_alignParentStart="true"
             android:elevation="5dp">
 
             <LinearLayout
@@ -90,14 +81,15 @@
             android:id="@+id/cardView2"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:layout_below="@+id/cardView1"
             android:background="@color/colorSilver"
             android:layout_alignParentBottom="false"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginTop="0dp"
             android:elevation="5dp">
 
@@ -149,13 +141,14 @@
             android:id="@+id/cardView3"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:layout_below="@+id/cardView1"
             android:layout_alignParentBottom="false"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:background="@color/colorSilver"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="10dp"
             android:elevation="5dp">
 
@@ -207,13 +200,14 @@
             android:id="@+id/cardView4"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:layout_below="@+id/cardView1"
             android:layout_alignParentBottom="false"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:background="@color/colorSilver"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginTop="10dp"
             android:elevation="5dp">
 
@@ -266,11 +260,12 @@
             android:layout_below="@+id/cardView4"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:background="@color/colorSilver"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
             android:elevation="5dp">
 

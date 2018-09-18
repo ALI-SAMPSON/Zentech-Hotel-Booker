@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/my_login_ui"
+    android:background="@drawable/login_bg"
     android:id="@+id/nestedScrollView"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
-    tools:context=".activities.SignUpActivity">
+    tools:context=".activities.UserSignUpActivity">
 
     <!-- Linear Layout for the UI elements -->
     <android.support.v7.widget.LinearLayoutCompat
@@ -89,14 +89,12 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="0dp"
             android:textAlignment="center"
-            android:textColorHint="@color/colorWhite"
-            android:layout_marginStart="0dp">
+            android:textColorHint="@color/colorWhite">
             <EditText
                 android:id="@+id/editTextUsername"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="0dp"
                 android:drawableLeft="@drawable/ic_person_white"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:fontFamily="@font/nunito_semibold"
@@ -106,8 +104,7 @@
                 android:textColorHint="@color/colorWhite"
                 android:inputType="text|textAutoComplete"
                 android:maxLines="1" tools:targetApi="jelly_bean"
-                android:drawableStart="@drawable/ic_person_white"
-                android:layout_marginStart="0dp" />
+                android:drawableStart="@drawable/ic_person_white"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Password -->
@@ -116,12 +113,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="0dp"
             android:textAlignment="center"
             android:textColorHint="@color/colorWhite"
             app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorWhite"
-            android:layout_marginStart="0dp">
+            app:passwordToggleTint="@color/colorWhite">
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="300dp"
@@ -147,7 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="0dp"
             android:orientation="horizontal"
             android:layout_marginStart="0dp">
@@ -236,7 +231,7 @@
             android:layout_below="@+id/textInputLayoutMobileNumber"
             android:text="@string/signUp"
             android:textColor="@color/colorWhite"
-            android:fontFamily="@font/nunito_semibold"
+            app:fontFamily="@font/nunito_semibold"
             android:textSize="18sp"
             android:textStyle="normal"
             android:textAlignment="center"
@@ -254,7 +249,7 @@
         <!-- Link to the Login Page -->
         <Button
             android:id="@+id/appCompatButtonLinkLogin"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -263,14 +258,13 @@
             android:layout_below="@+id/textInputLayoutTelNumber"
             android:text="@string/login_link"
             android:textColor="@color/colorWhite"
-            android:fontFamily="@font/nunito_semibold"
+            app:fontFamily="@font/nunito_semibold"
             android:textAllCaps="false"
             android:textSize="18sp"
             android:textStyle="normal"
             android:textAlignment="center"
             android:background="@drawable/round_corner_button_faded_dark"
-            android:onClick="onLoginLinkButtonClick"
-            tools:targetApi="jelly_bean" />
+            android:onClick="onLoginLinkButtonClick"/>
 
     </android.support.v7.widget.LinearLayoutCompat>
 

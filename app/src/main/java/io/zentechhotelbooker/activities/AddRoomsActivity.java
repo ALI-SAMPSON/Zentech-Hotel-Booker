@@ -62,7 +62,6 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     private Rooms rooms;
 
-
     private FirebaseAuth mAuth;
 
     private ProgressBar progressBar;
@@ -215,7 +214,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         else {
             // Showing Alert message.
-            Snackbar.make(nestedScrollView, "Please Select Image or add Room Number and Price",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(nestedScrollView, "Please Select Image or add Room Number or Price",Snackbar.LENGTH_LONG).show();
         }
 
     }
@@ -249,21 +248,9 @@ public class AddRoomsActivity extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_admin,menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.about_us:
-                //starts the aboutUs activity for admin
-                AddRoomsActivity.this.finish();
-                startActivity(new Intent(AddRoomsActivity.this,AboutUsAdminActivity.class));
-                break;
             case android.R.id.home:
                 //send user back to the adminDashboard
                 AddRoomsActivity.this.finish();

@@ -120,23 +120,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mAuth = FirebaseAuth.getInstance();
 
         // call to the method to load user details into their respective views
-        //loadUserInfo();
+        loadUserInfo();
 
         // call to the method to load rooms from Firbase Database
         loadUploadedRoomDetails();
 
         // method call to welcomeMessage Method
-        displayWelcomeMessage();
+        //displayWelcomeMessage();
 
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-        /*if(mAuth.getCurrentUser() == null){
+        if(mAuth.getCurrentUser() == null){
             HomeActivity.this.finish();
             // starts the login activity currently logged in user is null(no logged in user)
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this,UserLoginActivity.class));
         }
         else if(mAuth.getCurrentUser() != null){
             // starts the home activity if user is already logged in
@@ -153,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             // method call to welcomeMessage Method
             displayWelcomeMessage();
         }
-        */
+
 
     }
 
@@ -259,7 +259,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         // dismisses any instance of Alert Dialog
-        alertDialog.dismiss();
+        //alertDialog.dismiss();
     }
 
     private void loadUserInfo(){

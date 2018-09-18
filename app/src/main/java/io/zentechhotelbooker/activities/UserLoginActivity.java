@@ -26,6 +26,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Users;
@@ -49,7 +52,7 @@ public class UserLoginActivity extends AppCompatActivity {
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_user_login);
 
         //get reference to the EditText fields defined in the xml file
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -63,27 +66,20 @@ public class UserLoginActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
+    @Override
     protected void onStart(){
         super.onStart();
         // checks if user is currently logged in
         if(mAuth.getCurrentUser() != null){
-            LoginActivity.this.finish();
-            startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+            UserLoginActivity.this.finish();
+            startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
         }
         // checks if user is not currently logged in
         else if(mAuth.getCurrentUser() == null){
-            final Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    progressDialog.dismiss();
-                    timer.cancel();
-                }
-            },2000);
+           // do nothing
         }
 
-}*/
+}
 
     //method to be called when the login Button is clicked or tapped
     public void onLoginButtonClick(View view){
@@ -161,7 +157,7 @@ public class UserLoginActivity extends AppCompatActivity {
         // finishes the current activity and open the Sign Up Activity
         UserLoginActivity.this.finish();
         //starts the Sign Up Activity
-        startActivity(new Intent(UserLoginActivity.this,SignUpActivity.class));
+        startActivity(new Intent(UserLoginActivity.this,UserSignUpActivity.class));
 
     }
 
