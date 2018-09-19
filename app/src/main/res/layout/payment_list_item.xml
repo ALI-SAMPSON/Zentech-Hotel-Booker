@@ -12,24 +12,25 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <!--  <com.master.glideimageview.GlideImageView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:id="@+id/glideImageView"
-             android:layout_margin="10dp"
-             android:background="@mipmap/candidate_image"
-             android:scaleType="centerCrop"
-             app:error_res="@mipmap/candidate_image"
-             app:placeholder_res="@mipmap/candidate_image"
-             app:show_progress="true"/> -->
+       <de.hdodenhof.circleimageview.CircleImageView
+           android:id="@+id/user_image"
+           android:layout_centerVertical="true"
+           android:layout_width="90dp"
+           android:layout_height="90dp"
+           android:scaleType="centerCrop"
+           android:src="@drawable/open_gallery"/>
 
         <!-- Text View for Username-->
         <TextView
             android:id="@+id/user_name"
+            android:layout_toRightOf="@+id/user_image"
             android:textSize="18sp"
             android:gravity="center"
             android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-            android:layout_marginTop="5dp"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:layout_marginTop="0dp"
+            android:text="@string/hint_username"
+            android:textColor="@color/colorGray"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -37,11 +38,15 @@
         <!-- Text View for Room Number-->
         <TextView
             android:layout_below="@+id/user_name"
+            android:layout_toRightOf="@+id/user_image"
             android:id="@+id/room_number"
             android:textSize="18sp"
             android:gravity="center"
             android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-            android:layout_marginTop="5dp"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:text="@string/room_number"
+            android:textColor="@color/colorGray"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -49,23 +54,31 @@
         <!-- Text View for price-->
         <TextView
             android:layout_below="@+id/room_number"
-            android:id="@+id/price"
+            android:id="@+id/room_price"
+            android:layout_toRightOf="@+id/user_image"
             android:textSize="18sp"
             android:gravity="center"
             android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-            android:layout_marginTop="5dp"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:text="@string/price"
+            android:textColor="@color/colorGray"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <!-- Text View for mobile number-->
         <TextView
-            android:layout_below="@+id/price"
+            android:layout_below="@+id/room_price"
             android:id="@+id/mobile_number"
+            android:layout_toRightOf="@+id/user_image"
             android:textSize="18sp"
             android:gravity="center"
             android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-            android:layout_marginTop="5dp"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:text="@string/hint_momo_number"
+            android:textColor="@color/colorGray"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

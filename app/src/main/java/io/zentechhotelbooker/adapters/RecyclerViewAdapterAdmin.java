@@ -123,38 +123,6 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
                             }
                         });
 
-
-
-
-                        // Room deleted successfully message
-                        //Toast.makeText(mCtx,rooms.getRoom_number() + " deleted Successfully",Toast.LENGTH_LONG).show();
-
-                        // getting the ImageUrl from the Rooms class
-                        /*StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(rooms.getRoom_image());
-
-                        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                                holder.progressBar.setVisibility(View.GONE);
-
-                                // Getting image upload ID.
-                                String ImageUploadID = holder.databaseReference.getKey();
-
-                                // removes values from the database
-                                holder.databaseReference.child(ImageUploadID).removeValue();
-
-                                // File deleted successfully message
-                                Toast.makeText(mCtx,rooms.getRoom_number() + " deleted Successfully",Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // File could not be deleted successfully
-                                Toast.makeText(mCtx,e.getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        */
                     }
                 });
 

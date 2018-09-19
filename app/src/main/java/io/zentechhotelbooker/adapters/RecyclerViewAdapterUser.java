@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -59,12 +61,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         */
         holder.room_number.setText(" Room Number : " + rooms.getRoom_number());
         holder.room_price.setText(" Price : GHC " + rooms.getPrice());
+        final String user_image = holder.user.getPhotoUrl().toString();
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
 
         holder.room_cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // calling the showAlertDialog method
                 showAlertDialog();
 
@@ -88,6 +90,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 // passing data to the payment activity
                 intent.putExtra("room_number",rooms.getRoom_number());
                 intent.putExtra("room_price",rooms.getPrice());
+                intent.putExtra("user_image", user_image);
                 // starting the activity
                 mCtx.startActivity(intent);
             }
@@ -125,6 +128,10 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         TextView room_number;
         TextView room_price;
 
+        FirebaseAuth mAuth;
+
+        FirebaseUser user;
+
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -133,6 +140,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             room_image = itemView.findViewById(R.id.room_image);
             room_number = itemView.findViewById(R.id.room_number);
             room_price = itemView.findViewById(R.id.room_price);
+
+            mAuth = FirebaseAuth.getInstance();
+            user = mAuth.getCurrentUser();
         }
 
     }

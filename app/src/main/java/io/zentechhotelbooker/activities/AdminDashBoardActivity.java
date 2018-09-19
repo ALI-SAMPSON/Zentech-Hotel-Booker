@@ -132,19 +132,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        progressDialog = ProgressDialog.show(AdminDashBoardActivity.this,"",null,true,true);
-                        progressDialog.setMessage("Please wait...");
-                        final Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                progressDialog.dismiss();
-                                timer.cancel();
-                            }
-                        },10000);
-                        //removes the field when user logs out
-                        //currentAdminRef.removeValue();
-
+                        // signs admin out  of the system
                         mAuth.signOut();
                         AdminDashBoardActivity.this.finish();
                         //logs Admin out of the system and navigate him back to the Login Page

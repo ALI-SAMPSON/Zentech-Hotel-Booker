@@ -15,12 +15,12 @@
         android:orderInCategory="200">
     </item>
 
-    <item
+    <!--<item
         android:id="@+id/menu_payment"
         android:title="@string/payment"
         android:icon="@drawable/ic_payment_white"
         android:orderInCategory="300">
-    </item>
+    </item> -->
 
     <!--<item
         android:id="@+id/menu_booked_rooms"

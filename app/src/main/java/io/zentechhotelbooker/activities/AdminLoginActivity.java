@@ -12,13 +12,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.models.Admin;
+import io.zentechhotelbooker.models.Users;
 
 public class AdminLoginActivity extends AppCompatActivity {
 
@@ -32,11 +37,15 @@ public class AdminLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private Admin admin;
+
+    private DatabaseReference adminRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // removes status bar and to make background fit Screen
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
 
@@ -50,11 +59,15 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        admin = new Admin();
+
+        adminRef = FirebaseDatabase.getInstance().getReference("Admin");
+
     }
 
 
     //login button method for admin
-    public void onLoginButtonClick(View view){
+    public void onSignUpButtonClick(View view){
 
         //get text from the EditText fields
         String email = editTextEmail.getText().toString().trim();
@@ -63,12 +76,12 @@ public class AdminLoginActivity extends AppCompatActivity {
         //checks if text entered are valid and textfields are not empty
         if(email.isEmpty()){
             editTextEmail.setError(getString(R.string.error_empty_email));
-            editTextEmail.requestFocus();
+            //editTextEmail.requestFocus();
             return;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             editTextEmail.setError(getString(R.string.email_invalid));
-            editTextEmail.requestFocus();
+            //editTextEmail.requestFocus();
             return;
         }
         else if(password.isEmpty()){
@@ -97,28 +110,73 @@ public class AdminLoginActivity extends AppCompatActivity {
         final String email = editTextEmail.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
 
+        /*admin.setEmail(email);
+        admin.setPassword(password);
+
+        adminRef.child(email)
+                .setValue(admin).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    // clear TextBothfields
+                    clearBothTextFields();
+
+                    // displays a success message
+                    Snackbar.make(nestedScrollView,getString(R.string.login_successful),Snackbar.LENGTH_LONG).show();
+
+                    // finishes this activity and start the AdminDashBoard Activity
+                    AdminLoginActivity.this.finish();
+                    startActivity(new Intent(AdminLoginActivity.this,AdminDashBoardActivity.class));
+                }
+                else{
+                    // clear PasswordTextfields
+                    clearPasswordTextField();
+                    // displays an error message
+                    Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
+
+                }
+
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+        */
+
         // method to sign admin into the system
         mAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            // displays a success message
-                            Snackbar.make(nestedScrollView,getString(R.string.login_successful),Snackbar.LENGTH_LONG).show();
+
+                            // clear TextBothfields
                             clearBothTextFields();
+
+                            // displays a success message
+                            Toast.makeText(AdminLoginActivity.this,getString(R.string.login_successful),Toast.LENGTH_LONG).show();
+                            //Snackbar.make(nestedScrollView,getString(R.string.login_successful),Snackbar.LENGTH_LONG).show();
+
                             // finishes this activity and start the AdminDashBoard Activity
                             AdminLoginActivity.this.finish();
                             startActivity(new Intent(AdminLoginActivity.this,AdminDashBoardActivity.class));
                         }
                         else{
+                            // clear PasswordTextfields
+                            clearPasswordTextField();
                             // displays an error message
                             Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
-                            clearPasswordTextField();
+
                         }
+                        // dismiss progressBar
                         progressBar.setVisibility(View.GONE);
                     }
                 });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // sign user out if this method is called
+        mAuth.signOut();
     }
 
     // clears all text from the Username and Password EditText
@@ -137,11 +195,6 @@ public class AdminLoginActivity extends AppCompatActivity {
         //starts the Users LoginActivity
         AdminLoginActivity.this.finish();
         startActivity(new Intent(AdminLoginActivity.this,UserLoginActivity.class));
-    }
-
-    // method to reset admin password
-    public void onButtonResetPassword(View view){
-
     }
 
 }

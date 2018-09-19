@@ -10,6 +10,7 @@ public class Rooms {
     private String price;
     // key to store the key reference of the data to delete
     private String key;
+    private String user_ImageUrl;
 
     //default constructor
     public Rooms(){}
@@ -53,5 +54,13 @@ public class Rooms {
     @Exclude
     public String getKey() {
         return key;
+    }
+
+    public void setUser_ImageUrl(String user_ImageUrl){
+        this.user_ImageUrl = user_ImageUrl;
+    }
+
+    public String getUser_ImageUrl(){
+        return user_ImageUrl;
     }
 }

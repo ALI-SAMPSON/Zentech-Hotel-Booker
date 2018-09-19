@@ -3,36 +3,66 @@ package io.zentechhotelbooker.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterPayment;
 import io.zentechhotelbooker.models.Payments;
+import io.zentechhotelbooker.models.Users;
 
 public class CheckPaymentActivity extends AppCompatActivity {
 
     FirebaseListAdapter firebaseListAdapter;
 
-    FirebaseDatabase paymentdB;
-
-    DatabaseReference paymentRef;
-
     ListView listView;
 
     Payments payments;
 
+    Users users;
+
     FirebaseAuth mAuth;
+
+    FirebaseUser user;
+
+    // Recycler View Objects
+    DatabaseReference mDatabaseRef;
+
+    RecyclerView recyclerView;
+
+    RecyclerViewAdapterPayment recyclerViewAdapterPayment;
+
+    List<Payments> paymentsList;
+
+    ProgressBar progressBar;
+
+    // Creating a ValueEvent Listener.
+    private ValueEventListener mDBListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,25 +77,97 @@ public class CheckPaymentActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        // Assign id to RecyclerView.
+        recyclerView = findViewById(R.id.recyclerView);
+
+        // Setting RecyclerView size true.
+        recyclerView.setHasFixedSize(true);
+
+        // Setting RecyclerView layout as LinearLayout.
+        recyclerView.setLayoutManager(new GridLayoutManager(CheckPaymentActivity.this,2));
+
+        paymentsList = new ArrayList<>();
+
+        recyclerViewAdapterPayment = new RecyclerViewAdapterPayment(CheckPaymentActivity.this,paymentsList);
+
+        recyclerView.setAdapter(recyclerViewAdapterPayment);
+
+        // Assign activity this to progress bar.
+        progressBar = findViewById(R.id.progressBar);
 
         payments = new Payments();
 
-        listView = findViewById(R.id.payment_listView);
+        users = new Users();
+
+        //listView = findViewById(R.id.payment_listView);
 
         // getting an instance of FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+
+        user = mAuth.getCurrentUser();
+
+        // Method call
+        showPayment();
 
         //displayPayments(); ///call to the method
 
     }
 
-    //method to populate the listView with payments
+    // method to populate payments into RecyclerView
+    public void showPayment(){
+
+        // displays the progress bar
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Setting up Firebase image upload folder path in databaseReference.
+        // The path is already defined in MainActivity.
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Payments");
+
+        mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // clears the list on data change
+                paymentsList.clear();
+
+                for(DataSnapshot paymentSnapshot : dataSnapshot.getChildren()){
+
+                    Payments payments = paymentSnapshot.getValue(Payments.class);
+
+                    paymentsList.add(payments);
+                }
+
+                recyclerViewAdapterPayment.notifyDataSetChanged();
+
+                // dismiss the progressBar
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                // Hiding the progress bar.
+                progressBar.setVisibility(View.GONE);
+
+                // displays a DatabaseError exception if error occurs
+                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
+    //method to populate payments into listView
     public void displayPayments(){
+
+        //final FirebaseUser user = mAuth.getCurrentUser();
 
         Query query = FirebaseDatabase.getInstance().getReference().child("Payments");
 
         FirebaseListOptions<Payments> options = new FirebaseListOptions.Builder<Payments>()
-                .setLayout(R.layout.payment_list_item)
+                .setLayout(R.layout.recyclerview_payment_items)
                 .setQuery(query,Payments.class)
                 .build();
 
@@ -76,18 +178,19 @@ public class CheckPaymentActivity extends AppCompatActivity {
                 //TextView and imageView to populate the data from the database
                 TextView username = v.findViewById(R.id.user_name);
                 TextView room_number = v.findViewById(R.id.room_number);
-                TextView price = v.findViewById(R.id.price);
+                TextView price = v.findViewById(R.id.room_price);
                 TextView mobile_number = v.findViewById(R.id.mobile_number);
+                CircleImageView circleImageView = v.findViewById(R.id.user_image);
 
                 //typecasting the payments to the Object model
                 Payments payments = (Payments) model;
 
                 //setting the Text of the various textViews to the payment info in the database;
-                username.setText(" Username : " + payments.getUser_name().toString());
-                room_number.setText(" Room Number : " + payments.getRoom_number().toString());
-                price.setText(" Price : GHS " + payments.getPrice().toString());
-                mobile_number.setText(" Mobile Number : " + payments.getMobile_number().toString());
-
+                username.setText(" Username : " + payments.getUser_name());
+                room_number.setText(" Room Number : " + payments.getRoom_number());
+                price.setText(" Price : GHC " + payments.getPrice());
+                mobile_number.setText(" Mobile Money Number : " + payments.getMobile_number());
+                Glide.with(CheckPaymentActivity.this).load(payments.getImageUrl()).into(circleImageView);
 
             }
         };
@@ -99,13 +202,13 @@ public class CheckPaymentActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseListAdapter.startListening();
+        //firebaseListAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        firebaseListAdapter.stopListening();
+        //firebaseListAdapter.stopListening();
     }
 
     @Override

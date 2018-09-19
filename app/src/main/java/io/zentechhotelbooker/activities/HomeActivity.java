@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     RecyclerViewAdapterUser recyclerViewAdapterUser;
 
     // Creating List of Rooms class.
-    List<Rooms> roomsList = new ArrayList<>();
+    List<Rooms> roomsList;
 
     // Creating progressBar
     ProgressBar progressBar;
@@ -113,6 +113,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Sets the Layout of the Recycler View and uses a spanCount of 2
         recyclerView.setLayoutManager(new GridLayoutManager(HomeActivity.this,2));
 
+        roomsList = new ArrayList<>();
+
+        recyclerViewAdapterUser = new RecyclerViewAdapterUser(HomeActivity.this,roomsList);
+
+        recyclerView.setAdapter(recyclerViewAdapterUser);
+
         // Assign id to ProgressBar
         progressBar = findViewById(R.id.progressBar);
 
@@ -121,12 +127,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // Getting instance of the FirbaseAuth class
         mAuth = FirebaseAuth.getInstance();
-
-        // call to the method to load user details into their respective views
-        loadUserInfo();
-
-        // call to the method to load rooms from Firbase Database
-        loadUploadedRoomDetails();
 
         // method call to welcomeMessage Method
         //displayWelcomeMessage();
@@ -137,18 +137,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart(){
         super.onStart();
         if(mAuth.getCurrentUser() == null){
-            HomeActivity.this.finish();
             // starts the login activity currently logged in user is null(no logged in user)
             startActivity(new Intent(this,UserLoginActivity.class));
+            finish();
         }
         else if(mAuth.getCurrentUser() != null){
             // starts the home activity if user is already logged in
             progressBar.setVisibility(View.GONE);
 
+            // call to the method to load user details into their respective views
+            loadUserInfo();
+
+            // call to the method to load rooms from Firbase Database
+            loadUploadedRoomDetails();
+
             // method call to welcomeMessage Method
             //displayWelcomeMessage();
         }
-
 
     }
 
@@ -254,7 +259,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         // dismisses any instance of Alert Dialog
-        //alertDialog.dismiss();
+        mAuth.signOut();
     }
 
     private void loadUserInfo(){
@@ -271,7 +276,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if(user != null){
             // checks if the photo of the current user is not null
             if(user.getPhotoUrl() != null ){
-                Glide.with(this)
+                Glide.with(HomeActivity.this)
                         .load(_photoUrl)
                         .into(circleImageView);
             }
@@ -285,6 +290,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+        // if there is no user logged in
+        /*else if(user == null){
+            Glide.with(HomeActivity.this)
+                    .load(R.drawable.avatar_placeholder)
+                    .into(circleImageView);
+            username.setText(getString(R.string.dummy_username));
+            email.setText(getString(R.string.dummy_email));
+        }*/
 
     }
 
@@ -302,6 +315,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                // clears the list on data change
+                roomsList.clear();
+
                 // getting snapshot of rooms available in the database
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
 
@@ -310,9 +326,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     roomsList.add(rooms);
                 }
 
-                recyclerViewAdapterUser = new RecyclerViewAdapterUser(HomeActivity.this,roomsList);
-
-                recyclerView.setAdapter(recyclerViewAdapterUser);
+                // refreshes the recyclerview after data change
+                recyclerViewAdapterUser.notifyDataSetChanged();
 
                 // Hiding the progress bar.
                 progressBar.setVisibility(View.GONE);
@@ -366,9 +381,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 // open UpdateUserProfileActivity activity
                 startActivity(new Intent(HomeActivity.this,UpdateUserProfileActivity.class));
                 break;
-            case R.id.menu_payment:
+            /*case R.id.menu_payment:
                 // open this activity
-                break;
+                break;*/
             /*case R.id.menu_booked_rooms:
                 // open this activity
                 break;*/
@@ -454,14 +469,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                final Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        //progressDialog.dismiss();
-                        timer.cancel();
-                    }
-                },10000);
                 // logs current user out of the system
                 mAuth.signOut();
                 HomeActivity.this.finish();

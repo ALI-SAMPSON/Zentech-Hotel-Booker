@@ -29,7 +29,7 @@
     <string name="sign_out">Signout</string>
     <string name="logout_sub_text">done? lets exit the system</string>
     <string name="admin_dash_board">ADMIN DASHBOARD</string>
-    <string name="about_us_title">About Us-</string>
+    <string name="about_us_title">About Us</string>
     <string name="about_us_sub_title">YOKA LOGDE is a mobile application specification android,
         developed by iCODE Labs to help this guest house keep with its management.
         iCODE Labs was established in the year 2017 to undertake the development
@@ -152,7 +152,8 @@
     <string name="text_delete">Delete Room</string>
     <string name="text_delete_body">Are you sure you want to delete this room?</string>
     <string name="price">Price</string>
-    <string name="room_image">Upload Room Image here...</string>
+    <string name="room_image">Upload Image of Room here</string>
+    <string name="hint_upload">Click on the image below to upload the image of a room</string>
     <string name="welcome">WELCOME TO YOKA LODGE!</string>
     <string name="welcome_admin">WELCOME ADMIN</string>
     <string name="welcome_msg">Hope you enjoy the stay</string>
@@ -169,5 +170,8 @@
     <string name="btn_back">GO BACK</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_pay">Pay</string>
+
+    <!--Developer-->
+    <string name="watermark">Created by <b>iCODE labs</b> © 2018</string>
 
 </resources>

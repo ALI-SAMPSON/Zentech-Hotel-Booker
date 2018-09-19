@@ -6,17 +6,14 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/hotel_9"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp"
-    android:paddingBottom="0dp"
+    android:background="@drawable/login_bg"
     tools:context=".activities.AdminLoginActivity">
 
     <!-- material design LinearLayout -->
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:orientation="vertical">
         <!-- Circular ImageView for logo -->
         <de.hdodenhof.circleimageview.CircleImageView
@@ -96,27 +93,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Button as a Link to the Sign Up Page -->
-        <!-- <android.support.v7.widget.AppCompatButton
-             android:id="@+id/appCompatButtonResetPassword"
-             android:layout_marginTop="5dp"
-             android:layout_width="300dp"
-             android:layout_height="wrap_content"
-             android:layout_centerInParent="true"
-             android:layout_gravity="center_horizontal"
-             android:gravity="start|left|fill_vertical"
-             android:layout_below="@+id/appCompatButtonLogin"
-             android:fontFamily="@font/nunito_semibold"
-             android:text="@string/link_reset_password"
-             android:textColor="@color/colorWhite"
-             android:textSize="16sp"
-             android:textAllCaps="false"
-             android:textStyle="normal"
-             android:textAlignment="textEnd"
-             android:background="@null"
-             android:onClick="onButtonResetPassword"
-             tools:ignore="RtlCompat" />-->
-
         <!-- Login Button  -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/appCompatButtonLogin"
@@ -132,8 +108,8 @@
             android:textSize="16sp"
             android:textStyle="normal"
             android:textAlignment="center"
-            android:background="@drawable/round_corner_button_signup"
-            android:onClick="onLoginButtonClick"/>
+            android:background="@drawable/nice_design_button_pink"
+            android:onClick="onSignUpButtonClick"/>
 
 
         <!-- Link to the user login page -->
@@ -145,7 +121,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:layout_below="@+id/appCompatButtonLogin"
-            android:fontFamily="@font/nunito_semibold"
+            app:fontFamily="@font/nunito_semibold"
             android:text="@string/login_link"
             android:textColor="@color/colorWhite"
             android:textSize="16sp"

@@ -53,13 +53,14 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(SPLASH_SCREEN_DISPLAY_TIME);
-                    //Creates and start the intent of the next activity
-                    Intent intent = new Intent(SplashScreenActivity.this, SliderViewActivity.class);
+                    // this prevents the app from going back to the splash screen
+                    SplashScreenActivity.this.finish();
+                    // Creates and start the intent of the next activity
+                    Intent intent = new Intent(SplashScreenActivity.this, UserLoginActivity.class);
                     startActivity(intent);
-                    finish();//this prevents the app from going back to the splash screen
                     super.run();
                 } catch (InterruptedException e) {
-                    Toast.makeText(SplashScreenActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SplashScreenActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         };

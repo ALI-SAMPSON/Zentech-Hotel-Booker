@@ -107,6 +107,8 @@ public class MakePaymentActivity extends AppCompatActivity {
         editTextRoomNumber.setText(getIntent().getStringExtra("room_number"));
         editTextPrice.setText(getIntent().getStringExtra("room_price"));
 
+        final String user_image = getIntent().getStringExtra("user_image");
+
         onEditTextClick();
     }
 
@@ -183,11 +185,15 @@ public class MakePaymentActivity extends AppCompatActivity {
     //method for making the payments
     public void makePayment(){
 
+        String user_image = getIntent().getStringExtra("user_image");
+
         // displays the progressBar
         progressBar.setVisibility(View.VISIBLE);
 
+        //final Payments payments = new Payments();
+
         //gets text from the user
-        String user_name = editTextUsername.getText().toString().trim();
+        final String user_name = editTextUsername.getText().toString().trim();
         final String room_number = editTextRoomNumber.getText().toString().trim();
         String price = editTextPrice.getText().toString().trim();
         String mobile_number = editTextMomoNumber.getText().toString().trim();
@@ -199,6 +205,7 @@ public class MakePaymentActivity extends AppCompatActivity {
         payments.setPrice(price);
         payments.setMobile_number(mobile_number);
         payments.setPayment_method(payment_method);
+        payments.setImageUrl(user_image);
 
         //code to the check if room has been booked already
         paymentRef.child(room_number).addValueEventListener(new ValueEventListener() {
@@ -206,7 +213,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //gets a snapshot of the data in the database
                 if (dataSnapshot.exists()) {
-                    Payments payments = dataSnapshot.getValue(Payments.class);
+                    final Payments payments = dataSnapshot.getValue(Payments.class);
                     //checks if room has been booked
                     if (room_number.equals(payments.getRoom_number())) {
 
@@ -214,8 +221,10 @@ public class MakePaymentActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
 
                         //clearBothTextFields(); //call to this method
-                        Snackbar.make(nestedScrollView, " Room is already booked by " + payments.getUser_name(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(nestedScrollView, " Room is already booked by another user ", Snackbar.LENGTH_LONG).show();
+
                     }
+
                 }
 
                 //else if room is not booked then allow payment to be made
@@ -226,8 +235,14 @@ public class MakePaymentActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
 
+                                FirebaseUser user = mAuth.getCurrentUser();
+
+                                String _imageUrl = user.getPhotoUrl().toString();
+
+                                payments.setImageUrl(_imageUrl);
+
                                 // hides the progressBar
-                                progressBar.setVisibility(View.GONE);
+                                //progressBar.setVisibility(View.GONE);
 
                                 //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
                                 Snackbar.make(nestedScrollView, " Payment made successfully ", Snackbar.LENGTH_LONG).show();
@@ -247,18 +262,19 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
                                 nm.notify(0, notification);
                             }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                            else {
+                                // hides the progressBar
+                                //progressBar.setVisibility(View.GONE);
+
+                                //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
+                                Snackbar.make(nestedScrollView, task.getException().toString(), Snackbar.LENGTH_LONG).show();
+                            }
                             // hides the progressBar
                             progressBar.setVisibility(View.GONE);
-
-                            //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
-                            Snackbar.make(nestedScrollView, e.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
                     });
                 }
+
 
             }
 
@@ -288,7 +304,7 @@ public class MakePaymentActivity extends AppCompatActivity {
     // method to clear TextViews when user clicks on
     public void onClearButtonClick(View view) {
         // clears the fields
-        editTextUsername.setText(null);
+        //editTextUsername.setText(null);
         editTextMomoNumber.setText(null);
 
     }

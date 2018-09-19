@@ -5,7 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/background_super_dark</item>
         <item name="colorPrimaryDark">@color/edit_text_color</item>
-        <item name="colorAccent">@color/background_super_dark</item>
+        <item name="colorAccent">@color/colorBlue</item>
+        <!-- <item name="android:textColorHint">@color/colorBlue</item> -->
     </style>
 
     <!-- Base application theme. -->
@@ -37,7 +38,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme.AdminComponents" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorAccent">@color/buttonLight</item>
+        <item name="colorAccent">@color/green</item>
         <item name="colorPrimary">@color/colorLightBlue</item>
         <item name="colorPrimaryDark">@color/colorBlue</item>
     </style>

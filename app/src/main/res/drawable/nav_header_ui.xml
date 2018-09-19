@@ -9,7 +9,7 @@
     <gradient
         android:angle="225"
         android:startColor="@color/buttonLight"
-        android:centerColor="@color/buttonLight"
+        android:centerColor="@color/background_super_dark"
         android:endColor="@color/buttonDark"/>
 
     <corners

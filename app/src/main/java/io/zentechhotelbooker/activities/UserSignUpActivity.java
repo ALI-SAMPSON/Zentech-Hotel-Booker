@@ -53,6 +53,8 @@ public class UserSignUpActivity extends AppCompatActivity {
     //instance of the ProgressDialog class
     ProgressDialog progressDialog;
 
+    Users users;
+
     //instance variables of the various views
     private EditText editTextEmail;
     private EditText editTextUsername;
@@ -102,6 +104,8 @@ public class UserSignUpActivity extends AppCompatActivity {
         progressBar1 = findViewById(R.id.progressBar1);
 
         mAuth = FirebaseAuth.getInstance();
+
+        users = new Users();
 
     }
 
@@ -177,7 +181,7 @@ public class UserSignUpActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
 
                             //getting the instances
-                            Users users = new Users(
+                            final Users users = new Users(
                                     email,
                                     username,
                                     gender,
@@ -189,30 +193,25 @@ public class UserSignUpActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
+
+                                        users.setImageUrl(profileImageUrl);
+
                                         // method call to save Username and profile Image
                                         saveUserInfo();
-                                        progressBar1.setVisibility(View.GONE);
+                                        //progressBar1.setVisibility(View.GONE);
                                         // displays a success message
                                         Snackbar.make(nestedScrollView,getString(R.string.sign_up_successful),Snackbar.LENGTH_LONG).show();
-                                        final Timer timer = new Timer();
-                                        timer.schedule(new TimerTask() {
-                                            @Override
-                                            public void run() {
-
-                                            }
-                                        },5000);
+                                        // clear TextFields
                                         clearTextFields();
-                                        UserSignUpActivity.this.finish();
-                                        startActivity(new Intent(UserSignUpActivity.this, UserLoginActivity.class));
                                     }
                                     else{
-                                        progressBar1.setVisibility(View.GONE);
+                                        //progressBar1.setVisibility(View.GONE);
                                         // displays an error message
                                         Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
                                         clearTextFields();
                                     }
 
-                                    //progressBar1.setVisibility(View.GONE);
+                                    progressBar1.setVisibility(View.GONE);
                                 }
                             });
 
@@ -229,9 +228,9 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     //link to the User login page
     public void onLoginLinkButtonClick(View view){
-        UserSignUpActivity.this.finish();
         //starts the LoginActivity when user clicks the button
         startActivity(new Intent(UserSignUpActivity.this, UserLoginActivity.class));
+        finish();
     }
 
     //clear text from the textfields
@@ -245,7 +244,6 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     // method to open user gallery
     private void openGallery(){
-
         Intent pickIntent = new Intent();
         pickIntent.setType("image/*");
         pickIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -286,6 +284,8 @@ public class UserSignUpActivity extends AppCompatActivity {
                             // dismisses the progress Bar and stores the image Url of the image in a String variable
                             progressBar.setVisibility(View.GONE);
                             profileImageUrl = taskSnapshot.getDownloadUrl().toString();
+                            // sets the Url of the Image to field in the database
+                            users.setImageUrl(profileImageUrl);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override

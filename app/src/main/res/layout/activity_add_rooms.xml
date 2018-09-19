@@ -13,42 +13,64 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
         <!-- Relative layout to place the progressBar at the center of the circular ImageView-->
         <RelativeLayout
             android:id="@+id/relativeLayout"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/hint_upload"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_upload"
+                android:layout_marginTop="0dp"
+                android:layout_centerHorizontal="true"
+                android:drawableStart="@drawable/ic_room_download"
+                android:drawableLeft="@drawable/ic_room_download"
+                android:drawableRight="@drawable/ic_room_download"
+                android:drawableEnd="@drawable/ic_room_download"
+                app:fontFamily="@font/nunito_semibold"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/colorGray"
+                android:padding="10dp"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circularImageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_below="@+id/hint_upload"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_margin="10dp"
                 android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/add_room_icon_1"
+                android:src="@drawable/add_room_icon"
                 android:onClick="onSelectImage"
                 app:civ_border_width="1.5dp"
-                app:civ_border_color="@color/colorViolet">
+                app:civ_border_color="@color/materialGreen">
             </de.hdodenhof.circleimageview.CircleImageView>
 
 
-            <TextView
+            <!--<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/room_image"
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/circularImageView"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:textColor="@color/buttonDark"
-                android:padding="5dp"/>
+                app:fontFamily="@font/nunito_semibold"
+                android:drawableStart="@drawable/ic_room_upload"
+                android:drawableLeft="@drawable/ic_room_upload"
+                android:drawableRight="@drawable/ic_room_upload"
+                android:drawableEnd="@drawable/ic_room_upload"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlue"
+                android:padding="5dp"/>-->
 
         </RelativeLayout>
 
@@ -58,20 +80,20 @@
             android:id="@+id/textInputLayoutRoomNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:textAlignment="center"
-            android:textColorHint="@color/buttonDark">
+            android:textColorHint="@color/colorBlue">
             <EditText
                 android:id="@+id/editTextRoomNumber"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_room"
                 android:drawableLeft="@drawable/ic_room"
                 android:drawablePadding="@dimen/spacing_normal"
-                android:textColor="@color/buttonDark"
+                android:textColor="@color/materialGreen"
                 android:textColorHint="@color/buttonLight"
                 android:hint="@string/room_number"
                 android:textSize="16sp"
@@ -84,19 +106,17 @@
             android:id="@+id/textInputLayoutPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textInputLayoutRoomNumber"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:textAlignment="center"
-            android:textColorHint="@color/buttonDark">
+            android:textColorHint="@color/colorBlue">
             <EditText
                 android:id="@+id/editTextPrice"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/buttonDark"
+                android:textColor="@color/materialGreen"
                 android:textColorHint="@color/buttonLight"
                 android:drawableLeft="@drawable/ic_payment"
                 android:drawablePadding="@dimen/spacing_normal"
@@ -132,11 +152,24 @@
             android:layout_below="@+id/textInputLayoutPrice"
             android:text="@string/text_add"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp"
+            android:textSize="18sp"
+            android:textAllCaps="false"
             android:textStyle="normal"
             android:textAlignment="center"
-            android:background="@drawable/round_corner_button_login_admin"
+            android:background="@drawable/nice_design_button_green"
             android:onClick="onAddRoomButtonClick"/>
+
+        <!--<android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            app:rippleColor="@color/colorWhite"
+            app:fabSize="normal"
+            android:src="@drawable/ic_add_room"
+            android:onClick="onAddRoomButtonClick">
+   </android.support.design.widget.FloatingActionButton>-->
 
         <ProgressBar
             android:id="@+id/progressBar"

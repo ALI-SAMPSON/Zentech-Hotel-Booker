@@ -7,6 +7,7 @@ public class Users {
     private String username;
     private String gender;
     private String mobile_number;
+    private String imageUrl;
 
     //default constructor
     public Users(){
@@ -55,6 +56,12 @@ public class Users {
         return mobile_number;
     }
 
+    public void setImageUrl(String imageUrl){
+        this.imageUrl = imageUrl;
+    }
 
+    public String getImageUrl(){
+        return imageUrl;
+    }
 
 }

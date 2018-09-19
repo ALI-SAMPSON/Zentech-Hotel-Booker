@@ -8,6 +8,7 @@ public class Payments {
     private String price;
     private String payment_method;
     private String mobile_number;
+    private String imageUrl;
 
 
     //default constructor
@@ -60,5 +61,13 @@ public class Payments {
     }
     public String getMobile_number() {
         return mobile_number;
+    }
+
+    public void setImageUrl(String imageUrl){
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl(){
+        return imageUrl;
     }
 }

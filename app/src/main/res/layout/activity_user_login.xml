@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/nestedScrollView"
-    android:background="@drawable/login_bg"
+    android:background="@drawable/my_login_ui"
     android:fitsSystemWindows="true"
     tools:context=".activities.UserLoginActivity">
 
@@ -56,7 +56,7 @@
                 android:textColorHint="@color/colorWhite"
                 app:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_email"
-                android:inputType="textEmailAddress|textAutoComplete"/>
+                android:inputType="textEmailAddress|textAutoComplete|textAutoCorrect"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Password -->

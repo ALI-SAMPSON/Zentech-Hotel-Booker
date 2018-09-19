@@ -74,10 +74,6 @@ public class UserLoginActivity extends AppCompatActivity {
             UserLoginActivity.this.finish();
             startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
         }
-        // checks if user is not currently logged in
-        else if(mAuth.getCurrentUser() == null){
-           // do nothing
-        }
 
 }
 
