@@ -196,6 +196,8 @@ public class UserSignUpActivity extends AppCompatActivity {
 
                                         users.setImageUrl(profileImageUrl);
 
+                                        mAuth.signOut();
+
                                         // method call to save Username and profile Image
                                         saveUserInfo();
                                         //progressBar1.setVisibility(View.GONE);
