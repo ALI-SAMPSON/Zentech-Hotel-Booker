@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -77,6 +78,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     //AlertDialog.Builder builder;
 
     AlertDialog alertDialog;
+
+    private boolean doublePressBackToExitApp = false;
 
 
     @Override
@@ -435,28 +438,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Exit Application?");
-        alertDialogBuilder
-                .setMessage("Are you sure you want to exit application?")
-                .setCancelable(false)
-                .setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                moveTaskToBack(true);
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                                System.exit(1);
-                            }
-                        })
+        // if condition
+       if(doublePressBackToExitApp){
+           super.onBackPressed();
+           return;
+       }
+       doublePressBackToExitApp = true;
+       // display a toast message to user
+       Toast.makeText(HomeActivity.this,getString(R.string.exit_app_message),Toast.LENGTH_SHORT).show();
 
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int id) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+       new Handler().postDelayed(new Runnable() {
+           @Override
+           public void run() {
+               doublePressBackToExitApp = false;
+           }
+       },2000);
     }
 
     // method to log user out of the system

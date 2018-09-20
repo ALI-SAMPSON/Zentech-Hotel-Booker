@@ -170,6 +170,7 @@
     <string name="btn_back">GO BACK</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_pay">Pay</string>
+    <string name="exit_app_message">Please press again to exit</string>
 
     <!--Developer-->
     <string name="watermark">Created by <b>iCODE labs</b> © 2018</string>
