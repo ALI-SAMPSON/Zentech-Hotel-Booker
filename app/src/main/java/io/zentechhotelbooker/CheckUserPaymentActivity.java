@@ -1,15 +1,13 @@
-package io.zentechhotelbooker.activities;
+package io.zentechhotelbooker;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,6 +18,7 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,16 +30,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.activities.CheckPaymentActivity;
+import io.zentechhotelbooker.activities.HomeActivity;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterPayment;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterUser;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterUserPayment;
 import io.zentechhotelbooker.models.Payments;
+import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
 
-public class CheckPaymentActivity extends AppCompatActivity {
+public class CheckUserPaymentActivity extends AppCompatActivity {
 
     FirebaseListAdapter firebaseListAdapter;
 
-    ListView listView;
+    ListView payment_listView;
 
     Payments payments;
 
@@ -48,16 +51,14 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
-    FirebaseUser user;
-
     // Recycler View Objects
     DatabaseReference mDatabaseRef;
 
     RecyclerView recyclerView;
 
-    RecyclerViewAdapterPayment recyclerViewAdapterPayment;
+    RecyclerViewAdapterUserPayment recyclerViewAdapterUserPayment;
 
-    List<Payments> paymentsList;
+    List<Payments> user_payment_list;
 
     ProgressBar progressBar;
 
@@ -67,106 +68,123 @@ public class CheckPaymentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_payment);
+        setContentView(R.layout.activity_check_user_payment);
 
         //checks if the support actionbar is not null
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(getString(R.string.check_payments));
+            getSupportActionBar().setTitle(getString(R.string.my_payments));
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        // Assign id to RecyclerView.
+        mAuth = FirebaseAuth.getInstance();
+
+        //mDatabaseRef = FirebaseDatabase.getInstance().getReference("Payment").child(payments.getRoom_number());
+
+        //payment_listView = findViewById(R.id.payment_listView);
         recyclerView = findViewById(R.id.recyclerView);
 
-        // Setting RecyclerView size true.
         recyclerView.setHasFixedSize(true);
 
-        // Setting RecyclerView layout as LinearLayout.
-        recyclerView.setLayoutManager(new GridLayoutManager(CheckPaymentActivity.this,2));
+        recyclerView.setLayoutManager(new GridLayoutManager(CheckUserPaymentActivity.this,2));
 
-        paymentsList = new ArrayList<>();
+        user_payment_list = new ArrayList<>();
 
-        recyclerViewAdapterPayment = new RecyclerViewAdapterPayment(CheckPaymentActivity.this,paymentsList);
+        recyclerViewAdapterUserPayment = new RecyclerViewAdapterUserPayment(CheckUserPaymentActivity.this,user_payment_list);
 
-        recyclerView.setAdapter(recyclerViewAdapterPayment);
+        recyclerView.setAdapter(recyclerViewAdapterUserPayment);
+
+        payments = new Payments();
 
         // Assign activity this to progress bar.
         progressBar = findViewById(R.id.progressBar);
 
-        payments = new Payments();
+        //displayPayments();
 
-        users = new Users();
+        //displayUserPayments();
 
-        //listView = findViewById(R.id.payment_listView);
-
-        // getting an instance of FirebaseAuth
-        mAuth = FirebaseAuth.getInstance();
-
-        user = mAuth.getCurrentUser();
-
-        // Method call
-        showPayment();
-
-        //displayPayments(); ///call to the method
 
     }
 
-    // method to populate payments into RecyclerView
-    public void showPayment(){
+    private void displayUserPayments(){
 
-        // displays the progress bar
         progressBar.setVisibility(View.VISIBLE);
 
-        // Setting up Firebase image upload folder path in databaseReference.
-        // The path is already defined in MainActivity.
+        final FirebaseUser user = mAuth.getCurrentUser();
+
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Payments");
 
-        mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
+        Query query = mDatabaseRef.child("03").orderByChild("user_name");
+
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                // clears the list on data change
-                paymentsList.clear();
+                if(dataSnapshot.exists()) {
+                    if (payments.getUser_name().equals(user.getDisplayName())) {
+                        Payments payments = dataSnapshot.getValue(Payments.class);
 
-                for(DataSnapshot paymentSnapshot : dataSnapshot.getChildren()){
-
-                    Payments payments = paymentSnapshot.getValue(Payments.class);
-
-                    paymentsList.add(payments);
+                        user_payment_list.add(payments);
+                    }
                 }
-
-                recyclerViewAdapterPayment.notifyDataSetChanged();
-
-                // dismiss the progressBar
-                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-                // Hiding the progress bar.
-                progressBar.setVisibility(View.GONE);
-
-                // displays a DatabaseError exception if error occurs
-                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
-
             }
         });
 
+
+
+       /*mDBListener =  mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // clears the list on data change
+                user_payment_list.clear();
+
+               for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                   Payments user_payments = snapshot.getValue(Payments.class);
+
+                   user_payment_list.add(user_payments);
+
+               }
+                recyclerViewAdapterUserPayment.notifyDataSetChanged();
+
+                // dismiss the progressBar
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Hiding the progress Bar
+                progressBar.setVisibility(View.GONE);
+
+                // displays an error message from the database
+                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    */
+
     }
 
+
     //method to populate payments into listView
-    public void displayPayments(){
+    public void displayPayments() {
 
-        //final FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = mAuth.getCurrentUser();
 
-        Query query = FirebaseDatabase.getInstance().getReference().child("Payments");
+        Query query = FirebaseDatabase.getInstance().getReference("Payments");
+
+        if(payments.getUser_name().equals(user.getDisplayName())){
 
         FirebaseListOptions<Payments> options = new FirebaseListOptions.Builder<Payments>()
-                .setLayout(R.layout.recyclerview_payment_items)
-                .setQuery(query,Payments.class)
+                .setLayout(R.layout.payment_list_item)
+                .setQuery(query, Payments.class)
                 .build();
 
         firebaseListAdapter = new FirebaseListAdapter(options) {
@@ -188,12 +206,13 @@ public class CheckPaymentActivity extends AppCompatActivity {
                 room_number.setText(" Room Number : " + payments.getRoom_number());
                 price.setText(" Price : GHC " + payments.getPrice());
                 mobile_number.setText(" Mobile Money Number : " + payments.getMobile_number());
-                Glide.with(CheckPaymentActivity.this).load(payments.getImageUrl()).into(circleImageView);
+                Glide.with(CheckUserPaymentActivity.this).load(payments.getImageUrl()).into(circleImageView);
 
             }
         };
+    }
 
-        listView.setAdapter(firebaseListAdapter);
+        payment_listView.setAdapter(firebaseListAdapter);
 
     }
 
@@ -212,18 +231,17 @@ public class CheckPaymentActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // removes the Value Listener when activity is destroy
         mDatabaseRef.removeEventListener(mDBListener);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            //navigates to the AdminDashboard activity
             case android.R.id.home:
-                startActivity(new Intent(CheckPaymentActivity.this,AdminDashBoardActivity.class));
-                break;
-            default:
-                break;
+                // goes back to Home Activity
+                startActivity(new Intent(CheckUserPaymentActivity.this, HomeActivity.class));
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Zentech Hotel Booker</string>
+    <string name="app_name">Zentech Hotel Room Booker</string>
 
-    <string name="application_name">ZENTECH HOTEL BOOKER</string>
+    <string name="application_name">ZENTECH HOTEL ROOM BOOKER</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
@@ -11,7 +11,7 @@
     <string name="hint_campus">Campus</string>
     <string name="hint_tel">Mob. Number</string>
     <string name="hint_phone">Phone Number</string>
-    <string name="hint_momo_number">Mobile Money Number</string>
+    <string name="hint_momo_number">Momo Number</string>
     <string name="hint_username">Username</string>
     <string name="link_reset_password">Forgot Password?</string>
     <string name="text_gender">Gender</string>
@@ -135,7 +135,8 @@
 
     <!-- Navigation drawer strings -->
     <string name="profile">Profile</string>
-    <string name="payment">Payment</string>
+    <string name="payments">Payments</string>
+    <string name="my_payments">My Payments</string>
     <string name="booked_rooms">Booked Rooms</string>
     <string name="settings">Settings</string>
     <string name="hint_enter_current_username">enter your username</string>
@@ -154,7 +155,7 @@
     <string name="price">Price</string>
     <string name="room_image">Upload Image of Room here</string>
     <string name="hint_upload">Click on the image below to upload the image of a room</string>
-    <string name="welcome">WELCOME TO YOKA LODGE!</string>
+    <string name="welcome">WELCOME TO ZENTECH HOTEL ROOM BOOKER!</string>
     <string name="welcome_admin">WELCOME ADMIN</string>
     <string name="welcome_msg">Hope you enjoy the stay</string>
     <string name="sign_up_link">Not yet a user? Sign Up</string>

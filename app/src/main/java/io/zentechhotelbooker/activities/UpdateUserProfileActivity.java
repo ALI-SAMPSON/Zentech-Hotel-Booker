@@ -170,7 +170,7 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
         String _username = username.getText().toString().trim();
 
         if(_username.isEmpty()) {
-            username.setError(getString(R.string.error_empty_field));
+            username.setError(getString(R.string.error_empty_username));
             username.requestFocus();
             return;
         }

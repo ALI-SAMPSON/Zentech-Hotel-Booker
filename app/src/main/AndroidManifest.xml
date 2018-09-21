@@ -22,59 +22,49 @@
             android:name=".activities.AdminLoginActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.AdminDashBoardActivity"
             android:configChanges="screenLayout|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
+            android:theme="@style/AppTheme.AdminComponents"></activity>
         <activity
             android:name=".activities.AddRoomsActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
+            android:theme="@style/AppTheme.AdminComponents"></activity>
         <activity
             android:name=".activities.DeleteRoomsActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
+            android:theme="@style/AppTheme.AdminComponents"></activity>
         <activity
             android:name=".activities.ResetAdminPasswordActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.CheckPaymentActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
+            android:theme="@style/AppTheme.AdminComponents"></activity>
         <activity
             android:name=".activities.AboutUsAdminActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
+            android:theme="@style/AppTheme.AdminComponents"></activity>
         <activity
             android:name=".activities.ContactUsAdminActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
+            android:theme="@style/AppTheme.AdminComponents"></activity>
 
-
-        <!--others -->
+        <!-- others -->
         <activity
             android:name=".activities.SliderViewActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.SplashScreenActivity"
             android:configChanges="screenSize|screenLayout"
@@ -86,7 +76,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <!-- User side Activities -->
         <activity
@@ -100,9 +89,9 @@
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
-        <activity android:name=".activities.UserSignUpActivity"
+        <activity
+            android:name=".activities.UserSignUpActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -117,27 +106,27 @@
             android:name=".activities.MakePaymentActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar">
-        </activity>
+            android:theme="@style/AppTheme.ActionBar"></activity>
         <activity
             android:name=".activities.ResetUserPasswordActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.AboutUsUserActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar">
-        </activity>
+            android:theme="@style/AppTheme.ActionBar"></activity>
         <activity
             android:name=".activities.ContactUsUserActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar"></activity>
+        <activity android:name=".CheckUserPaymentActivity"
+            android:configChanges="screenSize|screenLayout|smallestScreenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar">
         </activity>
-
     </application>
 
 </manifest>

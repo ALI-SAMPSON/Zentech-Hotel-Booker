@@ -75,7 +75,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
     // method to call the alert Dialog
     public void showAlertDialog(){
         // Creates an Alert Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mCtx,android.R.style.Theme_Material_Dialog_Alert);
         builder.setTitle("Book this Room!");
         builder.setMessage("Are you sure you want to book this room and make payment for it?");
         builder.setCancelable(false);

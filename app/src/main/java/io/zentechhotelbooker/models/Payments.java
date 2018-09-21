@@ -3,12 +3,12 @@ package io.zentechhotelbooker.models;
 public class Payments {
 
     //database fields for the database
-    private String user_name;
-    private String room_number;
-    private String price;
-    private String payment_method;
-    private String mobile_number;
-    private String imageUrl;
+    String user_name;
+    String room_number;
+    String price;
+    String payment_method;
+    String mobile_number;
+    String imageUrl;
 
 
     //default constructor

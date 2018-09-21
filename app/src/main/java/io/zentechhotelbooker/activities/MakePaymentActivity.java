@@ -185,12 +185,10 @@ public class MakePaymentActivity extends AppCompatActivity {
     //method for making the payments
     public void makePayment(){
 
-        String user_image = getIntent().getStringExtra("user_image");
+        final String user_image = getIntent().getStringExtra("user_image");
 
         // displays the progressBar
         progressBar.setVisibility(View.VISIBLE);
-
-        //final Payments payments = new Payments();
 
         //gets text from the user
         final String user_name = editTextUsername.getText().toString().trim();
@@ -223,6 +221,8 @@ public class MakePaymentActivity extends AppCompatActivity {
                         //clearBothTextFields(); //call to this method
                         Snackbar.make(nestedScrollView, " Room is already booked by another user ", Snackbar.LENGTH_LONG).show();
 
+                        return;
+
                     }
 
                 }
@@ -254,7 +254,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 PendingIntent pendingIntent = PendingIntent.getActivity(MakePaymentActivity.this, 0, intent, 0);
                                 Notification notification = new Notification.Builder(MakePaymentActivity.this)
                                         .setSmallIcon(R.mipmap.app_icon_round)
-                                        .setContentTitle("Zentech Hotel Booker")
+                                        .setContentTitle("Zentech Hotel Room Booker")
                                         .setContentText(" You have successfully made payment for room " + room_number)
                                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                                         .setContentIntent(pendingIntent).getNotification();
@@ -281,7 +281,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // display an error message
-                Toast.makeText(MakePaymentActivity.this, databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                Snackbar.make(nestedScrollView, databaseError.getMessage(),Snackbar.LENGTH_LONG).show();
 
             }
         });

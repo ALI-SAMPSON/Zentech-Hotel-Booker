@@ -17,10 +17,10 @@
 
     <!--<item
         android:id="@+id/menu_payment"
-        android:title="@string/payment"
+        android:title="@string/my_payments"
         android:icon="@drawable/ic_payment_white"
         android:orderInCategory="300">
-    </item> -->
+    </item>-->
 
     <!--<item
         android:id="@+id/menu_booked_rooms"

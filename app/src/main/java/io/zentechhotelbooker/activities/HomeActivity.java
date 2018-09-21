@@ -37,10 +37,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.zentechhotelbooker.CheckUserPaymentActivity;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterUser;
 import io.zentechhotelbooker.models.Rooms;
+import io.zentechhotelbooker.models.Users;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -52,7 +54,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private FirebaseAuth mAuth;
 
-    ProgressDialog progressDialog;
+    private Users users;
 
     // Creating DataReference
     DatabaseReference databaseReference;
@@ -62,6 +64,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     // Creating RecyclerViewAdapterAdmin
     RecyclerViewAdapterUser recyclerViewAdapterUser;
+
+    // Creating a ValueEvent Listener.
+    private ValueEventListener mDBListener;
 
     // Creating List of Rooms class.
     List<Rooms> roomsList;
@@ -74,12 +79,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TextView username;
     private TextView email;
 
-    // Creating Alert Dialog
-    //AlertDialog.Builder builder;
-
-    AlertDialog alertDialog;
-
+    // boolean variable to check for doubleBackPress to exit app
     private boolean doublePressBackToExitApp = false;
+
+    /* boolean variable to launch Alert Dialog
+     upon successful login into the application*/
+    private  static boolean isFirstRun = true;
 
 
     @Override
@@ -128,11 +133,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // displays the progressBsr
         progressBar.setVisibility(View.VISIBLE);
 
+        users = new Users();
+
         // Getting instance of the FirbaseAuth class
         mAuth = FirebaseAuth.getInstance();
 
-        // method call to welcomeMessage Method
-        //displayWelcomeMessage();
+        // Calling method to display a welcome message
+        displayWelcomeMessage();
 
     }
 
@@ -154,76 +161,34 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             // call to the method to load rooms from Firbase Database
             loadUploadedRoomDetails();
 
-            // method call to welcomeMessage Method
-            //displayWelcomeMessage();
         }
 
     }
 
     // Method to display a welcome  message to user when he or she logs in
-    private void displayWelcomeMessage(){
+    private void displayWelcomeMessage() {
 
+        // get current logged in user
         FirebaseUser user = mAuth.getCurrentUser();
 
-        // Creating Alert Dialog
-        //AlertDialog.Builder builder;
+        /* getting username of the currently
+         Logged In user and storing in a string */
+        String username = user.getDisplayName();
 
-        if(user != null ) {
+        // checks if user is not equal to null
+        if (user != null) {
 
-            // Checks if the API Version of the phone is 21
-            // and above and set the theme accordingly
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
-                        android.R.style.Theme_Material_Dialog_Alert);
-                builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle(" Welcome, " + user.getDisplayName());
-                builder.setMessage(getString(R.string.welcome_message));
-                builder.setCancelable(false);
-                builder.setIcon(R.drawable.app_logo);
+        if (isFirstRun) {
 
-                builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // closes the Alert dialog
-                        dialogInterface.dismiss();
-                    }
-                });
-                // Creates and displays the alert Dialog
-                alertDialog = builder.create();
-                alertDialog.show();
-            }
-            else {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle(" Welcome, " + user.getDisplayName());
-                builder.setMessage(getString(R.string.welcome_message));
-                builder.setCancelable(false);
-                builder.setIcon(R.drawable.app_logo);
-
-                builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // closes the Alert dialog
-                        dialogInterface.dismiss();
-                    }
-                });
-                // Creates and displays the alert Dialog
-                alertDialog = builder.create();
-                alertDialog.show();
-            }
-        }
-        else {
-            //AlertDialog.Builder builder;
-            // Checks if the API Version of the phone is 21
-            // and above and set the theme accordingly
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
+
+                AlertDialog.Builder builder = new
+                        AlertDialog.Builder(HomeActivity.this,
                         android.R.style.Theme_Material_Dialog_Alert);
-                builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle(" Welcome, username");
+                builder.setTitle(" Welcome, " + username);
                 builder.setMessage(getString(R.string.welcome_message));
                 builder.setCancelable(false);
-                builder.setIcon(R.drawable.app_logo);
+                builder.setIcon(R.mipmap.app_icon_round);
 
                 builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
                     @Override
@@ -233,16 +198,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
                 // Creates and displays the alert Dialog
-                alertDialog = builder.create();
-                alertDialog.show();
-            }
-            else {
+                AlertDialog alert = builder.create();
+                alert.show();
 
+            } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle(" Welcome, username");
+                builder.setTitle(" Welcome, " + username);
                 builder.setMessage(getString(R.string.welcome_message));
                 builder.setCancelable(false);
-                builder.setIcon(R.drawable.app_logo);
+                builder.setIcon(R.mipmap.app_icon_round);
 
                 builder.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
                     @Override
@@ -252,17 +216,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
                 // Creates and displays the alert Dialog
-                alertDialog = builder.create();
-                alertDialog.show();
-             }
+                AlertDialog alert = builder.create();
+                //builder.show();
+                alert.show();
+            }
         }
+    }
+        // sets it to false
+        isFirstRun = false;
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // dismisses any instance of Alert Dialog
-        mAuth.signOut();
+        // dismisses any instance of user
+        databaseReference.removeEventListener(mDBListener);
     }
 
     private void loadUserInfo(){
@@ -293,14 +262,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
-        // if there is no user logged in
-        /*else if(user == null){
-            Glide.with(HomeActivity.this)
-                    .load(R.drawable.avatar_placeholder)
-                    .into(circleImageView);
-            username.setText(getString(R.string.dummy_username));
-            email.setText(getString(R.string.dummy_email));
-        }*/
 
     }
 
@@ -314,7 +275,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
         // Adding Add Value Event Listener to databaseReference.
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -385,7 +346,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(HomeActivity.this,UpdateUserProfileActivity.class));
                 break;
             /*case R.id.menu_payment:
-                // open this activity
+                // open CheckUserPaymentActivity activity
+                startActivity(new Intent(HomeActivity.this,CheckUserPaymentActivity.class));
                 break;*/
             /*case R.id.menu_booked_rooms:
                 // open this activity
@@ -410,7 +372,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     // method to close the app and kill all processes
     private void exitApplication(){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
+                android.R.style.Theme_Material_Dialog_Alert);
         builder.setTitle("Exit Application");
         builder.setMessage("Are you sure you want to exit application?");
         builder.setCancelable(false);
@@ -451,14 +414,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
            @Override
            public void run() {
                doublePressBackToExitApp = false;
+                   // Code to exit application
+               moveTaskToBack(true);
+               android.os.Process.killProcess(android.os.Process.myPid());
+               System.exit(1);
            }
        },2000);
+
     }
 
     // method to log user out of the system
     private void logout(){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
+                android.R.style.Theme_Material_Dialog_Alert);
         builder.setTitle(getString(R.string.logout));
         builder.setMessage(getString(R.string.logout_msg));
 
@@ -467,8 +436,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(DialogInterface dialogInterface, int i) {
                 // logs current user out of the system
                 mAuth.signOut();
-                HomeActivity.this.finish();
                 startActivity(new Intent(HomeActivity.this,UserLoginActivity.class));
+                finish();
             }
         });
 
