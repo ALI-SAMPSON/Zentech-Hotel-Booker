@@ -23,8 +23,8 @@
         android:layout_gravity="center_horizontal"
         app:fontFamily="@font/nunito_extrabold"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
-        android:text="WHO WE ARE"
+        android:textSize="20sp"
+        android:text="@string/title_who_we_are"
         android:padding="10dp"
         android:layout_centerHorizontal="true"/>
 
