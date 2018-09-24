@@ -7,9 +7,14 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,6 +45,9 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
     // context variable and a list of the Rooms
      Context mCtx;
      List<Rooms> roomsList;
+
+     // private member variable
+     private onItemClickListener mListener;
 
     public RecyclerViewAdapterAdmin(Context mCtx, List<Rooms> roomsList ){
         this.mCtx = mCtx;
@@ -74,8 +82,9 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
         //Loading image into Glide using the glide library.
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
 
+
         // on Click listener for the CardView
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -141,6 +150,7 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
             }
         });
+        */
 
 
     }
@@ -151,7 +161,8 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
         return roomsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener,View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
 
         // Creating object of the classes
         RecyclerView recyclerView;
@@ -187,9 +198,74 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
             // creating an instance of a Firebase Storage
             mStorage = FirebaseStorage.getInstance();
 
+            // OnClickListeners for the ContextMenu
+            itemView.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
+
 
         }
 
+        @Override
+        public void onClick(View view) {
+            if(mListener != null){
+                int position  = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+                    mListener.onItemClick(position);
+                }
+            }
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            //contextMenu.setHeaderTitle("Select Action");
+            MenuItem deleteRooms = contextMenu.add(Menu.NONE,1,1,"Delete Room");
+            MenuItem cancel = contextMenu.add(Menu.NONE,2,2, "Cancel");
+
+
+            deleteRooms.setOnMenuItemClickListener(this);
+            cancel.setOnMenuItemClickListener(this);
+
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            if(mListener != null){
+                int position  = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+
+                    // Check menuItem Clicked and respond accordingly
+                    switch (menuItem.getItemId()){
+                        case 1:
+                            mListener.onDeleteClick(position);
+                            return true;
+                        case 2 :
+                            mListener.onCancelClick(position);
+                            return true;
+                    }
+
+                }
+            }
+            return false;
+        }
+    }
+
+    // Interface for ContextMenu
+    public interface onItemClickListener{
+
+        // Method to handle default clicks
+        void onItemClick(int position);
+
+        // Method to handle ViewRoom (dismiss ContextMenu) Clicks
+        void onCancelClick(int position);
+
+        // Method to handle deletion of item
+        void onDeleteClick(int position);
+
+    }
+
+    // OnItemClickListener implementing the interface
+    public void setOnItemClickListener(onItemClickListener listener){
+        mListener = listener;
     }
 
 }

@@ -1,6 +1,9 @@
 package io.zentechhotelbooker.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,11 +14,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +31,7 @@ import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
 import io.zentechhotelbooker.models.Rooms;
 
-public class DeleteRoomsActivity extends AppCompatActivity {
+public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerViewAdapterAdmin.onItemClickListener {
 
     // Creating DatabaseReference.
     DatabaseReference mDatabaseRef;
@@ -43,6 +50,8 @@ public class DeleteRoomsActivity extends AppCompatActivity {
 
     // Creating a progressBar
     ProgressBar progressBar;
+
+    FirebaseStorage mStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +81,8 @@ public class DeleteRoomsActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(recyclerViewAdapterAdmin);
 
+        recyclerViewAdapterAdmin.setOnItemClickListener(DeleteRoomsActivity.this);
+
         // Assign activity this to progress bar.
         progressBar = findViewById(R.id.progressBar);
 
@@ -79,6 +90,10 @@ public class DeleteRoomsActivity extends AppCompatActivity {
 
         // Calling the method to display rooms in the firebase database
         loadUploadedRoomDetails();
+
+        // creating an instance of a Firebase Storage
+        mStorage = FirebaseStorage.getInstance();
+
     }
 
     @Override
@@ -157,4 +172,81 @@ public class DeleteRoomsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // Methods implemented in the recyclerView for this activity
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this," long click on a room to view options ",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCancelClick(int position) {
+        //Toast.makeText(this," View Rooms is clicked at position : " + position,Toast.LENGTH_SHORT).show();
+    }
+
+    // Method to delete Rooms from the system
+    @Override
+    public void onDeleteClick(final int position) {
+        // getting the position of each room and its details
+        final Rooms rooms = roomsList.get(position);
+        // Create an an alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Sets a Title and a Message on it
+        builder.setTitle("Delete Room");
+        builder.setMessage("Are you sure you want to delete this room");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                final Rooms selectedRoom = roomsList.get(position);
+                final String selectedKey = selectedRoom.getKey();
+
+                // getting the reference of the room
+                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoom_image());
+                roomImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        //remove value from FirebaseDatabase
+                        mDatabaseRef.child(selectedKey).removeValue();
+
+                        // dismiss the progress bar
+                        progressBar.setVisibility(View.GONE);
+
+                        // File deleted successfully message
+                        Toast.makeText(DeleteRoomsActivity.this," Room deleted Successfully ",Toast.LENGTH_LONG).show();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // dismiss the progress bar
+                        progressBar.setVisibility(View.GONE);
+
+                        // File deleted successfully message
+                        Toast.makeText(DeleteRoomsActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss the alert Dialog
+                dialogInterface.dismiss();
+            }
+        });
+
+        // Creates a new AlertDialog and displays it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
 }

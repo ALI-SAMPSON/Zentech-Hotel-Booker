@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +31,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
     private Context mCtx;
     private List<Rooms> roomsList;
+    private onItemClickListener mListener;
 
     public RecyclerViewAdapterUser(Context mCtx, List<Rooms> roomsList){
         this.mCtx = mCtx;
@@ -64,13 +69,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         final String user_image = holder.user.getPhotoUrl().toString();
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
 
-        holder.room_cardView.setOnClickListener(new View.OnClickListener() {
+        /*holder.room_cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // calling the showAlertDialog method
-                showAlertDialog();
-
-    }
+                //showAlertDialog();
+            }
 
     // method to call the alert Dialog
     public void showAlertDialog(){
@@ -111,6 +115,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
     }
         });
+       */
 
     }
 
@@ -119,7 +124,8 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         return roomsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
 
         // Creating objects of the views
         CardView room_cardView;
@@ -143,8 +149,64 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
+
+            itemView.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
         }
 
+        @Override
+        public void onClick(View view) {
+            if(mListener != null){
+                int position = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+                    mListener.onItemClick(position);
+                }
+            }
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            contextMenu.setHeaderTitle("Select Action");
+            MenuItem selectRoom = contextMenu.add(Menu.NONE,1,1,"Select this Room");
+            MenuItem cancelRoom = contextMenu.add(Menu.NONE,2,2,"Cancel");
+
+            // setting onClickListeners for the various options
+            selectRoom.setOnMenuItemClickListener(this);
+            cancelRoom.setOnMenuItemClickListener(this);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            if(mListener != null){
+                int position = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+
+                    switch (menuItem.getItemId()){
+                        case 1:
+                            mListener.onSelectRoomClick(position);
+                            return true;
+                        case 2:
+                            mListener.onCancelClick(position);
+                    }
+
+                }
+            }
+            return false;
+        }
+    }
+
+    public interface onItemClickListener{
+
+        // Abstract method
+        void onItemClick(int position);
+
+        void onSelectRoomClick(int position);
+
+        void onCancelClick(int position);
+    }
+
+    public void setOnClickListener(onItemClickListener listener){
+        mListener = listener;
     }
 
 }
