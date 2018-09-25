@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -129,13 +130,9 @@ public class UserLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            // display a successful login message
-                            Toast.makeText(UserLoginActivity.this,getString(R.string.login_successful),Toast.LENGTH_SHORT).show();
+                            // MEthod to check if email is Verified
+                            checkIfEmailIsVerified();
 
-                            clearBothTextFields();
-                            // finishes this activity and starts a new one
-                            UserLoginActivity.this.finish();
-                            startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
                         }
                         else{
                             // display a successful login message
@@ -146,6 +143,40 @@ public class UserLoginActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    // Method to check if user's email is verified
+    private void checkIfEmailIsVerified(){
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        // variable to handle isEmailVerified
+        boolean isEmailVerified = user.isEmailVerified();
+
+        // user is verified, so you can finish this activity or send user to activity which you want.
+        if(isEmailVerified){
+
+            // display a successful login message
+            Toast.makeText(UserLoginActivity.this,getString(R.string.login_successful),Toast.LENGTH_SHORT).show();
+
+            clearBothTextFields();
+
+            startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
+
+            // finishes this activity and starts a new one
+            finish();
+
+        }
+        else{
+            // email is not verified, so just prompt the message to the user and restart this activity.
+            // NOTE: don't forget to log out the user.
+            Toast.makeText(this," Email address is not verified, please verify your email from your inbox", Toast.LENGTH_LONG).show();
+            mAuth.signOut();
+            finish();
+            // restart the activity
+            startActivity(new Intent(UserLoginActivity.this,UserLoginActivity.class));
+
+        }
     }
 
     //method called when the link to the SignUp Activity is clicked or tapped

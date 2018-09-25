@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ThrowOnExtraProperties;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -164,6 +166,8 @@ public class UserSignUpActivity extends AppCompatActivity {
     //sign Up method
     public void signUpUser(){
 
+        final FirebaseUser user = mAuth.getCurrentUser();
+
         progressBar1.setVisibility(View.VISIBLE);
 
         //get text from the EditText fields
@@ -196,18 +200,24 @@ public class UserSignUpActivity extends AppCompatActivity {
 
                                         users.setImageUrl(profileImageUrl);
 
-                                        mAuth.signOut();
+                                        // Code to sign user out of the system
+                                        // after registering
 
                                         // method call to save Username and profile Image
                                         saveUserInfo();
-                                        //progressBar1.setVisibility(View.GONE);
+
+                                        // Call to the method to send Verification Email
+                                        sendVerificationEmail();
+
                                         // displays a success message
-                                        Snackbar.make(nestedScrollView,getString(R.string.sign_up_successful),Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(nestedScrollView,getString(R.string.text_sign_up_and_verification_sent),Snackbar.LENGTH_LONG).show();
+                                        //Toast.makeText(UserSignUpActivity.this,getString(R.string.sign_up_successful),Toast.LENGTH_LONG).show();
+
                                         // clear TextFields
                                         clearTextFields();
                                     }
                                     else{
-                                        //progressBar1.setVisibility(View.GONE);
+
                                         // displays an error message
                                         Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
                                         clearTextFields();
@@ -227,6 +237,37 @@ public class UserSignUpActivity extends AppCompatActivity {
                 });
 
     }
+
+
+    // Method to send verification link to the user after sign Up
+    public void sendVerificationEmail(){
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                    // display a success message
+                    //Snackbar.make(nestedScrollView,getString(R.string.verification_link_sent),Snackbar.LENGTH_LONG).show();
+
+                    // signs user out
+                    mAuth.signOut();
+                    //finish();
+                    //startActivity(new Intent(UserSignUpActivity.this,UserLoginActivity.class));
+                }
+
+                else{
+
+                    // display an error message
+                    Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
+    }
+
 
     //link to the User login page
     public void onLoginLinkButtonClick(View view){

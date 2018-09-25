@@ -40,7 +40,7 @@ import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
 
 public class HomeActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,RecyclerViewAdapterUser.onItemClickListener{
+        NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout mDrawerLayout;
 
@@ -122,8 +122,6 @@ public class HomeActivity extends AppCompatActivity implements
         recyclerViewAdapterUser = new RecyclerViewAdapterUser(HomeActivity.this,roomsList);
 
         recyclerView.setAdapter(recyclerViewAdapterUser);
-
-        recyclerViewAdapterUser.setOnClickListener(this);
 
         // Assign id to ProgressBar
         progressBar = findViewById(R.id.progressBar);
@@ -252,11 +250,11 @@ public class HomeActivity extends AppCompatActivity implements
             }
             // checks if the username of the current user is not null
             if(user.getDisplayName() != null){
-                username.setText("Username : " + _username);
+                username.setText(" Username : " + _username);
             }
             // checks if the email of the current user is not null
             if(user.getEmail() != null){
-                email.setText("Email : " + _email);
+                email.setText(" Email : " + _email);
             }
 
         }
@@ -452,65 +450,4 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    public void onItemClick(int position) {
-
-    }
-
-    @Override
-    public void onSelectRoomClick(int position) {
-
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        // getting the position of each room and its details
-        final Rooms rooms = roomsList.get(position);
-
-        final String user_image = user.getPhotoUrl().toString();
-
-        // Creates an Alert Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,android.R.style.Theme_Material_Dialog_Alert);
-        builder.setTitle("Book this Room!");
-        builder.setMessage("Are you sure you want to book this room and make payment for it?");
-        builder.setCancelable(false);
-
-        // set the Positive button for alert dialog
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // Creates new Intent
-                Intent intent = new Intent(HomeActivity.this, MakePaymentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // passing data to the payment activity
-                intent.putExtra("room_number",rooms.getRoom_number());
-                intent.putExtra("room_price",rooms.getPrice());
-                intent.putExtra("user_image", user_image);
-                // starting the activity
-                HomeActivity.this.startActivity(intent);
-            }
-        });
-
-        // set the Positive button for alert dialog
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // dismiss the dialogue interface
-                dialogInterface.dismiss();
-            }
-        });
-
-        //
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-    }
-
-    @Override
-    public void onCancelClick(int position) {
-        //do nothing
-    }
-
-    // method to call the alert Dialog
-    public void showAlertDialog(){
-        //do nothing
-    }
 }

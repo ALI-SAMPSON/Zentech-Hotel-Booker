@@ -173,6 +173,12 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_pay">Pay</string>
     <string name="exit_app_message">Please press again to exit</string>
+    <string name="verification_link_sent">a verification link has been sent to you mail, please visit your inbox and verify</string>
+    <string name="text_sign_up_and_verification_sent">
+        Sign Up Successful!. A verification link has been
+        sent to your mail, please visit your inbox to verify
+        your email address
+    </string>
 
     <!--Developer-->
     <string name="watermark">Created by <b>iCODE labs</b> © 2018</string>

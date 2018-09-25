@@ -250,7 +250,7 @@
         <!-- Link to the Login Page -->
         <Button
             android:id="@+id/appCompatButtonLinkLogin"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
