@@ -35,14 +35,14 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/circularImageView"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_margin="20dp"
                         android:scaleType="centerCrop"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/tap_icon"
                         android:onClick="onSelectImage"
-                        app:civ_border_width="1.5dp"
+                        app:civ_border_width="1dp"
                         app:civ_border_color="@color/materialGreen">
                     </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -153,8 +153,8 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_alignParentBottom="true"
