@@ -109,7 +109,7 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <!--TextInputLayout and LinearLayout and spinner View for Voter's Gender-->
+        <!--TextInputLayout and LinearLayout and spinner View for Payment Method-->
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutGender"
             android:layout_width="match_parent"

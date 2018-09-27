@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="room_type">
+        <item>Select Room</item>
+        <item>Single</item>
+        <item>Double</item>
+        <item>Triple</item>
+        <item>Quad</item>
+        <item>King</item>
+        <item>Queen</item>
+        <item>Twin</item>
+        <item>Double-double</item>
+    </string-array>
+
+</resources>

@@ -1,196 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nestedScrollView"
-    android:background="@color/colorSilver"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.AddRoomsActivity">
-
-    <!-- material design LinearLayout -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical">
 
         <!-- Relative layout to place the progressBar at the center of the circular ImageView-->
         <RelativeLayout
             android:id="@+id/relativeLayout"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:background="@mipmap/room_bg"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/hint_upload"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:text="@string/hint_upload"
-                android:layout_marginTop="0dp"
-                android:layout_centerHorizontal="true"
-                android:drawableStart="@drawable/ic_room_download"
-                android:drawableLeft="@drawable/ic_room_download"
-                android:drawableRight="@drawable/ic_room_download"
-                android:drawableEnd="@drawable/ic_room_download"
-                app:fontFamily="@font/nunito_semibold"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/colorGray"
-                android:padding="10dp"/>
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circularImageView"
-                android:layout_below="@+id/hint_upload"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_margin="10dp"
-                android:scaleType="centerCrop"
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView_add_room"
+                android:layout_width="280dp"
                 android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/add_room_icon"
-                android:onClick="onSelectImage"
-                app:civ_border_width="1.5dp"
-                app:civ_border_color="@color/materialGreen">
-            </de.hdodenhof.circleimageview.CircleImageView>
-
-
-            <!--<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/room_image"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/circularImageView"
                 android:layout_centerHorizontal="true"
-                app:fontFamily="@font/nunito_semibold"
-                android:drawableStart="@drawable/ic_room_upload"
-                android:drawableLeft="@drawable/ic_room_upload"
-                android:drawableRight="@drawable/ic_room_upload"
-                android:drawableEnd="@drawable/ic_room_upload"
-                android:textSize="16sp"
-                android:textColor="@color/colorBlue"
-                android:padding="5dp"/>-->
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/round_corner_radius"
+                app:cardElevation="@dimen/spacing_small"
+                app:cardBackgroundColor="@color/colorSilver">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="300dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circularImageView"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_margin="20dp"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/tap_icon"
+                        android:onClick="onSelectImage"
+                        app:civ_border_width="1.5dp"
+                        app:civ_border_color="@color/materialGreen">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+
+                    <!--TextInputLayout and LinearLayout and spinner View for Payment Method-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textInputLayoutGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="0dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="0dp">
+                        <LinearLayout
+                            android:layout_width="230dp"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1">
+                            <!--TextView View  and Spinner View for Voter's Gender-->
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/textViewRoomType"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/room_type"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorBlue"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1.11"
+                                android:layout_marginStart="10dp" />
+                            <LinearLayout
+                                android:layout_marginTop="5dp"
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content"
+                                android:weightSum="1"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp">
+                                <android.support.v7.widget.AppCompatSpinner
+                                    android:id="@+id/spinnerRoomType"
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!-- TextInputLayout and AppCompatEdiText for Price -->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textInputLayoutPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="30dp"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:textColorHint="@color/colorBlue">
+                        <EditText
+                            android:id="@+id/editTextPrice"
+                            android:layout_width="230dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_horizontal"
+                            android:textColor="@color/materialGreen"
+                            android:textColorHint="@color/buttonLight"
+                            android:textSize="16sp"
+                            android:hint="@string/price"
+                            android:inputType="numberDecimal"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Add Button  -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/appCompatButtonLogin"
+                android:layout_marginTop="20dp"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_below="@+id/cardView_add_room"
+                android:text="@string/text_add"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:textStyle="normal"
+                android:textAlignment="center"
+                android:background="@drawable/nice_design_button_green"
+                android:onClick="onAddRoomButtonClick"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="4dp"
+                android:visibility="gone"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                app:rippleColor="@color/colorWhite"
+                app:fabSize="normal"
+                android:src="@drawable/ic_contact_us_white"
+                android:onClick="openContactUs">
+            </android.support.design.widget.FloatingActionButton>
 
         </RelativeLayout>
 
-        <!-- TextInputLayout and AppCompatEdiText for Username -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_below="@+id/relativeLayout"
-            android:id="@+id/textInputLayoutRoomNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:textAlignment="center"
-            android:textColorHint="@color/colorBlue">
-            <EditText
-                android:id="@+id/editTextRoomNumber"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableStart="@drawable/ic_room"
-                android:drawableLeft="@drawable/ic_room"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:textColor="@color/materialGreen"
-                android:textColorHint="@color/buttonLight"
-                android:hint="@string/room_number"
-                android:textSize="16sp"
-                android:inputType="text"
-                android:maxLines="1"/>
-        </android.support.design.widget.TextInputLayout>
 
-        <!-- TextInputLayout and AppCompatEdiText for Price -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayoutPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:textAlignment="center"
-            android:textColorHint="@color/colorBlue">
-            <EditText
-                android:id="@+id/editTextPrice"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/materialGreen"
-                android:textColorHint="@color/buttonLight"
-                android:drawableLeft="@drawable/ic_payment"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:textSize="16sp"
-                android:hint="@string/price"
-                android:inputType="numberDecimal"
-                android:maxLines="1"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <!--<de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circularImageViewAdd"
-            android:layout_below="@+id/textInputLayoutPrice"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="40dp"
-            android:scaleType="centerCrop"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_add_room"
-            android:onClick="onAddRoomButtonClick"
-            app:civ_border_width="1.5dp"
-            app:civ_border_color="@color/buttonDark">
-        </de.hdodenhof.circleimageview.CircleImageView> -->
-
-        <!-- Add Button  -->
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/appCompatButtonLogin"
-            android:layout_marginTop="40dp"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_below="@+id/textInputLayoutPrice"
-            android:text="@string/text_add"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:textAllCaps="false"
-            android:textStyle="normal"
-            android:textAlignment="center"
-            android:background="@drawable/nice_design_button_green"
-            android:onClick="onAddRoomButtonClick"/>
-
-        <!--<android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            app:rippleColor="@color/colorWhite"
-            app:fabSize="normal"
-            android:src="@drawable/ic_add_room"
-            android:onClick="onAddRoomButtonClick">
-   </android.support.design.widget.FloatingActionButton>-->
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:visibility="gone"/>
-
-    </LinearLayout>
-
-    <!--<android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        app:rippleColor="@color/buttonLight"
-        app:fabSize="normal"
-        android:src="@drawable/ic_about">
-    </android.support.design.widget.FloatingActionButton> -->
-
-</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

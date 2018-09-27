@@ -200,9 +200,6 @@ public class UserSignUpActivity extends AppCompatActivity {
 
                                         users.setImageUrl(profileImageUrl);
 
-                                        // Code to sign user out of the system
-                                        // after registering
-
                                         // method call to save Username and profile Image
                                         saveUserInfo();
 
@@ -220,7 +217,7 @@ public class UserSignUpActivity extends AppCompatActivity {
 
                                         // displays an error message
                                         Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
-                                        clearTextFields();
+
                                     }
 
                                     progressBar1.setVisibility(View.GONE);
@@ -249,19 +246,16 @@ public class UserSignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
 
-                    // display a success message
-                    //Snackbar.make(nestedScrollView,getString(R.string.verification_link_sent),Snackbar.LENGTH_LONG).show();
-
                     // signs user out
                     mAuth.signOut();
-                    //finish();
-                    //startActivity(new Intent(UserSignUpActivity.this,UserLoginActivity.class));
+
                 }
 
                 else{
 
                     // display an error message
                     Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
+
                 }
             }
         });

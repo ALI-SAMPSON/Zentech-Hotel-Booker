@@ -10,11 +10,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -38,8 +41,12 @@ import io.zentechhotelbooker.models.Rooms;
 public class AddRoomsActivity extends AppCompatActivity {
 
     //class variables
-    private EditText editTextRoomNumber;
+    //private EditText editTextRoomNumber;
     private EditText editTextPrice;
+
+    // Objects for the spinner view
+    private AppCompatSpinner spinnerRoomType;
+    private ArrayAdapter<CharSequence> arrayAdapter;
 
     private FirebaseDatabase roomdB;
     private DatabaseReference roomRef;
@@ -66,7 +73,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
-    private NestedScrollView nestedScrollView;
+    private LinearLayout linearLayout;
 
 
     @Override
@@ -83,8 +90,13 @@ public class AddRoomsActivity extends AppCompatActivity {
         }
 
         circleImageView = findViewById(R.id.circularImageView);
-        editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
+        //editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
+
+        spinnerRoomType = findViewById(R.id.spinnerRoomType);
+        arrayAdapter = ArrayAdapter.createFromResource(this,R.array.room_type,R.layout.spinner_item_add_room);
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_add_room);
+        spinnerRoomType.setAdapter(arrayAdapter);
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -94,7 +106,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
-        nestedScrollView = findViewById(R.id.nestedScrollView);
+        linearLayout = findViewById(R.id.linearLayout);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -124,7 +136,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                 circleImageView.setImageBitmap(bitmap);
             }
             catch (Exception e){
-                Snackbar.make(nestedScrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
+                Snackbar.make(linearLayout,e.getMessage(),Snackbar.LENGTH_LONG).show();
             }
 
         }
@@ -162,15 +174,17 @@ public class AddRoomsActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                             //get input from the editText fields
-                            String room_number = editTextRoomNumber.getText().toString().trim();
+                            //String room_number = editTextRoomNumber.getText().toString().trim();
                             String price = editTextPrice.getText().toString().trim();
                             String imageDownloadUrl = taskSnapshot.getDownloadUrl().toString();
+                            String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
 
                             // displays the progressBar
                             progressBar.setVisibility(View.GONE);
 
                             // setting fields to the object og the class Rooms
-                            rooms.setRoom_number(room_number);
+                            //rooms.setRoom_number(room_number);
+                            rooms.setRoom_type(room_type);
                             rooms.setPrice(price);
                             rooms.setRoom_image(imageDownloadUrl);
 
@@ -181,7 +195,10 @@ public class AddRoomsActivity extends AppCompatActivity {
                             databaseReference .child(ImageUploadID).setValue(rooms);
 
                             // Showing success message.
-                            Snackbar.make(nestedScrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(linearLayout,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
+
+                            // Method Call
+                            clearTextFields();
 
                         }
                     })
@@ -193,8 +210,8 @@ public class AddRoomsActivity extends AppCompatActivity {
                             // Hiding the progressBar.
                             progressBar.setVisibility(View.GONE);
 
-                            // Showing exception erro message.
-                            Snackbar.make(nestedScrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
+                            // Showing exception error message.
+                            Snackbar.make(linearLayout,e.getMessage(),Snackbar.LENGTH_LONG).show();
 
                         }
                     })
@@ -203,7 +220,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    // Setting progressDialog Title.
+                    // Setting progressBar visible.
                     progressBar.setVisibility(View.VISIBLE);
 
                 }
@@ -214,7 +231,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         else {
             // Showing Alert message.
-            Snackbar.make(nestedScrollView, "Please Select Image or add Room Number or Price",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(linearLayout, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
         }
 
     }
@@ -223,23 +240,13 @@ public class AddRoomsActivity extends AppCompatActivity {
     public void onAddRoomButtonClick(View view){
 
         //get input from the editText fields
-        String room_number = editTextRoomNumber.getText().toString().trim();
+       // String room_number = editTextRoomNumber.getText().toString().trim();
         String price = editTextPrice.getText().toString().trim();
 
-        if(room_number.isEmpty()){
-            editTextRoomNumber.setError(getString(R.string.error_empty_field));
-            editTextRoomNumber.requestFocus();
-            return;
-        }
-        else if(price.isEmpty()){
+        if(price.isEmpty()){
             editTextPrice.setError(getString(R.string.error_empty_field));
             editTextPrice.requestFocus();
             return;
-        }
-        else if(room_number.isEmpty() && price.isEmpty()){
-            Snackbar.make(nestedScrollView,"Both fields cannot be left blank",Snackbar.LENGTH_LONG).show();
-            return;
-            //Toast.makeText(AddRoomsActivity.this,"Both fields cannot be left blank",Toast.LENGTH_LONG).show();
         }
         else{
             // Calling method to upload selected image on Firebase storage.
@@ -253,8 +260,8 @@ public class AddRoomsActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 //send user back to the adminDashboard
-                AddRoomsActivity.this.finish();
                 startActivity(new Intent(AddRoomsActivity.this,AdminDashBoardActivity.class));
+                finish();
                 break;
             default:
                 break;
@@ -266,9 +273,17 @@ public class AddRoomsActivity extends AppCompatActivity {
     //Method for clearing all textfields after Login Button is Clicked
     public void clearTextFields() {
         //Clears all text from the EditText
-        editTextRoomNumber.setText(null);
         editTextPrice.setText(null);
 
     }
 
+    public void openContactUs(View view) {
+
+        // starts the about us activity
+        startActivity(new Intent(AddRoomsActivity.this,AboutUsAdminActivity.class));
+
+        // finishes the current activity
+        finish();
+
+    }
 }

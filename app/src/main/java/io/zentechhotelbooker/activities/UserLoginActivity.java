@@ -130,7 +130,7 @@ public class UserLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            // MEthod to check if email is Verified
+                            // Method to check if email is Verified
                             checkIfEmailIsVerified();
 
                         }
@@ -170,7 +170,7 @@ public class UserLoginActivity extends AppCompatActivity {
         else{
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
-            Toast.makeText(this," Email address is not verified, please verify your email from your inbox", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,getString(R.string.text_email_not_verified), Toast.LENGTH_LONG).show();
             mAuth.signOut();
             finish();
             // restart the activity

@@ -172,7 +172,6 @@ public class MakePaymentActivity extends AppCompatActivity {
             return;
         }
         else if(user_name.isEmpty() && mobile_number.isEmpty()){
-            //Toast.makeText(MakePaymentActivity.this,"Both username and password are required fields",Toast.LENGTH_LONG).show();
             Snackbar.make(nestedScrollView,"Both username and momo number are required fields",Snackbar.LENGTH_LONG).show();
         }
         else{

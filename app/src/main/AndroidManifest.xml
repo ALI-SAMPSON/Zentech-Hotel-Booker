@@ -27,12 +27,19 @@
             android:name=".activities.AdminDashBoardActivity"
             android:configChanges="screenLayout|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents"></activity>
+            android:theme="@style/AppTheme.AdminComponents">
+        </activity>
         <activity
             android:name=".activities.AddRoomsActivity"
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents"></activity>
+            android:theme="@style/AppTheme.AdminComponents">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.DeleteRoomsActivity"
             android:configChanges="screenSize|screenLayout"
@@ -70,11 +77,6 @@
             android:configChanges="screenSize|screenLayout"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- User side Activities -->
@@ -116,12 +118,14 @@
             android:name=".activities.AboutUsUserActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"></activity>
+            android:theme="@style/AppTheme.ActionBar">
+        </activity>
         <activity
             android:name=".activities.ContactUsUserActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"></activity>
+            android:theme="@style/AppTheme.ActionBar">
+        </activity>
         <activity android:name=".activities.CheckUserPaymentActivity"
             android:configChanges="screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"

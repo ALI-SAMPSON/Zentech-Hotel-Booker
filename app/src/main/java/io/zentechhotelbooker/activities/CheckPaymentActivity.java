@@ -135,6 +135,13 @@ public class CheckPaymentActivity extends AppCompatActivity {
                     Payments payments = paymentSnapshot.getValue(Payments.class);
 
                     paymentsList.add(payments);
+
+                    // check if all children are empty, that no payments made
+                    if(paymentSnapshot.getChildren() == null){
+                        // display a message
+                        Toast.makeText(CheckPaymentActivity.this,"No Payments made yet",Toast.LENGTH_LONG).show();
+                    }
+
                 }
 
                 recyclerViewAdapterPayment.notifyDataSetChanged();

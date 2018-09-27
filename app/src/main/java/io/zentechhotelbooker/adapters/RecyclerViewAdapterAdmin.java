@@ -1,9 +1,6 @@
 package io.zentechhotelbooker.adapters;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,32 +10,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Rooms;
-
-import static io.zentechhotelbooker.activities.AddRoomsActivity.Database_Path;
 
 public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewAdapterAdmin.ViewHolder> {
 
@@ -59,7 +43,7 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_items,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_room_items,parent,false);
 
         ViewHolder viewHolder = new ViewHolder(view);
 
@@ -76,8 +60,8 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
          * it to the their respective view objects
          * or views
          */
-        holder.room_number.setText(" Room Number : " + rooms.getRoom_number());
-        holder.room_price.setText(" Price : GHC " + rooms.getPrice());
+        holder.room_type.setText(" Room Type : " + rooms.getRoom_type());
+        holder.room_price.setText(" Price : GH¢" + rooms.getPrice());
 
         //Loading image into Glide using the glide library.
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
@@ -168,7 +152,7 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
         RecyclerView recyclerView;
         CardView cardView;
         ImageView room_image;
-        TextView room_number;
+        TextView room_type;
         TextView room_price;
 
         ProgressBar progressBar;
@@ -188,7 +172,7 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
             cardView = itemView.findViewById(R.id.room_cardView);
 
             room_image = itemView.findViewById(R.id.room_image);
-            room_number = itemView.findViewById(R.id.room_number);
+            room_type = itemView.findViewById(R.id.room_type);
             room_price = itemView.findViewById(R.id.room_price);
 
             progressBar = itemView.findViewById(R.id.progressBar);
