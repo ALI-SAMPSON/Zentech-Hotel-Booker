@@ -323,10 +323,10 @@ public class HomeActivity extends AppCompatActivity implements
         }
         switch (item.getItemId()){
             case R.id.menu_about_us:
-                // open AboutUsUserActivity activity
-                startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
                 // finishes the activity
                 finish();
+                // open AboutUsUserActivity activity
+                startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
                 // Add fadein-to-fadeout animation to the activity
                 CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
                 break;
@@ -362,7 +362,7 @@ public class HomeActivity extends AppCompatActivity implements
                 // open ContactUsUserActivity activity
                 startActivity(new Intent(HomeActivity.this,ContactUsUserActivity.class));
                 // Add fadein-to-fadeout animation to the activity
-                CustomIntent.customType(HomeActivity.this,"up-to-button");
+                CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
                 break;
             case R.id.menu_sign_out:
                 // log user out of the system
@@ -409,25 +409,23 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        // if condition
-       if(doublePressBackToExitApp){
-           super.onBackPressed();
-           return;
-       }
-       doublePressBackToExitApp = true;
-       // display a toast message to user
-       Toast.makeText(HomeActivity.this,getString(R.string.exit_app_message),Toast.LENGTH_SHORT).show();
 
-       new Handler().postDelayed(new Runnable() {
-           @Override
-           public void run() {
-               doublePressBackToExitApp = false;
-                   // Code to exit application
-               moveTaskToBack(true);
-               android.os.Process.killProcess(android.os.Process.myPid());
-               System.exit(1);
-           }
-       },2000);
+        if(doublePressBackToExitApp){
+            super.onBackPressed();
+            return;
+        }
+        doublePressBackToExitApp = true;
+        // display a toast message to user
+        Toast.makeText(HomeActivity.this,getString(R.string.exit_app_message),Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        },2000);
 
     }
 
@@ -466,4 +464,10 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        // Add fadein-to-fadeout animation to the activity
+        CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+    }
 }
