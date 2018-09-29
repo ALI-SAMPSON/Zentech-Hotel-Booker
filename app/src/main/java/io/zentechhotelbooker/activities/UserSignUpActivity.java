@@ -275,11 +275,13 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     //link to the User login page
     public void onLoginLinkButtonClick(View view){
+        // finishes the activity
+        finish();
         //starts the LoginActivity when user clicks the button
         startActivity(new Intent(UserSignUpActivity.this, UserLoginActivity.class));
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserSignUpActivity.this,"fadein-to-fadeout");
-        finish();
+
     }
 
     //clear text from the textfields
@@ -297,6 +299,8 @@ public class UserSignUpActivity extends AppCompatActivity {
         pickIntent.setType("image/*");
         pickIntent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(pickIntent,"Select Profile Picture"),REQUEST_CODE);
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(UserSignUpActivity.this,"fadein-to-fadeout");
     }
 
     @Override
