@@ -18,6 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class AdminDashBoardActivity extends AppCompatActivity {
 
@@ -71,11 +72,15 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                 // finishes this activity and open the About Us activity
                 AdminDashBoardActivity.this.finish();
                 startActivity(new Intent(AdminDashBoardActivity.this, AboutUsAdminActivity.class));
+                // Adds a fadein-fadeout animations to the activity
+                CustomIntent.customType(AdminDashBoardActivity.this, "bottom-to-up");
                 break;
             case R.id.menu_contact:
                 // finishes this activity and open the About Us activity
                 AdminDashBoardActivity.this.finish();
                 startActivity(new Intent(AdminDashBoardActivity.this, ContactUsAdminActivity.class));
+                // Adds a fadein-fadeout animations to the activity
+                CustomIntent.customType(AdminDashBoardActivity.this, "up-to-bottom");
                 break;
                 default:
                     break;
@@ -91,6 +96,9 @@ public class AdminDashBoardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //start the add rooms activity
                 startActivity(new Intent(AdminDashBoardActivity.this,AddRoomsActivity.class));
+                // Adds a fadein-fadeout animations to the activity
+                CustomIntent.customType(AdminDashBoardActivity.this, "fadein-to-fadeout");
+
             }
         });
 
@@ -100,6 +108,8 @@ public class AdminDashBoardActivity extends AppCompatActivity {
             public void onClick(View view){
                 //starts the delete rooms activity
                 startActivity(new Intent(AdminDashBoardActivity.this,DeleteRoomsActivity.class));
+                // Adds a bottom-to-up animations to the activity
+                CustomIntent.customType(AdminDashBoardActivity.this,"bottom-to-up");
             }
         });
 
@@ -109,6 +119,8 @@ public class AdminDashBoardActivity extends AppCompatActivity {
             public void onClick(View view){
                 //starts the edit credentials activity activity
                 startActivity(new Intent(AdminDashBoardActivity.this,ResetAdminPasswordActivity.class));
+                // Add a fadein-to-fadeout animation to the activity
+                CustomIntent.customType(AdminDashBoardActivity.this,"fadein-to-fadeout");
             }
         });
 
@@ -117,6 +129,8 @@ public class AdminDashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 startActivity(new Intent(AdminDashBoardActivity.this, CheckPaymentActivity.class));
+                // Add a up-to-bottom animation to the activity
+                CustomIntent.customType(AdminDashBoardActivity.this,"up-to-bottom");
             }
         });
 
@@ -134,9 +148,15 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // signs admin out  of the system
                         mAuth.signOut();
-                        AdminDashBoardActivity.this.finish();
+
+                        // finish activity
+                        finish();
+
                         //logs Admin out of the system and navigate him back to the Login Page
                         startActivity(new Intent(AdminDashBoardActivity.this, AdminLoginActivity.class));
+
+                        // Add a fadein-to-fadeout animation to the activity
+                        CustomIntent.customType(AdminDashBoardActivity.this,"fadein-to-fadeout");
                     }
                 });
 
@@ -156,4 +176,10 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(AdminDashBoardActivity.this, "fadein-to-fadeout");
+    }
 }

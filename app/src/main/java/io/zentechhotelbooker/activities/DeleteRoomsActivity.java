@@ -30,6 +30,7 @@ import java.util.List;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
 import io.zentechhotelbooker.models.Rooms;
+import maes.tech.intentanim.CustomIntent;
 
 public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerViewAdapterAdmin.onItemClickListener {
 
@@ -164,8 +165,16 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home:
+
                 //goes back to the AdminDashboard
                 startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
+
+                // Adds a bottom-to-up animations to the activity
+                CustomIntent.customType(DeleteRoomsActivity.this,"fadein-to-fadeout");
+
+                // finishes the activity
+                finish();
+
                 break;
             default:
                 break;
@@ -249,4 +258,10 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a bottom-to-up animations to the activity
+        CustomIntent.customType(DeleteRoomsActivity.this,"bottom-to-up");
+    }
 }

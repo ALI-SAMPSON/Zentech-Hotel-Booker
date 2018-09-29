@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class ResetAdminPasswordActivity extends AppCompatActivity {
 
@@ -95,7 +96,18 @@ public class ResetAdminPasswordActivity extends AppCompatActivity {
     // method to go back
     public void goBackButton(View view) {
         // finishes the current activity and open the resetPassword Activity
-        ResetAdminPasswordActivity.this.finish();
+        finish();
+        // starts activity
         startActivity(new Intent(ResetAdminPasswordActivity.this, AdminDashBoardActivity.class));
+
+        // Add a rotateout-to-rotatein animation to the activity
+        CustomIntent.customType(ResetAdminPasswordActivity.this,"fadein-to-fadeout");
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Add a rotateout-to-rotatein animation to the activity
+        CustomIntent.customType(ResetAdminPasswordActivity.this,"fadein-to-fadeout");
     }
 }

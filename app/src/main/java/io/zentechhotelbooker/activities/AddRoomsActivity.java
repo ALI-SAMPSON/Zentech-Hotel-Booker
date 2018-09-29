@@ -37,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Rooms;
+import maes.tech.intentanim.CustomIntent;
 
 public class AddRoomsActivity extends AppCompatActivity {
 
@@ -120,6 +121,8 @@ public class AddRoomsActivity extends AppCompatActivity {
         imageIntent.setType("image/*");
         imageIntent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(imageIntent,"Please Select Image"),image_request_code);
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
     }
 
     @Override
@@ -251,7 +254,6 @@ public class AddRoomsActivity extends AppCompatActivity {
         else{
             // Calling method to upload selected image on Firebase storage.
             UploadImageFileToFirebaseStorage();
-            //addRoom();
         }
     }
 
@@ -261,6 +263,9 @@ public class AddRoomsActivity extends AppCompatActivity {
             case android.R.id.home:
                 //send user back to the adminDashboard
                 startActivity(new Intent(AddRoomsActivity.this,AdminDashBoardActivity.class));
+                // Adds a fadein-fadeout animations to the activity
+                CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
+                // finish activity
                 finish();
                 break;
             default:
@@ -282,8 +287,18 @@ public class AddRoomsActivity extends AppCompatActivity {
         // starts the about us activity
         startActivity(new Intent(AddRoomsActivity.this,AboutUsAdminActivity.class));
 
+        // Adds an up-to-bottom animation to the activity
+        CustomIntent.customType(AddRoomsActivity.this,"up-to-bottom");
+
         // finishes the current activity
         finish();
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
     }
 }

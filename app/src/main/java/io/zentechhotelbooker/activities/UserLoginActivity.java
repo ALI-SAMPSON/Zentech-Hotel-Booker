@@ -33,6 +33,7 @@ import java.util.TimerTask;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Users;
+import maes.tech.intentanim.CustomIntent;
 
 public class UserLoginActivity extends AppCompatActivity {
 
@@ -74,6 +75,8 @@ public class UserLoginActivity extends AppCompatActivity {
         if(mAuth.getCurrentUser() != null){
             UserLoginActivity.this.finish();
             startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
+            // Adds a fadein-fadeout animations to the activity
+            CustomIntent.customType(UserLoginActivity.this,"fadein-to-fadeout");
         }
 
 }
@@ -106,9 +109,9 @@ public class UserLoginActivity extends AppCompatActivity {
             editTextPassword.requestFocus();
             return;
         }
-        /*else if(email.isEmpty() && password.isEmpty()){
+        else if(email.isEmpty() && password.isEmpty()){
             Toast.makeText(UserLoginActivity.this,"Email and Password are required fields",Toast.LENGTH_LONG).show();
-        }*/
+        }
         else{
             // call to the LoginUser method
             loginUser();
@@ -162,6 +165,8 @@ public class UserLoginActivity extends AppCompatActivity {
             clearBothTextFields();
 
             startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
+            // Adds a fadein-fadeout animations to the activity
+            CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
             // finishes this activity and starts a new one
             finish();
@@ -175,6 +180,8 @@ public class UserLoginActivity extends AppCompatActivity {
             finish();
             // restart the activity
             startActivity(new Intent(UserLoginActivity.this,UserLoginActivity.class));
+            // Adds a fadein-fadeout animations to the activity
+            CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
         }
     }
@@ -182,18 +189,22 @@ public class UserLoginActivity extends AppCompatActivity {
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onSignUpLinkClick(View View){
         // finishes the current activity and open the Sign Up Activity
-        UserLoginActivity.this.finish();
+        finish();
         //starts the Sign Up Activity
         startActivity(new Intent(UserLoginActivity.this,UserSignUpActivity.class));
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
     }
 
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onAdminLoginButtonLinkClick(View view){
         // finishes the current activity and open the AdminLoginActivity Activity
-        UserLoginActivity.this.finish();
+        finish();
         //starts the AdminLoginActivity
         startActivity(new Intent(UserLoginActivity.this,AdminLoginActivity.class));
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
     }
 
     // clears the Username and Password EditText
@@ -209,7 +220,16 @@ public class UserLoginActivity extends AppCompatActivity {
     // method to reset user password
     public void onButtonResetPassword(View view) {
         // finishes the current activity and open the resetPassword Activity
-        UserLoginActivity.this.finish();
+        finish();
         startActivity(new Intent(UserLoginActivity.this, ResetUserPasswordActivity.class));
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
     }
 }

@@ -38,6 +38,7 @@ import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterUser;
 import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
+import maes.tech.intentanim.CustomIntent;
 
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener{
@@ -145,7 +146,10 @@ public class HomeActivity extends AppCompatActivity implements
         if(mAuth.getCurrentUser() == null){
             // starts the login activity currently logged in user is null(no logged in user)
             startActivity(new Intent(this,UserLoginActivity.class));
+            // finishes activity
             finish();
+            // Adds a fadein-fadeout animations to the activity
+            CustomIntent.customType(HomeActivity.this, "fadein-to-fadeout");
         }
         else if(mAuth.getCurrentUser() != null){
             // starts the home activity if user is already logged in
@@ -217,7 +221,7 @@ public class HomeActivity extends AppCompatActivity implements
                 alert.show();
             }
         }
-    }
+     }
         // sets it to false
         isFirstRun = false;
 
@@ -321,6 +325,10 @@ public class HomeActivity extends AppCompatActivity implements
             case R.id.menu_about_us:
                 // open AboutUsUserActivity activity
                 startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
+                // finishes the activity
+                finish();
+                // Add fadein-to-fadeout animation to the activity
+                CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
                 break;
             case R.id.menu_exit:
                 // call to the method to exit the application
@@ -340,6 +348,8 @@ public class HomeActivity extends AppCompatActivity implements
             case R.id.menu_profile:
                 // open UpdateUserProfileActivity activity
                 startActivity(new Intent(HomeActivity.this,UpdateUserProfileActivity.class));
+                // Add fadein-to-fadeout animation to the activity
+                CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
                 break;
             /*case R.id.menu_payment:
                 // open CheckUserPaymentActivity activity
@@ -351,6 +361,8 @@ public class HomeActivity extends AppCompatActivity implements
             case R.id.menu_contact:
                 // open ContactUsUserActivity activity
                 startActivity(new Intent(HomeActivity.this,ContactUsUserActivity.class));
+                // Add fadein-to-fadeout animation to the activity
+                CustomIntent.customType(HomeActivity.this,"up-to-button");
                 break;
             case R.id.menu_sign_out:
                 // log user out of the system
@@ -432,7 +444,11 @@ public class HomeActivity extends AppCompatActivity implements
             public void onClick(DialogInterface dialogInterface, int i) {
                 // logs current user out of the system
                 mAuth.signOut();
+                // starts the UserLoginActivity
                 startActivity(new Intent(HomeActivity.this,UserLoginActivity.class));
+                // Add fadein-to-fadeout animation to the activity
+                CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+                // finishes the activity
                 finish();
             }
         });

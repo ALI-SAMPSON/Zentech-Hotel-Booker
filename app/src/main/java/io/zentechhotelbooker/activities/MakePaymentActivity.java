@@ -38,6 +38,7 @@ import java.util.TimerTask;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Payments;
 import io.zentechhotelbooker.models.Users;
+import maes.tech.intentanim.CustomIntent;
 
 public class MakePaymentActivity extends AppCompatActivity {
 
@@ -51,7 +52,7 @@ public class MakePaymentActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     private EditText editTextUsername;
-    private EditText editTextRoomNumber;
+    private EditText editTextRoomType;
     private EditText editTextPrice;
     private EditText editTextMomoNumber;
 
@@ -79,7 +80,7 @@ public class MakePaymentActivity extends AppCompatActivity {
         }
 
         //getting reference to the editText fields
-        editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
+        editTextRoomType = findViewById(R.id.editTextRoomType);
         editTextPrice = findViewById(R.id.editTextPrice);
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextMomoNumber = findViewById(R.id.editTextMomoNumber);
@@ -102,9 +103,7 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         paymentRef = FirebaseDatabase.getInstance().getReference().child("Payments");
 
-
-        //editTextUsername.setText(getIntent().getStringExtra("user_name"));
-        editTextRoomNumber.setText(getIntent().getStringExtra("room_number"));
+        editTextRoomType.setText(getIntent().getStringExtra("room_type"));
         editTextPrice.setText(getIntent().getStringExtra("room_price"));
 
         final String user_image = getIntent().getStringExtra("user_image");
@@ -117,7 +116,7 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         //error strings
         final String error_username = "Username field cannot be edited";
-        final String error_room_number = "Room number field cannot be edited";
+        final String error_room_type = "Room Type field cannot be edited";
         final String error_room_price = "Price field cannot be edited";
 
         editTextUsername.setOnClickListener(new View.OnClickListener() {
@@ -127,10 +126,10 @@ public class MakePaymentActivity extends AppCompatActivity {
             }
         });
 
-        editTextRoomNumber.setOnClickListener(new View.OnClickListener() {
+        editTextRoomType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editTextRoomNumber.setError(error_room_number);
+                editTextRoomType.setError(error_room_type);
             }
         });
 
@@ -148,7 +147,9 @@ public class MakePaymentActivity extends AppCompatActivity {
         super.onStart();
         // checks if there the is user logged in
         if(mAuth.getCurrentUser() != null){
+            // gets an instance of the user
             FirebaseUser user = mAuth.getCurrentUser();
+            // sets the username text to the user's name
             editTextUsername.setText(user.getDisplayName());
         }
     }
@@ -157,22 +158,18 @@ public class MakePaymentActivity extends AppCompatActivity {
     public void onMakePaymentButtonClick(View view){
 
         //gets input from the fields
-        String user_name = editTextUsername.getText().toString().trim();
         String mobile_number = editTextMomoNumber.getText().toString().trim();
 
         //checks if the fields are not empty
-        if(user_name.isEmpty()){
-            editTextUsername.setError(getString(R.string.error_empty_username));
-            editTextUsername.requestFocus();
-            return;
-        }
-        else if(mobile_number.isEmpty()){
+        if(mobile_number.isEmpty()){
             editTextMomoNumber.setError(getString(R.string.error_empty_momo_number));
             editTextMomoNumber.requestFocus();
             return;
         }
-        else if(user_name.isEmpty() && mobile_number.isEmpty()){
-            Snackbar.make(nestedScrollView,"Both username and momo number are required fields",Snackbar.LENGTH_LONG).show();
+        else if(mobile_number.length() != 10 ){
+            editTextMomoNumber.setError(getString(R.string.phone_invalid));
+            return;
+            //Snackbar.make(nestedScrollView,"Momo number are required fields",Snackbar.LENGTH_LONG).show();
         }
         else{
             //method call
@@ -191,28 +188,29 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         //gets text from the user
         final String user_name = editTextUsername.getText().toString().trim();
-        final String room_number = editTextRoomNumber.getText().toString().trim();
+        final String room_type = editTextRoomType.getText().toString().trim();
         String price = editTextPrice.getText().toString().trim();
         String mobile_number = editTextMomoNumber.getText().toString().trim();
         String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
 
         //sets the values from the EditText Fields to those in the database
+        payments.setUid(mAuth.getCurrentUser().getUid());
         payments.setUser_name(user_name);
-        payments.setRoom_number(room_number);
+        payments.setRoom_Type(room_type);
         payments.setPrice(price);
         payments.setMobile_number(mobile_number);
         payments.setPayment_method(payment_method);
         payments.setImageUrl(user_image);
 
         //code to the check if room has been booked already
-        paymentRef.child(room_number).addValueEventListener(new ValueEventListener() {
+        paymentRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //gets a snapshot of the data in the database
                 if (dataSnapshot.exists()) {
                     final Payments payments = dataSnapshot.getValue(Payments.class);
                     //checks if room has been booked
-                    if (room_number.equals(payments.getRoom_number())) {
+                    if (mAuth.getCurrentUser().getUid().equals(payments.getUid())) {
 
                         // hides the progressBar
                         progressBar.setVisibility(View.GONE);
@@ -229,7 +227,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                 //else if room is not booked then allow payment to be made
                 else{
                     //sets the values to the database by using the username as the child
-                    paymentRef.child(room_number).setValue(payments).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    paymentRef.child(mAuth.getCurrentUser().getUid()).setValue(payments).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -254,7 +252,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 Notification notification = new Notification.Builder(MakePaymentActivity.this)
                                         .setSmallIcon(R.mipmap.app_icon_round)
                                         .setContentTitle("Zentech Hotel Room Booker")
-                                        .setContentText(" You have successfully made payment for room " + room_number)
+                                        .setContentText(user_name + ", you have successfully made payment for a " + room_type + " room ")
                                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                                         .setContentIntent(pendingIntent).getNotification();
                                 notification.flags = Notification.FLAG_AUTO_CANCEL;
@@ -292,7 +290,10 @@ public class MakePaymentActivity extends AppCompatActivity {
         switch(item.getItemId()){
             //sends user to the Home Activity
             case android.R.id.home:
+                // starts the home activity
                 startActivity(new Intent(MakePaymentActivity.this,HomeActivity.class));
+                // Add a custom animation to the activity
+                CustomIntent.customType(MakePaymentActivity.this,"bottom-to-up");
                 break;
             default:
                 break;
@@ -303,8 +304,14 @@ public class MakePaymentActivity extends AppCompatActivity {
     // method to clear TextViews when user clicks on
     public void onClearButtonClick(View view) {
         // clears the fields
-        //editTextUsername.setText(null);
         editTextMomoNumber.setText(null);
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Add a custom animation to the activity
+        CustomIntent.customType(MakePaymentActivity.this,"bottom-to-up");
     }
 }

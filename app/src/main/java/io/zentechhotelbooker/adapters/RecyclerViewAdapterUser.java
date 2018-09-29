@@ -22,6 +22,7 @@ import java.util.List;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.activities.MakePaymentActivity;
 import io.zentechhotelbooker.models.Rooms;
+import maes.tech.intentanim.CustomIntent;
 
 public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAdapterUser.ViewHolder> {
 
@@ -59,8 +60,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         holder.room_price.setText(" Price : GHC " + roomsList.get(position).getPrice());
         Glide.with(context).load(roomsList.get(position).getRoom_image()).into(holder.room_image);
         */
-        holder.room_number.setText(" Room Number : " + rooms.getRoom_number());
-        holder.room_price.setText(" Price : GHC " + rooms.getPrice());
+        holder.room_type.setText(" Room Type : " + rooms.getRoom_type());
+        holder.room_price.setText(" Price : GH¢ " + rooms.getPrice());
+
         final String user_image = holder.user.getPhotoUrl().toString();
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
 
@@ -87,11 +89,13 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 Intent intent = new Intent(mCtx, MakePaymentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 // passing data to the payment activity
-                intent.putExtra("room_number",rooms.getRoom_number());
+                intent.putExtra("room_type",rooms.getRoom_type());
                 intent.putExtra("room_price",rooms.getPrice());
                 intent.putExtra("user_image", user_image);
                 // starting the activity
                 mCtx.startActivity(intent);
+                // Add a custom animation to the activity
+                CustomIntent.customType(mCtx,"right-to-left");
             }
         });
 
@@ -125,7 +129,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         CardView room_cardView;
 
         ImageView room_image;
-        TextView room_number;
+        TextView room_type;
         TextView room_price;
 
         FirebaseAuth mAuth;
@@ -138,7 +142,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             // Assigning ids to the objects
             room_cardView = itemView.findViewById(R.id.room_cardView);
             room_image = itemView.findViewById(R.id.room_image);
-            room_number = itemView.findViewById(R.id.room_number);
+            room_type = itemView.findViewById(R.id.room_type);
             room_price = itemView.findViewById(R.id.room_price);
 
             mAuth = FirebaseAuth.getInstance();

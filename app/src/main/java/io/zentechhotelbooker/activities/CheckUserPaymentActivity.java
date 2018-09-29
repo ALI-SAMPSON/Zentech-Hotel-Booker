@@ -196,7 +196,7 @@ public class CheckUserPaymentActivity extends AppCompatActivity {
 
                 //setting the Text of the various textViews to the payment info in the database;
                 username.setText(" Username : " + payments.getUser_name());
-                room_number.setText(" Room Number : " + payments.getRoom_number());
+                room_number.setText(" Room Type : " + payments.getRoom_type());
                 price.setText(" Price : GHC " + payments.getPrice());
                 mobile_number.setText(" Mobile Money Number : " + payments.getMobile_number());
                 Glide.with(CheckUserPaymentActivity.this).load(payments.getImageUrl()).into(circleImageView);

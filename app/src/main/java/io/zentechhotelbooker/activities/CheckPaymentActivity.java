@@ -35,6 +35,7 @@ import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterPayment;
 import io.zentechhotelbooker.models.Payments;
 import io.zentechhotelbooker.models.Users;
+import maes.tech.intentanim.CustomIntent;
 
 public class CheckPaymentActivity extends AppCompatActivity {
 
@@ -192,7 +193,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
                 //setting the Text of the various textViews to the payment info in the database;
                 username.setText(" Username : " + payments.getUser_name());
-                room_number.setText(" Room Number : " + payments.getRoom_number());
+                room_number.setText(" Room Type : " + payments.getRoom_type());
                 price.setText(" Price : GHC " + payments.getPrice());
                 mobile_number.setText(" Mobile Money Number : " + payments.getMobile_number());
                 Glide.with(CheckPaymentActivity.this).load(payments.getImageUrl()).into(circleImageView);
@@ -228,10 +229,21 @@ public class CheckPaymentActivity extends AppCompatActivity {
             //navigates to the AdminDashboard activity
             case android.R.id.home:
                 startActivity(new Intent(CheckPaymentActivity.this,AdminDashBoardActivity.class));
+                // Add a up-to-bottom animation to the activity
+                CustomIntent.customType(CheckPaymentActivity.this,"fadein-to-fadeout");
+                // finishes the activity
+                finish();
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Add a up-to-bottom animation to the activity
+        CustomIntent.customType(CheckPaymentActivity.this,"up-to-bottom");
     }
 }

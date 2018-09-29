@@ -60,13 +60,13 @@
             android:textAlignment="center"
             android:textColorHint="@color/colorWhite">
             <EditText
-                android:id="@+id/editTextRoomNumber"
+                android:id="@+id/editTextRoomType"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="0dp"
-                android:drawableLeft="@drawable/ic_add_room_black_24dp"
-                android:hint="@string/room_number"
+                android:drawableLeft="@drawable/ic_room_type"
+                android:hint="@string/room_type"
                 android:drawablePadding="@dimen/spacing_normal"
                 app:fontFamily="@font/nunito_semibold"
                 android:textColor="@color/colorWhite"

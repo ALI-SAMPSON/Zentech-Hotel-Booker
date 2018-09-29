@@ -33,6 +33,7 @@ import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class UpdateUserProfileActivity extends AppCompatActivity {
 
@@ -108,6 +109,8 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
         pickImage.setType("image/*");
         pickImage.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(pickImage,"Select Profile Picture"),REQUEST_CODE);
+        // Add a custom animation to the activity
+        CustomIntent.customType(UpdateUserProfileActivity.this,"fadein-to-fadeout");
     }
 
 
@@ -236,10 +239,20 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home:
+                // finishes the HomeActivity
+                finish();
                 // starts the HomeActivity
-                UpdateUserProfileActivity.this.finish();
                 startActivity(new Intent(UpdateUserProfileActivity.this,HomeActivity.class));
+                // Add a custom animation to the activity
+                CustomIntent.customType(UpdateUserProfileActivity.this,"fadein-to-fadeout");
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Add a custom animation to the activity
+        CustomIntent.customType(UpdateUserProfileActivity.this,"fadein-to-fadeout");
     }
 }

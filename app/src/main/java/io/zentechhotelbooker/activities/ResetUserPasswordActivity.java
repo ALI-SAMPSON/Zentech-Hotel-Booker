@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class ResetUserPasswordActivity extends AppCompatActivity {
 
@@ -102,7 +103,10 @@ public class ResetUserPasswordActivity extends AppCompatActivity {
     // method to go back
     public void goBackButton(View view) {
         // finishes the current activity and open the resetPassword Activity
-        ResetUserPasswordActivity.this.finish();
+        finish();
+        // starts the activity
         startActivity(new Intent(ResetUserPasswordActivity.this, UserLoginActivity.class));
+        // Add fadein-to-fadeout animation to the activity
+        CustomIntent.customType(ResetUserPasswordActivity.this,"fadein-to-fadeout");
     }
 }

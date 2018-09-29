@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class ContactUsAdminActivity extends AppCompatActivity {
 
@@ -33,5 +34,12 @@ public class ContactUsAdminActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(ContactUsAdminActivity.this, "up-to-bottom");
     }
 }

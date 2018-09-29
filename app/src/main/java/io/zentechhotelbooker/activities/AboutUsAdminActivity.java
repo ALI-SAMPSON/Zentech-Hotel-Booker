@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class AboutUsAdminActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -87,5 +88,12 @@ public class AboutUsAdminActivity extends AppCompatActivity implements View.OnCl
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(AboutUsAdminActivity.this, "bottom-to-up");
     }
 }

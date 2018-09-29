@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Admin;
 import io.zentechhotelbooker.models.Users;
+import maes.tech.intentanim.CustomIntent;
 
 public class AdminLoginActivity extends AppCompatActivity {
 
@@ -156,8 +157,11 @@ public class AdminLoginActivity extends AppCompatActivity {
                             //Snackbar.make(nestedScrollView,getString(R.string.login_successful),Snackbar.LENGTH_LONG).show();
 
                             // finishes this activity and start the AdminDashBoard Activity
-                            AdminLoginActivity.this.finish();
+                            finish();
+
                             startActivity(new Intent(AdminLoginActivity.this,AdminDashBoardActivity.class));
+                            // Adds a fadein-fadeout animations to the activity
+                            CustomIntent.customType(AdminLoginActivity.this, "fadein-to-fadeout");
                         }
                         else{
                             // clear PasswordTextfields
@@ -193,8 +197,18 @@ public class AdminLoginActivity extends AppCompatActivity {
     //link to the user login interface
     public void onLoginButtonLinkClick(View view){
         //starts the Users LoginActivity
-        AdminLoginActivity.this.finish();
+        finish();
+
         startActivity(new Intent(AdminLoginActivity.this,UserLoginActivity.class));
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(AdminLoginActivity.this, "fadein-to-fadeout");
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(AdminLoginActivity.this, "fadein-to-fadeout");
+    }
 }

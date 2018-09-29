@@ -41,6 +41,7 @@ import java.util.TimerTask;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.models.Users;
+import maes.tech.intentanim.CustomIntent;
 
 public class UserSignUpActivity extends AppCompatActivity {
 
@@ -111,6 +112,13 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(UserSignUpActivity.this,"fadein-to-fadeout");
+    }
 
     //method for the sign Up button
     public void onSignUpButtonClick(View view){
@@ -207,8 +215,10 @@ public class UserSignUpActivity extends AppCompatActivity {
                                         sendVerificationEmail();
 
                                         // displays a success message
-                                        Snackbar.make(nestedScrollView,getString(R.string.text_sign_up_and_verification_sent),Snackbar.LENGTH_LONG).show();
-                                        //Toast.makeText(UserSignUpActivity.this,getString(R.string.sign_up_successful),Toast.LENGTH_LONG).show();
+                                        Snackbar.make(nestedScrollView,
+                                                getString(R.string.text_sign_up_and_verification_sent),
+                                                Snackbar.LENGTH_LONG).show();
+
 
                                         // clear TextFields
                                         clearTextFields();
@@ -267,6 +277,8 @@ public class UserSignUpActivity extends AppCompatActivity {
     public void onLoginLinkButtonClick(View view){
         //starts the LoginActivity when user clicks the button
         startActivity(new Intent(UserSignUpActivity.this, UserLoginActivity.class));
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(UserSignUpActivity.this,"fadein-to-fadeout");
         finish();
     }
 
