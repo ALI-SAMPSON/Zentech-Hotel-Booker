@@ -117,7 +117,7 @@
             android:textSize="16sp"
             android:textAllCaps="false"
             android:textStyle="normal"
-            android:textAlignment="textEnd"
+            android:textAlignment="center"
             android:background="@null"
             android:onClick="onButtonResetPassword"
             tools:ignore="RtlCompat" />
