@@ -16,7 +16,10 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -77,6 +80,11 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     private CircleImageView circleImageView;
 
+    // Animation class
+    private Animation shake;
+
+    private Button btn_login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // removes status bar and to make background fit Screen
@@ -97,6 +105,7 @@ public class UserSignUpActivity extends AppCompatActivity {
         arrayAdapterGender.setDropDownViewResource(R.layout.spinner_dropdown_item);
         appCompatSpinnerGender.setAdapter(arrayAdapterGender);
 
+        btn_login = findViewById(R.id.buttonSignUp);
 
         nestedScrollView = findViewById(R.id.nestedScrollView);
 
@@ -109,6 +118,8 @@ public class UserSignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         users = new Users();
+
+        shake = AnimationUtils.loadAnimation(this,R.anim.anim_shake);
 
     }
 
@@ -133,36 +144,50 @@ public class UserSignUpActivity extends AppCompatActivity {
          ** empty before user logs in and of accurate number of characters
          */
         if(email.isEmpty()){
+            editTextEmail.clearAnimation();
+            editTextEmail.startAnimation(shake);
             editTextEmail.setError(getString(R.string.error_empty_email));
             editTextEmail.requestFocus();
             return;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            editTextEmail.clearAnimation();
+            editTextEmail.startAnimation(shake);
             editTextEmail.setError(getString(R.string.email_invalid));
             editTextEmail.requestFocus();
             return;
         }
         else if(username.isEmpty()){
+            editTextUsername.clearAnimation();
+            editTextUsername.startAnimation(shake);
             editTextUsername.setError(getString(R.string.error_empty_username));
             editTextUsername.requestFocus();
             return;
         }
         else if(password.isEmpty()){
+            editTextPassword.clearAnimation();
+            editTextPassword.startAnimation(shake);
             editTextPassword.setError(getString(R.string.error_empty_password));
             editTextPassword.requestFocus();
             return;
         }
         else if(password.length() < 6 ){
+            editTextPassword.clearAnimation();
+            editTextPassword.startAnimation(shake);
             editTextPassword.setError(getString(R.string.error_password_length));
             editTextPassword.requestFocus();
             return;
         }
         else if(mobile_number.isEmpty()){
+            editTextMobileNumber.clearAnimation();
+            editTextMobileNumber.startAnimation(shake);
             editTextMobileNumber.setError(getString(R.string.error_empty_phone));
             editTextMobileNumber.requestFocus();
             return;
         }
         else if(mobile_number.length() < 10){
+            editTextMobileNumber.clearAnimation();
+            editTextMobileNumber.startAnimation(shake);
             editTextMobileNumber.setError(getString(R.string.phone_invalid));
             editTextMobileNumber.requestFocus();
             return;
@@ -173,6 +198,10 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     //sign Up method
     public void signUpUser(){
+
+        // add animation to the button
+        //btn_login.clearAnimation();
+        //btn_login.startAnimation(shake);
 
         final FirebaseUser user = mAuth.getCurrentUser();
 

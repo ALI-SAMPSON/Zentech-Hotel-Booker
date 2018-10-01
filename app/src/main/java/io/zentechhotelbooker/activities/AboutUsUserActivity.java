@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class AboutUsUserActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -81,11 +82,23 @@ public class AboutUsUserActivity extends AppCompatActivity implements View.OnCli
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
+                // finishes and starts the next activity
+                finish();
                 startActivity(new Intent(AboutUsUserActivity.this,HomeActivity.class));
+                // Adds a custom animation to the intent
+                CustomIntent.customType(AboutUsUserActivity.this,"fadein-to-fadeout");
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Adds a custom animation to the intent
+        CustomIntent.customType(AboutUsUserActivity.this,"fadein-to-fadeout");
     }
 }

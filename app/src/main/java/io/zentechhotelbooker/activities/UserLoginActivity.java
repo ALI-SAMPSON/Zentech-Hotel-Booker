@@ -14,6 +14,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -45,8 +47,13 @@ public class UserLoginActivity extends AppCompatActivity {
     //Email and password EditText
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private AppCompatButton btn_login;
 
     private NestedScrollView nestedScrollView;
+
+    private Animation shake;
+
+    private Animation scale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +67,17 @@ public class UserLoginActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
 
+        btn_login = findViewById(R.id.appCompatButtonLogin);
+
         nestedScrollView = findViewById(R.id.nestedScrollView);
 
         progressBar = findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance();
+
+        shake = AnimationUtils.loadAnimation(this,R.anim.anim_shake);
+
+        scale = AnimationUtils.loadAnimation(this,R.anim.anim_scale_imageview);
 
     }
 
@@ -90,21 +103,29 @@ public class UserLoginActivity extends AppCompatActivity {
 
         //checks if text entered are valid and textfields are not empty
         if(email.isEmpty()){
+            // adds animation to the editText
+            editTextEmail.startAnimation(shake);
             editTextEmail.setError(getString(R.string.error_empty_email));
             // editTextEmail.requestFocus();
             return;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            // adds animation to the editText
+            editTextEmail.startAnimation(shake);
             editTextEmail.setError(getString(R.string.email_invalid));
             // editTextEmail.requestFocus();
             return;
         }
         else if(password.isEmpty()){
+            // adds animation to the editText
+            editTextPassword.startAnimation(shake);
             editTextPassword.setError(getString(R.string.error_empty_password));
             editTextPassword.requestFocus();
             return;
         }
         else if(password.length() < 6){
+            // adds animation to the editText
+            editTextPassword.startAnimation(shake);
             editTextPassword.setError(getString(R.string.error_password_length));
             editTextPassword.requestFocus();
             return;
@@ -121,6 +142,9 @@ public class UserLoginActivity extends AppCompatActivity {
 
     //method for logging user into the system
     public void loginUser(){
+
+        // add animation to the button
+        //btn_login.startAnimation(scale);
 
         //get text from the EditText fields
         String email = editTextEmail.getText().toString().trim();

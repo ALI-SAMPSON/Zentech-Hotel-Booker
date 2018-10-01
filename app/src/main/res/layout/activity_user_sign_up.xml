@@ -222,7 +222,7 @@
 
         <!-- Sign Up Button -->
         <Button
-            android:id="@+id/appCompatButtonSignUp"
+            android:id="@+id/buttonSignUp"
             android:layout_marginTop="20dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -233,10 +233,11 @@
             android:text="@string/signUp"
             android:textColor="@color/colorWhite"
             app:fontFamily="@font/nunito_semibold"
+            android:textAllCaps="false"
             android:textSize="18sp"
             android:textStyle="normal"
             android:textAlignment="center"
-            android:background="@drawable/round_corner_button_signup"
+            android:background="@drawable/nice_design_button_pink"
             android:onClick="onSignUpButtonClick"/>
 
         <ProgressBar
@@ -249,7 +250,7 @@
 
         <!-- Link to the Login Page -->
         <Button
-            android:id="@+id/appCompatButtonLinkLogin"
+            android:id="@+id/buttonLinkLogin"
             android:layout_marginTop="10dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"

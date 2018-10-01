@@ -10,6 +10,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -42,6 +44,8 @@ public class AdminLoginActivity extends AppCompatActivity {
 
     private DatabaseReference adminRef;
 
+    private Animation shake;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // removes status bar and to make background fit Screen
@@ -64,6 +68,8 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         adminRef = FirebaseDatabase.getInstance().getReference("Admin");
 
+        shake = AnimationUtils.loadAnimation(this,R.anim.anim_shake);
+
     }
 
 
@@ -76,21 +82,33 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         //checks if text entered are valid and textfields are not empty
         if(email.isEmpty()){
+            // adds animation to the editText
+            editTextEmail.clearAnimation();
+            editTextEmail.startAnimation(shake);
             editTextEmail.setError(getString(R.string.error_empty_email));
             //editTextEmail.requestFocus();
             return;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            // adds animation to the editText
+            editTextEmail.clearAnimation();
+            editTextEmail.startAnimation(shake);
             editTextEmail.setError(getString(R.string.email_invalid));
             //editTextEmail.requestFocus();
             return;
         }
         else if(password.isEmpty()){
+            // adds animation to the editText
+            editTextPassword.clearAnimation();
+            editTextPassword.startAnimation(shake);
             editTextPassword.setError(getString(R.string.error_empty_password));
             editTextPassword.requestFocus();
             return;
         }
         else if(password.length() < 6){
+            // adds animation to the editText
+            editTextPassword.clearAnimation();
+            editTextPassword.startAnimation(shake);
             editTextPassword.setError(getString(R.string.error_password_length));
             editTextPassword.requestFocus();
             return;
