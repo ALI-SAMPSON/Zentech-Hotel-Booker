@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +31,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // firebase instance
         mAuth = FirebaseAuth.getInstance();
+
+        // method call
+        runAnimation();
 
     }
 
@@ -59,8 +65,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     // this prevents the app from going back to the splash screen
                     finish();
                     // Creates and start the intent of the next activity
-                    Intent intent = new Intent(SplashScreenActivity.this, UserLoginActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
                     // Adds a fadein-fadeout animations to the activity
                     CustomIntent.customType(SplashScreenActivity.this,"fadein-to-fadeout");
 
@@ -74,4 +79,24 @@ public class SplashScreenActivity extends AppCompatActivity {
         //starts the timer
         timer.start();
     }
+
+    // method to set animation on textViews
+    private  void runAnimation(){
+
+        Animation slide_in_left = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_scale_in);
+        slide_in_left.reset();
+        // setting animation for the App Title on the splashScreen
+        TextView hotel_title = findViewById(R.id.hotel_title);
+        hotel_title.clearAnimation();
+        hotel_title.startAnimation(slide_in_left);
+
+        Animation slide_out_right = AnimationUtils.loadAnimation(SplashScreenActivity.this, android.R.anim.slide_out_right);
+        slide_in_left.reset();
+        // setting animation for the App watermark on the splashScreen
+        TextView trademark = findViewById(R.id.trade_mark);
+        trademark.clearAnimation();
+        trademark.startAnimation(slide_out_right);
+
+    }
+
 }
