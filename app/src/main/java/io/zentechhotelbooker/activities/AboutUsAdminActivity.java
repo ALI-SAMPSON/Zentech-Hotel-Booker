@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import io.zentechhotelbooker.R;
 import maes.tech.intentanim.CustomIntent;
 
@@ -65,13 +68,31 @@ public class AboutUsAdminActivity extends AppCompatActivity implements View.OnCl
 
         switch (view.getId()){
             case R.id.cardViewOverview:
+
+                // Adds animation to the cardView
+                YoYo.with(Techniques.ZoomInUp).playOn(overview_CardView);
+
+                // sets text to this TextView
                 sub_Text.setText(text_overview);
+
                 break;
             case R.id.cardViewMission:
+
+                // Adds animation to the cardView
+                YoYo.with(Techniques.ZoomInDown).playOn(mission_CardView);
+
+                // sets text to this TextView
                 sub_Text.setText(text_mission);
+
                 break;
             case R.id.cardViewVision:
+
+                // Adds animation to the cardView
+                YoYo.with(Techniques.ZoomInUp).playOn(vision_CardView);
+
+                // sets text to this TextView
                 sub_Text.setText(text_vision);
+
                 break;
             default:
                 break;
@@ -82,7 +103,16 @@ public class AboutUsAdminActivity extends AppCompatActivity implements View.OnCl
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
+
+                // finishes this activity
+                finish();
+
+                // Opens the About Us activity
                 startActivity(new Intent(AboutUsAdminActivity.this,AdminDashBoardActivity.class));
+
+                // Adds a bottom-to-up animations to the activity
+                CustomIntent.customType(AboutUsAdminActivity.this, "bottom-to-up");
+
                 break;
             default:
                 break;

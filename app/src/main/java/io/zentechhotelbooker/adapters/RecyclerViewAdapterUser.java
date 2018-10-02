@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -60,10 +62,17 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         holder.room_price.setText(" Price : GHC " + roomsList.get(position).getPrice());
         Glide.with(context).load(roomsList.get(position).getRoom_image()).into(holder.room_image);
         */
+
+        // animation to cardView
+        YoYo.with(Techniques.RubberBand).playOn(holder.room_cardView);
+
+        // sets text to the TextViews
         holder.room_type.setText(" Room Type : " + rooms.getRoom_type());
         holder.room_price.setText(" Price : GH¢ " + rooms.getPrice());
 
         final String user_image = holder.user.getPhotoUrl().toString();
+
+        // using Glide Library to load images
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
 
         holder.room_cardView.setOnClickListener(new View.OnClickListener() {

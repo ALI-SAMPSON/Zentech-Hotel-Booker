@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
 
 import io.zentechhotelbooker.R;
@@ -83,19 +85,13 @@ public class SplashScreenActivity extends AppCompatActivity {
     // method to set animation on textViews
     private  void runAnimation(){
 
-        Animation slide_in_left = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_scale_in);
-        slide_in_left.reset();
         // setting animation for the App Title on the splashScreen
         TextView hotel_title = findViewById(R.id.hotel_title);
-        hotel_title.clearAnimation();
-        hotel_title.startAnimation(slide_in_left);
+        YoYo.with(Techniques.ZoomInDown).playOn(hotel_title);
 
-        Animation slide_out_right = AnimationUtils.loadAnimation(SplashScreenActivity.this, android.R.anim.slide_out_right);
-        slide_in_left.reset();
         // setting animation for the App watermark on the splashScreen
         TextView trademark = findViewById(R.id.trade_mark);
-        trademark.clearAnimation();
-        trademark.startAnimation(slide_out_right);
+        YoYo.with(Techniques.ZoomInUp).playOn(trademark);
 
     }
 

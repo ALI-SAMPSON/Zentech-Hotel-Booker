@@ -31,11 +31,12 @@
             android:clickable="true"
             android:focusable="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:elevation="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -48,6 +49,7 @@
                     android:src="@drawable/ic_add_room_black_24dp" />
 
                 <TextView
+                    android:id="@+id/add_rooms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -65,6 +67,7 @@
                     android:padding="10dp" />
 
                 <TextView
+                    android:id="@+id/add_rooms_sub_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -87,15 +90,15 @@
             android:layout_alignParentBottom="false"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginEnd="0dp"
             android:layout_marginTop="0dp"
             android:elevation="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -108,6 +111,7 @@
                     android:src="@drawable/ic_delete_room_black_24dp" />
 
                 <TextView
+                    android:id="@+id/delete_rooms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -125,6 +129,7 @@
                     android:padding="10dp" />
 
                 <TextView
+                    android:id="@+id/delete_rooms_sub_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -145,16 +150,16 @@
             android:layout_below="@+id/cardView1"
             android:layout_alignParentBottom="false"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:background="@color/colorSilver"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginStart="0dp"
             android:layout_marginTop="10dp"
             android:elevation="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -167,6 +172,7 @@
                     android:src="@drawable/ic_lock_black_24dp" />
 
                 <TextView
+                    android:id="@+id/reset_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -184,6 +190,7 @@
                     android:padding="10dp" />
 
                 <TextView
+                    android:id="@+id/reset_pass_sub_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -204,16 +211,16 @@
             android:layout_below="@+id/cardView1"
             android:layout_alignParentBottom="false"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:background="@color/colorSilver"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginEnd="0dp"
             android:layout_marginTop="10dp"
             android:elevation="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -226,6 +233,7 @@
                     android:src="@drawable/ic_payment_black_24dp" />
 
                 <TextView
+                    android:id="@+id/check_payments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -243,6 +251,7 @@
                     android:padding="10dp" />
 
                 <TextView
+                    android:id="@+id/check_payments_sub_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -284,6 +293,7 @@
                     android:src="@drawable/ic_logout_app_black_24dp" />
 
                 <TextView
+                    android:id="@+id/logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -301,6 +311,7 @@
                     android:padding="10dp" />
 
                 <TextView
+                    android:id="@+id/logout_sub_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"

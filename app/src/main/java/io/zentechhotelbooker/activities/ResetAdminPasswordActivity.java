@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,11 +53,21 @@ public class ResetAdminPasswordActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString().trim();
 
         if(email.isEmpty()){
+
+            // Add a custom shake animation to the view
+            YoYo.with(Techniques.Shake).playOn(editTextEmail);
+
+            // set error on the editText
             editTextEmail.setError(getString(R.string.error_empty_email));
             editTextEmail.requestFocus();
             return;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+
+            // Add a custom shake animation to the view
+            YoYo.with(Techniques.Shake).playOn(editTextEmail);
+
+            // set error on the editText
             editTextEmail.setError(getString(R.string.email_registered));
             editTextEmail.requestFocus();
             return;
@@ -97,10 +109,11 @@ public class ResetAdminPasswordActivity extends AppCompatActivity {
     public void goBackButton(View view) {
         // finishes the current activity and open the resetPassword Activity
         finish();
+
         // starts activity
         startActivity(new Intent(ResetAdminPasswordActivity.this, AdminDashBoardActivity.class));
 
-        // Add a rotateout-to-rotatein animation to the activity
+        // Add a fadein-to-fadeout animation to the activity
         CustomIntent.customType(ResetAdminPasswordActivity.this,"fadein-to-fadeout");
     }
 

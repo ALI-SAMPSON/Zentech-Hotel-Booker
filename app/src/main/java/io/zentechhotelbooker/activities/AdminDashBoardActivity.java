@@ -10,7 +10,12 @@ import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
@@ -29,9 +34,24 @@ public class AdminDashBoardActivity extends AppCompatActivity {
     private CardView cardView4;
     private CardView cardView5;
 
+    // View Objects of the textViews in the cardViews
+    private TextView textView_add_rooms;
+    private TextView textView_add_rooms_sub_text;
+    private TextView textView_delete_rooms;
+    private TextView textView_delete_rooms_sub_text;
+    private TextView textView_reset_password;
+    private TextView textView_reset_password_sub_text;
+    private TextView textView_check_payments;
+    private TextView textView_check_payments_sub_text;
+    private TextView textView_logout;
+    private TextView textView_logout_sub_text;
+
     private ProgressDialog progressDialog;
 
     private FirebaseAuth mAuth;
+
+    // Animation class
+    private Animation bounce_card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +72,28 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         cardView5 = findViewById(R.id.cardView5);
 
         //instantiation of the class
+        textView_add_rooms = findViewById(R.id.add_rooms);
+        textView_add_rooms_sub_text = findViewById(R.id.add_rooms_sub_text);
+        textView_delete_rooms = findViewById(R.id.delete_rooms);
+        textView_delete_rooms_sub_text = findViewById(R.id.delete_rooms_sub_text);
+        textView_reset_password = findViewById(R.id.reset_password);
+        textView_reset_password_sub_text =  findViewById(R.id.reset_pass_sub_text);
+        textView_check_payments = findViewById(R.id.check_payments);
+        textView_check_payments_sub_text = findViewById(R.id.check_payments_sub_text);
+        textView_logout =  findViewById(R.id.logout);
+        textView_logout_sub_text = findViewById(R.id.logout_sub_text);
+
 
         mAuth = FirebaseAuth.getInstance();
 
+        // instantiation of the class
+        bounce_card = AnimationUtils.loadAnimation(this,R.anim.anim_fade_in);
+
+        // method call
+        animateTexView();
+
         cardViewMethods();//call to the method
+
 
     }
 
@@ -70,7 +108,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.menu_about:
                 // finishes this activity and open the About Us activity
-                AdminDashBoardActivity.this.finish();
+                finish();
                 startActivity(new Intent(AdminDashBoardActivity.this, AboutUsAdminActivity.class));
                 // Adds a fadein-fadeout animations to the activity
                 CustomIntent.customType(AdminDashBoardActivity.this, "bottom-to-up");
@@ -88,14 +126,43 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // method to animate the textViews when activity is launched
+    private void animateTexView(){
+        // animation to add to TextView in the ADD ROOMS CardView
+        YoYo.with(Techniques.FadeInUp).playOn(textView_add_rooms);
+        YoYo.with(Techniques.SlideInLeft).playOn(textView_add_rooms_sub_text);
+
+        // animation to add to TextView in the DELETE ROOMS CardView
+        YoYo.with(Techniques.ZoomInDown).playOn(textView_delete_rooms);
+        YoYo.with(Techniques.SlideInRight).playOn(textView_delete_rooms_sub_text);
+
+        // animation to add to TextView in the RESET PASSWORD CardView
+        YoYo.with(Techniques.ZoomInUp).playOn(textView_reset_password);
+        YoYo.with(Techniques.SlideInLeft).playOn(textView_reset_password_sub_text);
+
+        // animation to add to TextView in the CHECK PAYMENTS CardView
+        YoYo.with(Techniques.ZoomIn).playOn(textView_check_payments);
+        YoYo.with(Techniques.SlideInRight).playOn(textView_check_payments_sub_text);
+
+        // animation to add to TextView in the CHECK PAYMENTS CardView
+        YoYo.with(Techniques.RotateIn).playOn(textView_logout);
+        YoYo.with(Techniques.SlideInUp).playOn(textView_logout_sub_text);
+    }
+
     //method to handle the onClickListeners of the CardViews
     public void cardViewMethods(){
+
         //onclickListener for carView1
         cardView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // add a flip animation to the view using the YoYo Library
+                YoYo.with(Techniques.FlipOutX).playOn(cardView1);
+
                 //start the add rooms activity
                 startActivity(new Intent(AdminDashBoardActivity.this,AddRoomsActivity.class));
+
                 // Adds a fadein-fadeout animations to the activity
                 CustomIntent.customType(AdminDashBoardActivity.this, "fadein-to-fadeout");
 
@@ -106,8 +173,13 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         cardView2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+
+                // add a flip animation to the view using the Yoyo  Library
+                YoYo.with(Techniques.FlipOutX).playOn(cardView2);
+
                 //starts the delete rooms activity
                 startActivity(new Intent(AdminDashBoardActivity.this,DeleteRoomsActivity.class));
+
                 // Adds a bottom-to-up animations to the activity
                 CustomIntent.customType(AdminDashBoardActivity.this,"bottom-to-up");
             }
@@ -117,8 +189,13 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         cardView3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //starts the edit credentials activity activity
+
+                // add a flip animation to the view using the YoYo Library
+                YoYo.with(Techniques.FlipInX).playOn(cardView3);
+
+                //starts the reset password activity
                 startActivity(new Intent(AdminDashBoardActivity.this,ResetAdminPasswordActivity.class));
+
                 // Add a fadein-to-fadeout animation to the activity
                 CustomIntent.customType(AdminDashBoardActivity.this,"fadein-to-fadeout");
             }
@@ -128,7 +205,13 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         cardView4.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+
+                // add a flip animation to the view using the YoYo Library
+                YoYo.with(Techniques.FlipInX).playOn(cardView4);
+
+                //starts the check payment activity
                 startActivity(new Intent(AdminDashBoardActivity.this, CheckPaymentActivity.class));
+
                 // Add a up-to-bottom animation to the activity
                 CustomIntent.customType(AdminDashBoardActivity.this,"up-to-bottom");
             }
@@ -138,6 +221,10 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         cardView5.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+
+                // add a flip animation to the view using the Yoyo
+                YoYo.with(Techniques.StandUp).playOn(cardView5);
+
                 //alert Dialog to alert the admin of logging out of the system
                 AlertDialog.Builder builder = new AlertDialog.Builder(AdminDashBoardActivity.this);
                 builder.setTitle("Signout");

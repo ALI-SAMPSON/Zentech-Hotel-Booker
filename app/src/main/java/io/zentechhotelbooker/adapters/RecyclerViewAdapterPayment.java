@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.List;
 
@@ -42,6 +44,9 @@ public class RecyclerViewAdapterPayment extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         final Payments payments = paymentsList.get(position);
+
+        // animation to cardView
+        YoYo.with(Techniques.BounceInUp).playOn(holder.cardView);
 
         holder.user_name.setText(" Username : " + payments.getUser_name());
         holder.room_number.setText(" Room Type : "  + payments.getRoom_type());

@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,6 +78,8 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
 
+    private LinearLayout spinnerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +113,18 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         linearLayout = findViewById(R.id.linearLayout);
 
+        spinnerLayout = findViewById(R.id.spinnerLayout);
+
         mAuth = FirebaseAuth.getInstance();
 
     }
 
-    //method to handle the select image from gallery when user click the image Button
+    //method to handle the select image from gallery when user click the circularImageView
     public void onSelectImage(View view){
+
+        // add animation to the view
+        YoYo.with(Techniques.RubberBand).playOn(circleImageView);
+
         // Creating intent.
         Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Setting intent type as image to select image from phone storage.
@@ -247,12 +257,21 @@ public class AddRoomsActivity extends AppCompatActivity {
         String price = editTextPrice.getText().toString().trim();
 
         if(price.isEmpty()){
+
+            YoYo.with(Techniques.FadeInDown).playOn(circleImageView);
+
+            YoYo.with(Techniques.Shake).playOn(spinnerLayout);
+
+            // Adds an animation to shake the view
+            YoYo.with(Techniques.Shake).playOn(editTextPrice);
+
+            // sets error message on view
             editTextPrice.setError(getString(R.string.error_empty_field));
             editTextPrice.requestFocus();
             return;
         }
         else{
-            // Calling method to upload selected image on Firebase storage.
+            // Calling method to upload selected image onto Firebase storage.
             UploadImageFileToFirebaseStorage();
         }
     }

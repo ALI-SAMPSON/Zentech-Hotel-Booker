@@ -15,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -60,82 +62,15 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
          * it to the their respective view objects
          * or views
          */
+        // animation to cardView
+        YoYo.with(Techniques.BounceInDown).playOn(holder.cardView);
+
+        // getting the input from the database and setting them to the textViews
         holder.room_type.setText(" Room Type : " + rooms.getRoom_type());
         holder.room_price.setText(" Price : GH¢" + rooms.getPrice());
 
         //Loading image into Glide using the glide library.
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
-
-
-        // on Click listener for the CardView
-        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Create an an alert builder
-                AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
-                // Sets a Title and a Message on it
-                builder.setTitle("Delete Room");
-                builder.setMessage("Are you sure you want to delete this room");
-                builder.setCancelable(false);
-
-                // sets the positive button on the Alert Dialog
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        // displays the progress bar
-                        holder.progressBar.setVisibility(View.VISIBLE);
-
-                        final Rooms selectedRoom = roomsList.get(position);
-                        final String selectedKey = selectedRoom.getKey();
-
-                        // Creating StorageReference and initializing storage reference
-                        StorageReference imageRef = holder.mStorage.getReferenceFromUrl(selectedRoom.getRoom_image());
-                        // code to delete imageRef of the image
-                        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                //remove value from FirebaseDatabase
-                                holder.mDatabaseRef.child(selectedKey).removeValue();
-
-                                // dismiss the progress bar
-                                holder.progressBar.setVisibility(View.GONE);
-
-                                 // File deleted successfully message
-                                Toast.makeText(mCtx," Room deleted Successfully ",Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // dismiss the progress bar
-                                holder.progressBar.setVisibility(View.GONE);
-
-                                // File deleted successfully message
-                                Toast.makeText(mCtx,e.getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                    }
-                });
-
-                // sets the positive button on the Alert Dialog
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // dismiss the Alert Dialog
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                // Creates a new AlertDialog and displays it
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-
-            }
-        });
-        */
-
 
     }
 

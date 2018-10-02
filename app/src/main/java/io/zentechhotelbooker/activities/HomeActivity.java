@@ -144,14 +144,18 @@ public class HomeActivity extends AppCompatActivity implements
     protected void onStart(){
         super.onStart();
         if(mAuth.getCurrentUser() == null){
-            // starts the login activity currently logged in user is null(no logged in user)
-            startActivity(new Intent(this,UserLoginActivity.class));
+
             // finishes activity
             finish();
+
+            // starts the login activity currently logged in user is null(no logged in user)
+            startActivity(new Intent(this,UserLoginActivity.class));
+
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(HomeActivity.this, "fadein-to-fadeout");
         }
         else if(mAuth.getCurrentUser() != null){
+
             // starts the home activity if user is already logged in
             progressBar.setVisibility(View.GONE);
 
