@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -97,6 +99,32 @@ public class HomeActivity extends AppCompatActivity implements
         circleImageView = navigationView.getHeaderView(0).findViewById(R.id.circularImageView);
         username = navigationView.getHeaderView(0).findViewById(R.id.username);
         email = navigationView.getHeaderView(0).findViewById(R.id.email);
+
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Adding a custom animation
+                YoYo.with(Techniques.RubberBand).playOn(circleImageView);
+            }
+        });
+
+        // Adding an OnClickListener
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Adding a custom animation
+                YoYo.with(Techniques.Shake).playOn(username);
+            }
+        });
+
+        // Adding an OnClickListener
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Adding a custom animation
+                YoYo.with(Techniques.Shake).playOn(email);
+            }
+        });
 
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
@@ -290,6 +318,7 @@ public class HomeActivity extends AppCompatActivity implements
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
 
                     Rooms rooms = postSnapshot.getValue(Rooms.class);
+
                     // adding the rooms to the List of rooms
                     roomsList.add(rooms);
                 }
