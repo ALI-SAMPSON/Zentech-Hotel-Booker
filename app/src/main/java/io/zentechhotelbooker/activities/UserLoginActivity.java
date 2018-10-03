@@ -1,5 +1,6 @@
 package io.zentechhotelbooker.activities;
 
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,13 +15,20 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -47,6 +55,7 @@ public class UserLoginActivity extends AppCompatActivity {
     //Email and password EditText
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private TextView welcome_msg;
     private AppCompatButton btn_login;
 
     private NestedScrollView nestedScrollView;
@@ -73,7 +82,16 @@ public class UserLoginActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
+        // setting animation on the progressBar
+        /*ObjectAnimator animator = ObjectAnimator.ofInt(progressBar,"progress",0,100);
+        animator.setDuration(1000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();*/
+
         mAuth = FirebaseAuth.getInstance();
+
+        // method call
+        animTextView();
 
         shake = AnimationUtils.loadAnimation(this,R.anim.anim_shake);
 
@@ -93,6 +111,17 @@ public class UserLoginActivity extends AppCompatActivity {
         }
 
 }
+
+    // method to add animation to TextView
+    private void animTextView(){
+
+        TextView welcome_msg = findViewById(R.id.welcome);
+
+        // add animation to the TextView using YoYo Library
+        YoYo.with(Techniques.FlipInX).playOn(welcome_msg);
+
+
+    }
 
     //method to be called when the login Button is clicked or tapped
     public void onLoginButtonClick(View view){

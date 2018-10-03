@@ -87,11 +87,14 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // setting animation for the App Title on the splashScreen
         TextView hotel_title = findViewById(R.id.hotel_title);
-        YoYo.with(Techniques.ZoomInDown).playOn(hotel_title);
+        YoYo.with(Techniques.BounceIn).playOn(hotel_title);
+
+        TextView theme  = findViewById(R.id.theme);
+        YoYo.with(Techniques.BounceInUp).playOn(theme);
 
         // setting animation for the App watermark on the splashScreen
         TextView trademark = findViewById(R.id.trade_mark);
-        YoYo.with(Techniques.ZoomInUp).playOn(trademark);
+        YoYo.with(Techniques.BounceInLeft).playOn(trademark);
 
     }
 
