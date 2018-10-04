@@ -3,7 +3,6 @@ package io.zentechhotelbooker.activities;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -12,17 +11,13 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,10 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.bulksms.Sender;
 import io.zentechhotelbooker.models.Payments;
 import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
@@ -139,6 +132,23 @@ public class MakePaymentActivity extends AppCompatActivity {
                 editTextPrice.setError(error_room_price);
             }
         });
+
+    }
+
+
+    // Method to call the Sender class to
+    private void callSMSClass(){
+
+        try {
+            // Below exmaple is for sending Plain text
+            Sender s = new Sender("smpp2.routesms.com", 8080, "tester909", "test11", "test for unicode", "1", "0", "919869533416", "Update");
+            s.submitMessage();
+            // Below example is for sending unicode
+            Sender s1 = new Sender("smpp2.routesms.com", 8080, "xxxx", "xxx", convertToUnicode("test for unicode").toString(),
+                    "1", "2", "919869533416", "Update");
+            s1.submitMessage();
+        }
+        catch (Exception ex) {}
 
     }
 
