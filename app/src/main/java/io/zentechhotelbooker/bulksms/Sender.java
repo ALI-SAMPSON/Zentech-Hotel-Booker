@@ -1,23 +1,38 @@
 package io.zentechhotelbooker.bulksms;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-    /**
+
+import io.zentechhotelbooker.models.Payments;
+
+/**
      * An Example Class to use for the submission using HTTP API You can perform
      * your own validations into this Class For username, password,destination,
      * source, dlr, type, message, server and port
      **/
     public class Sender {
+
+        // object of the Payment
+        private Payments payments;
+
+        // Object of the DatabaseReference to the payment classs
+        private DatabaseReference paymentRef;
+
         // Username that is to be used for submission
-        String username;
+        private String username;
         // password that is to be used along with username
-        String password;
+
+        private String password;
         // Message content that is to be transmitted
-        String message;
+
+        private String message;
         /**
          * What type of the message that is to be sent
          * <ul>
@@ -27,7 +42,7 @@ import java.net.URLEncoder;
          * <li>6:means Unicode Flash (Message content should be in Hex)</li>
          * </ul>
          */
-        String type;
+        private String type;
         /**
          * Require DLR or not
          * <ul>
@@ -35,20 +50,24 @@ import java.net.URLEncoder;
          * <li>1:means DLR is Required</li>
          * </ul>
          */
-        String dlr;
+        private String dlr;
         /**
          * Destinations to which message is to be sent For submitting more than one
 
          * destination at once destinations should be comma separated Like
          * 91999000123,91999000124
          */
-        String destination;
+        private String destination;
+
         // Sender Id to be used for submitting the message
-        String source;
+        private String source;
+
         // To what server you need to connect to for submission
-        String server;
+        private String server = "rslr.connectbind.com";
+
         // Port that is to be used like 8080 or 8000
-        int port;
+        private int port = 2345;
+
         public Sender(String server, int port, String username, String password, String message, String dlr, String type, String destination, String source) {
             this.username = username;
             this.password = password;
@@ -59,6 +78,12 @@ import java.net.URLEncoder;
             this.source = source;
             this.server = server;
             this.port = port;
+
+            // instantiation of the class
+            payments = new Payments();
+
+            paymentRef = FirebaseDatabase.getInstance().getReference().child("Payments");
+
         }
         public void submitMessage(){
 
@@ -100,7 +125,8 @@ import java.net.URLEncoder;
  * Now dataFromUrl variable contains the Response received from the
  * server so we can parse the response and process it accordingly.
  */
-                dataStreamFromUrl.close(); System.out.println("Response: " + dataFromUrl);
+                dataStreamFromUrl.close();
+                System.out.println("Response: " + dataFromUrl);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

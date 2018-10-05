@@ -136,22 +136,6 @@ public class MakePaymentActivity extends AppCompatActivity {
     }
 
 
-    // Method to call the Sender class to
-    private void callSMSClass(){
-
-        try {
-            // Below exmaple is for sending Plain text
-            Sender s = new Sender("smpp2.routesms.com", 8080, "tester909", "test11", "test for unicode", "1", "0", "919869533416", "Update");
-            s.submitMessage();
-            // Below example is for sending unicode
-            Sender s1 = new Sender("smpp2.routesms.com", 8080, "xxxx", "xxx", convertToUnicode("test for unicode").toString(),
-                    "1", "2", "919869533416", "Update");
-            s1.submitMessage();
-        }
-        catch (Exception ex) {}
-
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -248,9 +232,6 @@ public class MakePaymentActivity extends AppCompatActivity {
 
                                 payments.setImageUrl(_imageUrl);
 
-                                // hides the progressBar
-                                //progressBar.setVisibility(View.GONE);
-
                                 //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
                                 Snackbar.make(nestedScrollView, " Payment made successfully ", Snackbar.LENGTH_LONG).show();
 
@@ -268,10 +249,12 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 notification.flags = Notification.FLAG_AUTO_CANCEL;
                                 NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
                                 nm.notify(0, notification);
+
+                                // Method call to the class to send SMS
+                                sendSMS();
+
                             }
                             else {
-                                // hides the progressBar
-                                //progressBar.setVisibility(View.GONE);
 
                                 //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
                                 Snackbar.make(nestedScrollView, task.getException().toString(), Snackbar.LENGTH_LONG).show();
@@ -292,6 +275,41 @@ public class MakePaymentActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    // Method to call the Sender class to
+    private void sendSMS(){
+
+        try {
+
+            //gets text or input from the user
+            final String user_name = editTextUsername.getText().toString().trim();
+            final String room_type = editTextRoomType.getText().toString().trim();
+            String price = editTextPrice.getText().toString().trim();
+            String mobile_number = editTextMomoNumber.getText().toString().trim();
+            String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
+
+            // variable to hold the message to send
+            String message = user_name + ", you have successfully made payment for a " + room_type + " room ";
+
+            // Below example is for sending Plain text
+            Sender s = new Sender("rslr.connectbind.com",
+                    2345, "tester909",
+                    "test11",
+                    message,
+                    "1",
+                    "0",
+                    mobile_number,
+                    getString(R.string.app_name));
+
+            // submitmessage using an object of the Sender Class
+            s.submitMessage();
+
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
     }
 
@@ -323,5 +341,20 @@ public class MakePaymentActivity extends AppCompatActivity {
         super.finish();
         // Add a custom animation to the activity
         CustomIntent.customType(MakePaymentActivity.this,"bottom-to-up");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // finish the activity
+        finish();
+
+        // starts the activity
+        startActivity(new Intent(MakePaymentActivity.this,HomeActivity.class));
+
+        // Add a custom animation to the activity
+        CustomIntent.customType(MakePaymentActivity.this,"fadein-to-fadeout");
+
     }
 }
