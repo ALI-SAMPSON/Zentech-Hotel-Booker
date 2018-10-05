@@ -63,10 +63,10 @@ import io.zentechhotelbooker.models.Payments;
         private String source;
 
         // To what server you need to connect to for submission
-        private String server = "rslr.connectbind.com";
+        private String server;
 
         // Port that is to be used like 8080 or 8000
-        private int port = 2345;
+        private int port;
 
         public Sender(String server, int port, String username, String password, String message, String dlr, String type, String destination, String source) {
             this.username = username;
