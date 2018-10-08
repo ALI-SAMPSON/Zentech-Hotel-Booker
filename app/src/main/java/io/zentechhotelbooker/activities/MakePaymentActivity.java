@@ -295,8 +295,8 @@ public class MakePaymentActivity extends AppCompatActivity {
 
             // Below example is for sending Plain text
             Sender s = new Sender("rslr.connectbind.com",
-                    2345, "tester909",
-                    "test11",
+                    2345, "marketin",
+                    "Zent-marketing",
                     message,
                     "1",
                     "0",
