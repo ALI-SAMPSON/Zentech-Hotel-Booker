@@ -103,9 +103,14 @@ public class UserLoginActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         // checks if user is currently logged in
+        // then opens the home activity straight forward
         if(mAuth.getCurrentUser() != null){
-            UserLoginActivity.this.finish();
+            // finishes this activity
+            finish();
+
+            //starts the Home Activity
             startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
+
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(UserLoginActivity.this,"fadein-to-fadeout");
         }
@@ -218,22 +223,31 @@ public class UserLoginActivity extends AppCompatActivity {
 
             clearBothTextFields();
 
+            // finishes this activity
+            finish();
+
+            // and starts a new activity
             startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
+
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
-            // finishes this activity and starts a new one
-            finish();
 
         }
         else{
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
             Toast.makeText(this,getString(R.string.text_email_not_verified), Toast.LENGTH_LONG).show();
+
+            // sign out currently logged in user
             mAuth.signOut();
+
+            // finishes the activity
             finish();
+
             // restart the activity
             startActivity(new Intent(UserLoginActivity.this,UserLoginActivity.class));
+
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
@@ -242,10 +256,13 @@ public class UserLoginActivity extends AppCompatActivity {
 
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onSignUpLinkClick(View View){
+
         // finishes the current activity and open the Sign Up Activity
         finish();
+
         //starts the Sign Up Activity
         startActivity(new Intent(UserLoginActivity.this,UserSignUpActivity.class));
+
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
@@ -253,10 +270,13 @@ public class UserLoginActivity extends AppCompatActivity {
 
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onAdminLoginButtonLinkClick(View view){
-        // finishes the current activity and open the AdminLoginActivity Activity
+
+        // finishes the current activity
         finish();
+
         //starts the AdminLoginActivity
         startActivity(new Intent(UserLoginActivity.this,AdminLoginActivity.class));
+
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
     }
@@ -273,9 +293,13 @@ public class UserLoginActivity extends AppCompatActivity {
 
     // method to reset user password
     public void onButtonResetPassword(View view) {
-        // finishes the current activity and open the resetPassword Activity
+
+        // finishes the current activity
         finish();
+
+        //open the resetPassword Activity
         startActivity(new Intent(UserLoginActivity.this, ResetUserPasswordActivity.class));
+
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
     }

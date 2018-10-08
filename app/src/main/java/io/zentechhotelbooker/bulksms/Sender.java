@@ -1,5 +1,8 @@
 package io.zentechhotelbooker.bulksms;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -18,6 +21,8 @@ import io.zentechhotelbooker.models.Payments;
      * source, dlr, type, message, server and port
      **/
     public class Sender {
+
+        private Context context;
 
         // object of the Payment
         private Payments payments;
@@ -127,6 +132,7 @@ import io.zentechhotelbooker.models.Payments;
  */
                 dataStreamFromUrl.close();
                 System.out.println("Response: " + dataFromUrl);
+                //Toast.makeText(context, dataFromUrl, Toast.LENGTH_SHORT).show();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

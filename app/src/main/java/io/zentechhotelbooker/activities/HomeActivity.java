@@ -360,8 +360,8 @@ public class HomeActivity extends AppCompatActivity implements
                 finish();
                 // open AboutUsUserActivity activity
                 startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
-                // Add fadein-to-fadeout animation to the activity
-                CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+                // Add left-to-right animation to the activity
+                CustomIntent.customType(HomeActivity.this,"left-to-right");
                 break;
             case R.id.menu_exit:
                 // call to the method to exit the application
@@ -467,20 +467,23 @@ public class HomeActivity extends AppCompatActivity implements
 
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
                 android.R.style.Theme_Material_Dialog_Alert);
-        builder.setTitle(getString(R.string.logout));
-        builder.setMessage(getString(R.string.logout_msg));
+        builder.setTitle(getString(R.string.sign_out));
+        builder.setMessage(getString(R.string.sign_out_msg));
 
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // logs current user out of the system
                 mAuth.signOut();
+
+                // finish the activity
+                finish();
+
                 // starts the UserLoginActivity
                 startActivity(new Intent(HomeActivity.this,UserLoginActivity.class));
+
                 // Add fadein-to-fadeout animation to the activity
                 CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
-                // finishes the activity
-                finish();
             }
         });
 

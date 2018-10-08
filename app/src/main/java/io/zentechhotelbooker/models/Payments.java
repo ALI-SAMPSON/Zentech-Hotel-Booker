@@ -41,7 +41,7 @@ public class Payments {
     }
 
     //Getter and Setter method for Room number
-    public void setRoom_Type(String room_type){
+    public void setRoom_type(String room_type){
         this.room_type = room_type;
     }
     public String getRoom_type(){

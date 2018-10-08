@@ -103,11 +103,13 @@ public class AboutUsUserActivity extends AppCompatActivity implements View.OnCli
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                // finishes and starts the next activity
+                // finishes and
+                // starts the next activity
                 finish();
+
                 startActivity(new Intent(AboutUsUserActivity.this,HomeActivity.class));
-                // Adds a custom animation to the intent
-                CustomIntent.customType(AboutUsUserActivity.this,"fadein-to-fadeout");
+                // Add right-to-left animation to the activity
+                CustomIntent.customType(AboutUsUserActivity.this,"right-to-left");
                 break;
             default:
                 break;
@@ -120,6 +122,6 @@ public class AboutUsUserActivity extends AppCompatActivity implements View.OnCli
     public void finish() {
         super.finish();
         // Adds a custom animation to the intent
-        CustomIntent.customType(AboutUsUserActivity.this,"fadein-to-fadeout");
+        CustomIntent.customType(AboutUsUserActivity.this,"right-to-left");
     }
 }

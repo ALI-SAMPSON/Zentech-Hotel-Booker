@@ -94,7 +94,7 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        paymentRef = FirebaseDatabase.getInstance().getReference().child("Payments");
+        paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
 
         editTextRoomType.setText(getIntent().getStringExtra("room_type"));
         editTextPrice.setText(getIntent().getStringExtra("room_price"));
@@ -190,7 +190,7 @@ public class MakePaymentActivity extends AppCompatActivity {
         //sets the values from the EditText Fields to those in the database
         payments.setUid(mAuth.getCurrentUser().getUid());
         payments.setUser_name(user_name);
-        payments.setRoom_Type(room_type);
+        payments.setRoom_type(room_type);
         payments.setPrice(price);
         payments.setMobile_number(mobile_number);
         payments.setPayment_method(payment_method);
@@ -242,7 +242,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 PendingIntent pendingIntent = PendingIntent.getActivity(MakePaymentActivity.this, 0, intent, 0);
                                 Notification notification = new Notification.Builder(MakePaymentActivity.this)
                                         .setSmallIcon(R.mipmap.app_icon_round)
-                                        .setContentTitle("Zentech Hotel Room Booker")
+                                        .setContentTitle(getString(R.string.app_name))
                                         .setContentText(user_name + ", you have successfully made payment for a " + room_type + " room ")
                                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                                         .setContentIntent(pendingIntent).getNotification();
@@ -290,8 +290,10 @@ public class MakePaymentActivity extends AppCompatActivity {
             String mobile_number = editTextMomoNumber.getText().toString().trim();
             String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
 
+            String my_number = "0245134112";
+
             // variable to hold the message to send
-            String message = user_name + ", you have successfully made payment for a " + room_type + " room ";
+            String message = user_name + " has successfully made payment for a " + room_type + " room. ";
 
             // Below example is for sending Plain text
             Sender s = new Sender("rslr.connectbind.com",
@@ -300,7 +302,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                     message,
                     "1",
                     "0",
-                    mobile_number,
+                    my_number,
                     getString(R.string.app_name));
 
             // submitmessage using an object of the Sender Class

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import io.zentechhotelbooker.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class ContactUsUserActivity extends AppCompatActivity {
 
@@ -27,12 +28,24 @@ public class ContactUsUserActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 // starts the home Activity
-                ContactUsUserActivity.this.finish();
+                finish();
+
                 startActivity(new Intent(ContactUsUserActivity.this,HomeActivity.class));
+
+                // Add fadein-to-fadeout animation to the activity
+                CustomIntent.customType(ContactUsUserActivity.this,"fadein-to-fadeout");
+
                 default:
                     break;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Add fadein-to-fadeout animation to the activity
+        CustomIntent.customType(ContactUsUserActivity.this,"fadein-to-fadeout");
     }
 }

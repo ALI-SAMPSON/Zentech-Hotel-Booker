@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">Zentech Hotel Room Booker</string>
+    <string name="app_name">Zentech HRB</string>
+    <string name="app_name1">Zentech Hotel Room Booker</string>
 
-    <string name="application_name">ZENTECH HOTEL ROOM BOOKER</string>
+    <string name="application_name">ZENTECH HRB</string>
+    <string name="application_name_1">ZENTECH HOTEL ROOM BOOKER</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
@@ -26,7 +28,6 @@
     <string name="edit_credentials_sub_text">lets edit your credentials if necessary</string>
     <string name="check_payments">Check Payments</string>
     <string name="check_payment_sub_text">check payments made by users</string>
-    <string name="sign_out">Sign out</string>
     <string name="logout_sub_text">done? lets exit the system</string>
     <string name="admin_dash_board">ADMIN DASHBOARD</string>
     <string name="about_us_title">About Us</string>
@@ -128,9 +129,11 @@
     <string name="orders">Orders</string>
     <string name="home">Home</string>
     <string name="logout">Logout</string>
+    <string name="sign_out">Sign out</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="logout_msg">Are you sure you want to logout?</string>
+    <string name="sign_out_msg">Are you sure you want to logout?</string>
     <string name="text_update">UPDATE</string>
     <string name="text_update_profile">Update Profile</string>
 
