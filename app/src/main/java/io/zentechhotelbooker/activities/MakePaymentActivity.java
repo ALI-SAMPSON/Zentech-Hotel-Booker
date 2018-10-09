@@ -3,7 +3,9 @@ package io.zentechhotelbooker.activities;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -31,8 +33,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.bulksms.Sender;
+import io.zentechhotelbooker.models.Admin;
 import io.zentechhotelbooker.models.Payments;
 import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
@@ -64,6 +74,7 @@ public class MakePaymentActivity extends AppCompatActivity {
 
     NestedScrollView nestedScrollView;
 
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -78,13 +89,13 @@ public class MakePaymentActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        tv_room_number = findViewById(R.id.tv_room_number);
+
         //getting reference to the editText fields
         editTextRoomType = findViewById(R.id.editTextRoomType);
         editTextPrice = findViewById(R.id.editTextPrice);
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextMomoNumber = findViewById(R.id.editTextMomoNumber);
-
-        tv_room_number = findViewById(R.id.tv_room_number);
 
         //spinner or drop down view and its arrayAdapter instantiation
         spinnerPaymentMethod = findViewById(R.id.spinnerPaymentMethod);
@@ -96,6 +107,11 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
+        progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_DARK);
+        // setting the style of the progress Dialog
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("please wait...");
+
         payments = new Payments();
 
         users = new Users();
@@ -104,15 +120,19 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
 
-        editTextRoomType.setText(getIntent().getStringExtra("room_type"));
-        editTextPrice.setText(getIntent().getStringExtra("room_price"));
-
+        // gets String from the intents and sets it to the textViews
         tv_room_number.setText(getIntent().getStringExtra("room_number"));
         tv_room_number.setVisibility(View.GONE);
+        editTextRoomType.setText(getIntent().getStringExtra("room_type"));
+        editTextPrice.setText(getIntent().getStringExtra("room_price"));
 
         final String user_image = getIntent().getStringExtra("user_image");
 
         onEditTextClick();
+
+        // line to enable sending of sms
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
     //sets error message on the editTextViews when user clicks on to edit
@@ -203,7 +223,8 @@ public class MakePaymentActivity extends AppCompatActivity {
         final String user_image = getIntent().getStringExtra("user_image");
 
         // displays the progressBar
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        progressDialog.show();
 
         //gets text from the user
         final String user_name = editTextUsername.getText().toString().trim();
@@ -225,33 +246,44 @@ public class MakePaymentActivity extends AppCompatActivity {
         payments.setImageUrl(user_image);
 
         //code to the check if room has been booked already
-        paymentRef.child(room_number).addValueEventListener(new ValueEventListener() {
+        paymentRef.child(room_number).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //gets a snapshot of the data in the database
                 if (dataSnapshot.exists()) {
-                    final Payments payments = dataSnapshot.getValue(Payments.class);
+
+                    //final Payments payments = dataSnapshot.getValue(Payments.class);
+
+                    // hides the progressBar
+                    progressDialog.dismiss();
+
+                    // displays a warning message
+                    Snackbar.make(nestedScrollView,
+                            " Room is already booked by another user. Please try another room!",
+                            Snackbar.LENGTH_LONG).show();
+
                     //checks if room has been booked
-                    if (room_number.equals(payments.getRoom_number())) {
+                    /*if (room_number.equals(payments.getRoom_number())) {
 
                         // hides the progressBar
-                        progressBar.setVisibility(View.GONE);
+                        progressDialog.dismiss();
 
                         //clearBothTextFields(); //call to this method
                         Snackbar.make(nestedScrollView,
                                 " Room is already booked by another user. Please try another room!",
                                 Snackbar.LENGTH_LONG).show();
+                        return;
 
-                        //return;
-
-                    }
+                    }*/
 
                 }
 
                 //else if room is not booked then allow payment to be made
                 else{
                     //sets the values to the database by using the username as the child
-                    paymentRef.child(room_number).setValue(payments).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    paymentRef.child(room_number)
+                            .setValue(payments)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -288,13 +320,15 @@ public class MakePaymentActivity extends AppCompatActivity {
 
                                 //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
                                 Snackbar.make(nestedScrollView, task.getException().toString(), Snackbar.LENGTH_LONG).show();
-                            }
-                            // hides the progressBar
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
-                }
 
+                            }
+                            // hides the progressDialog
+                            progressDialog.dismiss();
+
+                            }
+
+                            });
+                }
 
             }
 
@@ -308,40 +342,112 @@ public class MakePaymentActivity extends AppCompatActivity {
 
     }
 
-    // Method to call the Sender class to
+    // Method to send sms to admin
+    // after user books a room
     private void sendSMS(){
 
-        try {
-
             //gets text or input from the user
-            final String user_name = editTextUsername.getText().toString().trim();
-            final String room_type = editTextRoomType.getText().toString().trim();
+            FirebaseUser user = mAuth.getCurrentUser();
+
+            final String user_name = user.getDisplayName();
+
+            //final String user_name = editTextUsername.getText().toString().trim();
+            String room_type = editTextRoomType.getText().toString().trim();
             String price = editTextPrice.getText().toString().trim();
             String mobile_number = editTextMomoNumber.getText().toString().trim();
             String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
 
-            String my_number = "0209062445";
+            String username = "zent-marketing";
+            // password that is to be used along with username
 
-            // variable to hold the message to send
+            String password = "marketin";
+            // Message content that is to be transmitted
+
             String message = user_name + " has successfully made payment for a " + room_type + " room. ";
 
-            // Below example is for sending Plain text
-            Sender s = new Sender("rslr.connectbind.com",
-                    2345, "marketin",
-                    "zent-marketing",
-                    message,
-                    "1",
-                    "0",
-                    my_number,
-                    getString(R.string.app_name));
+            /*String message = user_name + " has successfully made payment for a " + room_type + " room "
+                    + " at " + price + " using " + payment_method + ".";*/
+            /**
+             * What type of the message that is to be sent
+             * <ul>
+             * <li>0:means plain text</li>
+             * <li>1:means flash</li>
+             * <li>2:means Unicode (Message content should be in Hex)</li>
+             * <li>6:means Unicode Flash (Message content should be in Hex)</li>
+             * </ul>
+             */
+            String type = "0";
+            /**
+             * Require DLR or not
+             * <ul>
+             * <li>0:means DLR is not Required</li>
+             * <li>1:means DLR is Required</li>
+             * </ul>
+             */
+            String dlr = "1";
+            /**
+             * Destinations to which message is to be sent For submitting more than one
 
-            // submitmessage using an object of the Sender Class
-            s.submitMessage();
+             * destination at once destinations should be comma separated Like
+             * 91999000123,91999000124
+             */
+            String destination = "233245134112";
 
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+            // Sender Id to be used for submitting the message
+            String source = "Zentech";
+
+            // To what server you need to connect to for submission
+            final String server = "rslr.connectbind.com";
+
+            // Port that is to be used like 8080 or 8000
+            int port = 2345;
+
+            try {
+                // Url that will be called to submit the message
+                URL sendUrl = new URL("http://" + server + ":" + "/bulksms/bulksms?");
+                HttpURLConnection httpConnection = (HttpURLConnection) sendUrl
+                        .openConnection();
+                // This method sets the method type to POST so that
+                // will be send as a POST request
+                httpConnection.setRequestMethod("POST");
+                // This method is set as true wince we intend to send
+                // input to the server
+                httpConnection.setDoInput(true);
+                // This method implies that we intend to receive data from server.
+                httpConnection.setDoOutput(true);
+                // Implies do not use cached data
+                httpConnection.setUseCaches(false);
+                // Data that will be sent over the stream to the server.
+                DataOutputStream dataStreamToServer = new DataOutputStream( httpConnection.getOutputStream());
+                dataStreamToServer.writeBytes("username="
+                        + URLEncoder.encode(username, "UTF-8") + "&password="
+                        + URLEncoder.encode(password, "UTF-8") + "&type="
+                        + URLEncoder.encode(type, "UTF-8") + "&dlr="
+                        + URLEncoder.encode(dlr, "UTF-8") + "&destination="
+                        + URLEncoder.encode(destination, "UTF-8") + "&source="
+                        + URLEncoder.encode(source, "UTF-8") + "&message="
+                        + URLEncoder.encode(message, "UTF-8"));
+                dataStreamToServer.flush();
+                dataStreamToServer.close();
+                // Here take the output value of the server.
+                BufferedReader dataStreamFromUrl = new BufferedReader( new InputStreamReader(httpConnection.getInputStream()));
+                String dataFromUrl = "", dataBuffer = "";
+                // Writing information from the stream to the buffer
+                while ((dataBuffer = dataStreamFromUrl.readLine()) != null) {
+                    dataFromUrl += dataBuffer;
+                }
+                /**
+                 * Now dataFromUrl variable contains the Response received from the
+                 * server so we can parse the response and process it accordingly.
+                 */
+                dataStreamFromUrl.close();
+                System.out.println("Response: " + dataFromUrl);
+                //Toast.makeText(context, dataFromUrl, Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception ex) {
+                // catches any error that occurs and outputs to the user
+                Toast.makeText(MakePaymentActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
+            }
 
     }
 

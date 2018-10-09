@@ -36,7 +36,6 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         this.roomsList = roomsList;
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -99,7 +98,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 // passing data to the payment activity
                 intent.putExtra("room_number", rooms.getRoom_number());
-                intent.putExtra("room_type",rooms.getRoom_type());
+                intent.putExtra("room_type", rooms.getRoom_type());
                 intent.putExtra("room_price","GH¢ " + rooms.getPrice());
                 intent.putExtra("user_image", user_image);
                 // starting the activity

@@ -1,6 +1,7 @@
 package io.zentechhotelbooker.bulksms;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -126,6 +127,8 @@ import io.zentechhotelbooker.models.Payments;
                 while ((dataBuffer = dataStreamFromUrl.readLine()) != null) {
                     dataFromUrl += dataBuffer;
                 }
+                String Tag = "Print Concole";
+                Log.d(Tag , "hello");
 /**
  * Now dataFromUrl variable contains the Response received from the
  * server so we can parse the response and process it accordingly.
