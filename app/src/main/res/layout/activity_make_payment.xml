@@ -81,6 +81,13 @@
                 android:focusableInTouchMode="false"/>
         </android.support.design.widget.TextInputLayout>
 
+        <TextView
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_room_number"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"/>
+
         <!-- TextInputLayout and AppCompatEdiText for Price -->
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutPrice"
@@ -199,16 +206,15 @@
                 android:layout_marginTop="30dp"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
-                android:layout_below="@+id/textInputLayoutTelNumber"
                 android:text="@string/text_pay"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"
                 android:textStyle="normal"
                 android:textAlignment="center"
-                android:fontFamily="@font/nunito_semibold"
+                android:textAllCaps="false"
+                app:fontFamily="@font/nunito_semibold"
                 android:background="@drawable/circular_end_button_make_payment"
                 android:onClick="onMakePaymentButtonClick"/>
 
@@ -218,15 +224,15 @@
                 android:layout_marginTop="30dp"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/text_cancel"
                 android:textColor="@color/colorWhite"
-                android:fontFamily="@font/nunito_semibold"
+                app:fontFamily="@font/nunito_semibold"
                 android:textSize="18sp"
                 android:textStyle="normal"
                 android:textAlignment="center"
+                android:textAllCaps="false"
                 android:background="@drawable/circular_end_button_cancel_payment"
                 android:onClick="onClearButtonClick"/>
 
@@ -234,10 +240,10 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center|bottom"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
             android:visibility="gone"/>
 

@@ -98,13 +98,15 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 Intent intent = new Intent(mCtx, MakePaymentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 // passing data to the payment activity
+                intent.putExtra("room_number", rooms.getRoom_number());
                 intent.putExtra("room_type",rooms.getRoom_type());
-                intent.putExtra("room_price",rooms.getPrice());
+                intent.putExtra("room_price","GH¢ " + rooms.getPrice());
                 intent.putExtra("user_image", user_image);
                 // starting the activity
                 mCtx.startActivity(intent);
                 // Add a custom animation to the activity
-                CustomIntent.customType(mCtx,"right-to-left");
+                CustomIntent.customType(mCtx,"fadein-to-fadeout");
+
             }
         });
 

@@ -124,7 +124,7 @@ public class UserLoginActivity extends AppCompatActivity {
         TextView welcome_msg = findViewById(R.id.welcome);
 
         // add animation to the TextView using YoYo Library
-        YoYo.with(Techniques.FlipInX).playOn(welcome_msg);
+        YoYo.with(Techniques.FlipInX).repeat(1).playOn(welcome_msg);
 
 
     }

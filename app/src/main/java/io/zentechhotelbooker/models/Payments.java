@@ -5,6 +5,7 @@ public class Payments {
     //database fields for the database
     String uid;
     String user_name;
+    String room_number;
     String room_type;
     String price;
     String payment_method;
@@ -16,9 +17,10 @@ public class Payments {
     public Payments(){}
 
     //constructor with two or more parameters
-    public Payments(String uid, String user_name, String room_type,String price,String mobile_number){
+    public Payments(String uid, String user_name, String room_number, String room_type,String price,String mobile_number){
         this.uid = uid;
         this.user_name = user_name;
+        this.room_number = room_number;
         this.room_type = room_type;
         this.price = price;
         this.mobile_number = mobile_number;
@@ -38,6 +40,14 @@ public class Payments {
     }
     public String getUser_name() {
         return user_name;
+    }
+
+    //Getter and Setter method for Room Number
+    public void setRoom_number(String room_number) {
+        this.room_number = room_number;
+    }
+    public String getRoom_number() {
+        return room_number;
     }
 
     //Getter and Setter method for Room number

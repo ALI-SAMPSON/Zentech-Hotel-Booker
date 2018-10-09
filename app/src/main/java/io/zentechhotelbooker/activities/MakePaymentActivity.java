@@ -16,7 +16,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +47,8 @@ public class MakePaymentActivity extends AppCompatActivity {
     Users users;
 
     FirebaseAuth mAuth;
+
+    private TextView tv_room_number;
 
     private EditText editTextUsername;
     private EditText editTextRoomType;
@@ -78,6 +84,8 @@ public class MakePaymentActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextMomoNumber = findViewById(R.id.editTextMomoNumber);
 
+        tv_room_number = findViewById(R.id.tv_room_number);
+
         //spinner or drop down view and its arrayAdapter instantiation
         spinnerPaymentMethod = findViewById(R.id.spinnerPaymentMethod);
         arrayAdapterPaymentMethod = ArrayAdapter.createFromResource(this,R.array.payment_method,R.layout.spinner_item);
@@ -99,6 +107,9 @@ public class MakePaymentActivity extends AppCompatActivity {
         editTextRoomType.setText(getIntent().getStringExtra("room_type"));
         editTextPrice.setText(getIntent().getStringExtra("room_price"));
 
+        tv_room_number.setText(getIntent().getStringExtra("room_number"));
+        tv_room_number.setVisibility(View.GONE);
+
         final String user_image = getIntent().getStringExtra("user_image");
 
         onEditTextClick();
@@ -115,21 +126,30 @@ public class MakePaymentActivity extends AppCompatActivity {
         editTextUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // add a custom animation
+                YoYo.with(Techniques.Shake).playOn(editTextUsername);
                 editTextUsername.setError(error_username);
+                Toast.makeText(MakePaymentActivity.this,error_username,Toast.LENGTH_LONG).show();
             }
         });
 
         editTextRoomType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // add a custom animation
+                YoYo.with(Techniques.Shake).playOn(editTextRoomType);
                 editTextRoomType.setError(error_room_type);
+                Toast.makeText(MakePaymentActivity.this,error_room_type,Toast.LENGTH_LONG).show();
             }
         });
 
         editTextPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // add a custom animation
+                YoYo.with(Techniques.Shake).playOn(editTextPrice);
                 editTextPrice.setError(error_room_price);
+                Toast.makeText(MakePaymentActivity.this,error_room_price,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -156,12 +176,17 @@ public class MakePaymentActivity extends AppCompatActivity {
 
         //checks if the fields are not empty
         if(mobile_number.isEmpty()){
+            // add a custom animation
+            YoYo.with(Techniques.Shake).playOn(editTextMomoNumber);
             editTextMomoNumber.setError(getString(R.string.error_empty_momo_number));
             editTextMomoNumber.requestFocus();
             return;
         }
         else if(mobile_number.length() != 10 ){
+            // add a custom animation
+            YoYo.with(Techniques.Shake).playOn(editTextMomoNumber);
             editTextMomoNumber.setError(getString(R.string.phone_invalid));
+            editTextMomoNumber.requestFocus();
             return;
             //Snackbar.make(nestedScrollView,"Momo number are required fields",Snackbar.LENGTH_LONG).show();
         }
@@ -187,9 +212,12 @@ public class MakePaymentActivity extends AppCompatActivity {
         String mobile_number = editTextMomoNumber.getText().toString().trim();
         String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
 
+        final String room_number = tv_room_number.getText().toString().trim();
+
         //sets the values from the EditText Fields to those in the database
-        payments.setUid(mAuth.getCurrentUser().getUid());
+        //payments.setUid(mAuth.getCurrentUser().getUid());
         payments.setUser_name(user_name);
+        payments.setRoom_number(room_number);
         payments.setRoom_type(room_type);
         payments.setPrice(price);
         payments.setMobile_number(mobile_number);
@@ -197,22 +225,24 @@ public class MakePaymentActivity extends AppCompatActivity {
         payments.setImageUrl(user_image);
 
         //code to the check if room has been booked already
-        paymentRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        paymentRef.child(room_number).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //gets a snapshot of the data in the database
                 if (dataSnapshot.exists()) {
                     final Payments payments = dataSnapshot.getValue(Payments.class);
                     //checks if room has been booked
-                    if (mAuth.getCurrentUser().getUid().equals(payments.getUid())) {
+                    if (room_number.equals(payments.getRoom_number())) {
 
                         // hides the progressBar
                         progressBar.setVisibility(View.GONE);
 
                         //clearBothTextFields(); //call to this method
-                        Snackbar.make(nestedScrollView, " Room is already booked by another user ", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(nestedScrollView,
+                                " Room is already booked by another user. Please try another room!",
+                                Snackbar.LENGTH_LONG).show();
 
-                        return;
+                        //return;
 
                     }
 
@@ -221,7 +251,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                 //else if room is not booked then allow payment to be made
                 else{
                     //sets the values to the database by using the username as the child
-                    paymentRef.child(mAuth.getCurrentUser().getUid()).setValue(payments).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    paymentRef.child(room_number).setValue(payments).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -290,7 +320,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             String mobile_number = editTextMomoNumber.getText().toString().trim();
             String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
 
-            String my_number = "0245134112";
+            String my_number = "0209062445";
 
             // variable to hold the message to send
             String message = user_name + " has successfully made payment for a " + room_type + " room. ";
@@ -298,7 +328,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             // Below example is for sending Plain text
             Sender s = new Sender("rslr.connectbind.com",
                     2345, "marketin",
-                    "Zent-marketing",
+                    "zent-marketing",
                     message,
                     "1",
                     "0",
@@ -320,10 +350,16 @@ public class MakePaymentActivity extends AppCompatActivity {
         switch(item.getItemId()){
             //sends user to the Home Activity
             case android.R.id.home:
+
+                // finishes the activity
+                finish();
+
                 // starts the home activity
                 startActivity(new Intent(MakePaymentActivity.this,HomeActivity.class));
+
                 // Add a custom animation to the activity
-                CustomIntent.customType(MakePaymentActivity.this,"bottom-to-up");
+                CustomIntent.customType(MakePaymentActivity.this,"fadein-to-fadeout");
+
                 break;
             default:
                 break;

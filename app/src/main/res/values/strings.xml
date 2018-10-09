@@ -57,7 +57,8 @@
     <string name="error_empty_field">Field cannot left empty</string>
     <string name="error_empty_username">Username is a required field</string>
     <string name="error_text_hostel">Enter your hostel name to better locate you</string>
-    <string name="error_text_room_number">Enter your room number"</string>
+    <string name="error_text_room_number">This field cannot be left empty"</string>
+    <string name="error_empty_price">This field cannot be left empty</string>
     <string name="error_text_phone_number">Telephone number is a required field</string>
     <string name="error_adding_room">Please Select Image or Room Type or Price</string>
 
@@ -114,8 +115,8 @@
     </string>
 
     <string name="welcome_message">
-        Zentech Hotel Booker has a lot to offer you.
-        Open the drawer from the left of the screen
+        Zentech Hotel Room Booker has a lot to offer you.
+        Open the drawer on the left of the screen
         to update your profile, checks payments and
         contact us if needed and freely book a room.
         Happy Booking and enjoy!
@@ -133,7 +134,7 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="logout_msg">Are you sure you want to logout?</string>
-    <string name="sign_out_msg">Are you sure you want to logout?</string>
+    <string name="sign_out_msg">Are you sure you want to Sign out?</string>
     <string name="text_update">UPDATE</string>
     <string name="text_update_profile">Update Profile</string>
 

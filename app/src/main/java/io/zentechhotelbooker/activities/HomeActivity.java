@@ -399,7 +399,7 @@ public class HomeActivity extends AppCompatActivity implements
                 break;
             case R.id.menu_sign_out:
                 // log user out of the system
-                logout();
+                signOut();
                 break;
                 default:
                     break;
@@ -463,7 +463,7 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     // method to log user out of the system
-    private void logout(){
+    private void  signOut(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this,
                 android.R.style.Theme_Material_Dialog_Alert);

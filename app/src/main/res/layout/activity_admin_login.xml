@@ -104,7 +104,8 @@
             android:layout_below="@+id/login_cardView"
             android:text="@string/sign_in"
             android:textColor="@color/colorWhite"
-            android:fontFamily="@font/nunito_semibold"
+            app:fontFamily="@font/nunito_semibold"
+            android:textAllCaps="false"
             android:textSize="16sp"
             android:textStyle="normal"
             android:textAlignment="center"
@@ -133,8 +134,8 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center|bottom"
             android:layout_margin="15dp"
             android:visibility="gone"/>

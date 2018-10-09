@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -38,13 +39,14 @@ import com.google.firebase.storage.UploadTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.models.Payments;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
 public class AddRoomsActivity extends AppCompatActivity {
 
     //class variables
-    //private EditText editTextRoomNumber;
+    private EditText editTextRoomNumber;
     private EditText editTextPrice;
 
     // Objects for the spinner view
@@ -72,11 +74,15 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     private Rooms rooms;
 
+    private Payments payments;
+
+    private DatabaseReference paymentRef;
+
     private FirebaseAuth mAuth;
 
     private ProgressBar progressBar;
 
-    private LinearLayout linearLayout;
+    private ScrollView scrollView;
 
     private LinearLayout spinnerLayout;
 
@@ -95,7 +101,7 @@ public class AddRoomsActivity extends AppCompatActivity {
         }
 
         circleImageView = findViewById(R.id.circularImageView);
-        //editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
+        editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
 
         spinnerRoomType = findViewById(R.id.spinnerRoomType);
@@ -107,11 +113,15 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
 
+        paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
+
         rooms = new Rooms();
+
+        payments = new Payments();
 
         progressBar = findViewById(R.id.progressBar);
 
-        linearLayout = findViewById(R.id.linearLayout);
+        scrollView = findViewById(R.id.scrollView);
 
         spinnerLayout = findViewById(R.id.spinnerLayout);
 
@@ -149,7 +159,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                 circleImageView.setImageBitmap(bitmap);
             }
             catch (Exception e){
-                Snackbar.make(linearLayout,e.getMessage(),Snackbar.LENGTH_LONG).show();
+                Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
             }
 
         }
@@ -187,7 +197,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                             //get input from the editText fields
-                            //String room_number = editTextRoomNumber.getText().toString().trim();
+                            String room_number = editTextRoomNumber.getText().toString().trim();
                             String price = editTextPrice.getText().toString().trim();
                             String imageDownloadUrl = taskSnapshot.getDownloadUrl().toString();
                             String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
@@ -196,7 +206,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
 
                             // setting fields to the object og the class Rooms
-                            //rooms.setRoom_number(room_number);
+                            rooms.setRoom_number(room_number);
                             rooms.setRoom_type(room_type);
                             rooms.setPrice(price);
                             rooms.setRoom_image(imageDownloadUrl);
@@ -207,8 +217,13 @@ public class AddRoomsActivity extends AppCompatActivity {
                             // Adding image upload id s child element into databaseReference.
                             databaseReference .child(ImageUploadID).setValue(rooms);
 
+                            // sets value
+                            //payments.setRoom_number(room_number);
+
+                            //paymentRef.setValue(payments);
+
                             // Showing success message.
-                            Snackbar.make(linearLayout,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(scrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
 
                             // Method Call
                             clearTextFields();
@@ -224,7 +239,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
 
                             // Showing exception error message.
-                            Snackbar.make(linearLayout,e.getMessage(),Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
 
                         }
                     })
@@ -244,7 +259,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         else {
             // Showing Alert message.
-            Snackbar.make(linearLayout, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
+            Snackbar.make(scrollView, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
         }
 
     }
@@ -253,20 +268,30 @@ public class AddRoomsActivity extends AppCompatActivity {
     public void onAddRoomButtonClick(View view){
 
         //get input from the editText fields
-       // String room_number = editTextRoomNumber.getText().toString().trim();
+        String room_number = editTextRoomNumber.getText().toString().trim();
         String price = editTextPrice.getText().toString().trim();
 
-        if(price.isEmpty()){
+        if(room_number.isEmpty()){
 
+            // Adds an animation to shake the view
             YoYo.with(Techniques.FadeInDown).playOn(circleImageView);
 
+            // Adds an animation to shake the view
             YoYo.with(Techniques.Shake).playOn(spinnerLayout);
 
             // Adds an animation to shake the view
             YoYo.with(Techniques.Shake).playOn(editTextPrice);
 
+            // Adds an animation to shake the view
+            YoYo.with(Techniques.Shake).playOn(editTextRoomNumber);
+
+            editTextRoomNumber.setError(getString(R.string.error_text_room_number));
+            editTextRoomNumber.requestFocus();
+            return;
+        }
+        else if(price.isEmpty()){
             // sets error message on view
-            editTextPrice.setError(getString(R.string.error_empty_field));
+            editTextPrice.setError(getString(R.string.error_empty_price));
             editTextPrice.requestFocus();
             return;
         }
