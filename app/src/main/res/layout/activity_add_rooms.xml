@@ -47,6 +47,59 @@
                         app:civ_border_color="@color/materialGreen">
                     </de.hdodenhof.circleimageview.CircleImageView>
 
+                    <!-- TextInputLayout and AppCompatEdiText for Room Number -->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textInputLayoutRoomNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:textColorHint="@color/colorBlue">
+                        <EditText
+                            android:id="@+id/editTextRoomNumber"
+                            android:layout_width="230dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_horizontal"
+                            android:textColor="@color/materialGreen"
+                            android:drawableLeft="@drawable/ic_room_type"
+                            android:drawableStart="@drawable/ic_room_type"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:textColorHint="@color/buttonLight"
+                            android:textSize="16sp"
+                            android:hint="@string/room_number"
+                            android:inputType="numberDecimal"
+                            android:importantForAutofill="no" tools:targetApi="o"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!-- TextInputLayout and AppCompatEdiText for Price -->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textInputLayoutPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:textColorHint="@color/colorBlue">
+                        <EditText
+                            android:id="@+id/editTextPrice"
+                            android:layout_width="230dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_horizontal"
+                            android:textColor="@color/materialGreen"
+                            android:drawableLeft="@drawable/ic_payment"
+                            android:drawableStart="@drawable/ic_payment"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:textColorHint="@color/buttonLight"
+                            android:textSize="16sp"
+                            android:hint="@string/price"
+                            android:inputType="numberDecimal"
+                            android:importantForAutofill="no" tools:targetApi="o" />
+                    </android.support.design.widget.TextInputLayout>
 
                     <!--TextInputLayout and LinearLayout and spinner View for Payment Method-->
                     <android.support.design.widget.TextInputLayout
@@ -54,7 +107,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="40dp"
                         android:layout_marginLeft="0dp"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
@@ -98,60 +152,6 @@
                         </LinearLayout>
                     </android.support.design.widget.TextInputLayout>
 
-                    <!-- TextInputLayout and AppCompatEdiText for Room Number -->
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/textInputLayoutRoomNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="0dp"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:textColorHint="@color/colorBlue">
-                        <EditText
-                            android:id="@+id/editTextRoomNumber"
-                            android:layout_width="230dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|center_horizontal"
-                            android:textColor="@color/materialGreen"
-                            android:drawableLeft="@drawable/ic_room_type"
-                            android:drawableStart="@drawable/ic_room_type"
-                            android:drawablePadding="@dimen/spacing_small"
-                            android:textColorHint="@color/buttonLight"
-                            android:textSize="16sp"
-                            android:hint="@string/room_number"
-                            android:inputType="numberDecimal"
-                            android:importantForAutofill="no" tools:targetApi="o"/>
-                    </android.support.design.widget.TextInputLayout>
-
-                    <!-- TextInputLayout and AppCompatEdiText for Price -->
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/textInputLayoutPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="40dp"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:textColorHint="@color/colorBlue">
-                        <EditText
-                            android:id="@+id/editTextPrice"
-                            android:layout_width="230dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|center_horizontal"
-                            android:textColor="@color/materialGreen"
-                            android:drawableLeft="@drawable/ic_payment"
-                            android:drawableStart="@drawable/ic_payment"
-                            android:drawablePadding="@dimen/spacing_small"
-                            android:textColorHint="@color/buttonLight"
-                            android:textSize="16sp"
-                            android:hint="@string/price"
-                            android:inputType="numberDecimal"
-                            android:importantForAutofill="no" tools:targetApi="o" />
-                    </android.support.design.widget.TextInputLayout>
-
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -159,7 +159,7 @@
             <!-- Add Button  -->
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/appCompatButtonLogin"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="80dp"
                 android:layout_width="280dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"

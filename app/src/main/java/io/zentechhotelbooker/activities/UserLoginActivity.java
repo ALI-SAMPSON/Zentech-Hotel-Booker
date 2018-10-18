@@ -50,6 +50,8 @@ public class UserLoginActivity extends AppCompatActivity {
     // global or class variables
     ProgressBar progressBar;
 
+    ProgressDialog progressDialog;
+
     FirebaseAuth mAuth;
 
     //Email and password EditText
@@ -81,6 +83,11 @@ public class UserLoginActivity extends AppCompatActivity {
         nestedScrollView = findViewById(R.id.nestedScrollView);
 
         progressBar = findViewById(R.id.progressBar);
+
+        progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_DARK);
+        // setting the style of the progress Dialog
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("please wait...");
 
         // setting animation on the progressBar
         /*ObjectAnimator animator = ObjectAnimator.ofInt(progressBar,"progress",0,100);
@@ -185,7 +192,9 @@ public class UserLoginActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+
+        progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -201,7 +210,9 @@ public class UserLoginActivity extends AppCompatActivity {
                             Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
                         }
 
-                        progressBar.setVisibility(View.GONE);
+                        // dismiss the dialog
+                        //progressBar.setVisibility(View.GONE);
+                        progressDialog.dismiss();
                     }
                 });
 

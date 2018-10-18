@@ -1,6 +1,12 @@
 package io.zentechhotelbooker.activities;
 
+import android.animation.LayoutTransition;
 import android.app.AlertDialog;
+// search bar imported libraries
+import android.app.SearchManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -14,9 +20,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +42,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.oshi.libsearchtoolbar.SearchAnimationToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     private DrawerLayout mDrawerLayout;
 
-    private ActionBarDrawerToggle mToggle;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     private NavigationView navigationView;
 
@@ -57,6 +70,8 @@ public class HomeActivity extends AppCompatActivity implements
 
     // Creating DataReference
     DatabaseReference databaseReference;
+
+    DatabaseReference roomRef;
 
     // Creating RecyclerView
     RecyclerView recyclerView;
@@ -92,6 +107,9 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
         mDrawerLayout = findViewById(R.id.drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -99,6 +117,14 @@ public class HomeActivity extends AppCompatActivity implements
         circleImageView = navigationView.getHeaderView(0).findViewById(R.id.circularImageView);
         username = navigationView.getHeaderView(0).findViewById(R.id.username);
         email = navigationView.getHeaderView(0).findViewById(R.id.email);
+
+        // Checks for available support action bar
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(getString(R.string.home));
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,17 +152,6 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(getString(R.string.home));
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
-
         // Assign id to RecyclerView.
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -146,6 +161,9 @@ public class HomeActivity extends AppCompatActivity implements
         // Sets the Layout of the Recycler View and uses a spanCount of 2
         recyclerView.setLayoutManager(new GridLayoutManager(HomeActivity.this,2));
 
+        /*StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3,LinearLayout.VERTICAL);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);*/
+
         roomsList = new ArrayList<>();
 
         recyclerViewAdapterUser = new RecyclerViewAdapterUser(HomeActivity.this,roomsList);
@@ -154,6 +172,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Assign id to ProgressBar
         progressBar = findViewById(R.id.progressBar);
+        progressBar.setIndeterminate(true);
 
         // displays the progressBsr
         progressBar.setVisibility(View.VISIBLE);
@@ -162,6 +181,8 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Getting instance of the FirbaseAuth class
         mAuth = FirebaseAuth.getInstance();
+
+        roomRef = FirebaseDatabase.getInstance().getReference("Rooms");
 
         // Calling method to display a welcome message
         displayWelcomeMessage();
@@ -345,16 +366,65 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_user,menu);
+        MenuInflater Inflater = getMenuInflater();
+        Inflater.inflate(R.menu.menu_user,menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        // setting a Linear Layout transition on the searchView
+        //LinearLayout searchBar =  searchView.findViewById(R.id.toolbar);
+        //searchBar.setLayoutTransition(new LayoutTransition());
+        // Do not iconify the widget; expand it by default
+        searchView.setIconifiedByDefault(false);
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setIconified(true);
+        searchView.setQueryRefinementEnabled(true);
+
+        // adding a QueryListener on the searchView
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                roomRef.orderByChild("room_type").equalTo("Single").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Rooms room_found = dataSnapshot.getChildren().iterator().next().getValue(Rooms.class);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
+        if(mDrawerToggle.onOptionsItemSelected(item)){
             return true;
         }
         switch (item.getItemId()){
+            /*case R.id.menu_search:
+                // call method
+               return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;*/
             case R.id.menu_about_us:
                 // finishes the activity
                 finish();
@@ -366,6 +436,7 @@ public class HomeActivity extends AppCompatActivity implements
             case R.id.menu_exit:
                 // call to the method to exit the application
                 exitApplication();
+
                 default:
                     break;
         }
@@ -443,6 +514,12 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+       /* boolean handledByToolbar = toolbar.onBackPressed();
+
+        if(!handledByToolbar){
+            super.onBackPressed();
+        }*/
+
         if(doublePressBackToExitApp){
             super.onBackPressed();
             return;
@@ -506,4 +583,5 @@ public class HomeActivity extends AppCompatActivity implements
         // Add fadein-to-fadeout animation to the activity
         CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
     }
+
 }

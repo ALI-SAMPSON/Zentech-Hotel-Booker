@@ -20,6 +20,15 @@
     </style>
 
     <!-- Base application theme. -->
+    <style name="AppTheme.home" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/background_super_dark</item>
+        <item name="colorPrimaryDark">@color/edit_text_color</item>
+        <item name="colorAccent">@color/colorWhite</item>
+        <item name="android:textColorHint">@color/colorWhite</item>
+    </style>
+
+    <!-- Base application theme. -->
     <style name="AppTheme.Sign_up" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorWhite</item>

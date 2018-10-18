@@ -1,5 +1,6 @@
 package io.zentechhotelbooker.activities;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -82,6 +83,8 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
+    private ProgressDialog progressDialog;
+
     private ScrollView scrollView;
 
     private LinearLayout spinnerLayout;
@@ -120,6 +123,11 @@ public class AddRoomsActivity extends AppCompatActivity {
         payments = new Payments();
 
         progressBar = findViewById(R.id.progressBar);
+
+        progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_LIGHT);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("Adding Room");
+        progressDialog.setMessage("please wait");
 
         scrollView = findViewById(R.id.scrollView);
 
@@ -184,7 +192,8 @@ public class AddRoomsActivity extends AppCompatActivity {
         if(FilePathUri != null){
 
             // display progressBar to show that image is uploading
-            progressBar.setVisibility(View.VISIBLE);
+            // progressBar.setVisibility(View.VISIBLE);
+            progressDialog.show();
 
             StorageReference storageReference2nd = storageReference
                     .child(Storage_Path + System.currentTimeMillis() +
@@ -203,7 +212,8 @@ public class AddRoomsActivity extends AppCompatActivity {
                             String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
 
                             // displays the progressBar
-                            progressBar.setVisibility(View.GONE);
+                            //progressBar.setVisibility(View.GONE);
+                            progressDialog.dismiss();
 
                             // setting fields to the object og the class Rooms
                             rooms.setRoom_number(room_number);
@@ -216,11 +226,6 @@ public class AddRoomsActivity extends AppCompatActivity {
 
                             // Adding image upload id s child element into databaseReference.
                             databaseReference .child(ImageUploadID).setValue(rooms);
-
-                            // sets value
-                            //payments.setRoom_number(room_number);
-
-                            //paymentRef.setValue(payments);
 
                             // Showing success message.
                             Snackbar.make(scrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
@@ -236,7 +241,8 @@ public class AddRoomsActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
 
                             // Hiding the progressBar.
-                            progressBar.setVisibility(View.GONE);
+                            //progressBar.setVisibility(View.GONE);
+                            progressDialog.dismiss();
 
                             // Showing exception error message.
                             Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
@@ -249,7 +255,8 @@ public class AddRoomsActivity extends AppCompatActivity {
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
                     // Setting progressBar visible.
-                    progressBar.setVisibility(View.VISIBLE);
+                    //progressBar.setVisibility(View.VISIBLE);
+                    progressDialog.show();
 
                 }
             });
@@ -305,12 +312,16 @@ public class AddRoomsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                //send user back to the adminDashboard
-                startActivity(new Intent(AddRoomsActivity.this,AdminDashBoardActivity.class));
-                // Adds a fadein-fadeout animations to the activity
-                CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
+
                 // finish activity
                 finish();
+
+                //send user back to the adminDashboard
+                startActivity(new Intent(AddRoomsActivity.this,AdminDashBoardActivity.class));
+
+                // Adds a fadein-fadeout animations to the activity
+                CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
+
                 break;
             default:
                 break;

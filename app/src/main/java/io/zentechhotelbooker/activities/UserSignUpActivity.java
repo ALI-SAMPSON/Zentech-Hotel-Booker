@@ -1,12 +1,16 @@
 package io.zentechhotelbooker.activities;
 
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,15 +18,12 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.Patterns;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,13 +34,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ThrowOnExtraProperties;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
@@ -51,6 +48,7 @@ public class UserSignUpActivity extends AppCompatActivity {
     //an instance of the Firebase Authentication class
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
+    @SuppressWarnings("unused")
     private ProgressBar progressBar1;
     private NestedScrollView nestedScrollView;
 
@@ -85,6 +83,10 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     private Button btn_login;
 
+    private String CHANNEL_ID = "notification_channel_id";
+
+    private int notificationId = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // removes status bar and to make background fit Screen
@@ -114,6 +116,11 @@ public class UserSignUpActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         progressBar1 = findViewById(R.id.progressBar1);
+
+        progressDialog = new ProgressDialog(this,ProgressDialog.THEME_HOLO_DARK);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("Signing Up");
+        progressDialog.setMessage("please wait...");
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -199,13 +206,11 @@ public class UserSignUpActivity extends AppCompatActivity {
     //sign Up method
     public void signUpUser(){
 
-        // add animation to the button
-        //btn_login.clearAnimation();
-        //btn_login.startAnimation(shake);
-
         final FirebaseUser user = mAuth.getCurrentUser();
 
-        progressBar1.setVisibility(View.VISIBLE);
+        // displays the dialog
+        //progressBar1.setVisibility(View.VISIBLE);
+        progressDialog.show();
 
         //get text from the EditText fields
         final String email = editTextEmail.getText().toString().trim();
@@ -240,6 +245,34 @@ public class UserSignUpActivity extends AppCompatActivity {
                                         // method call to save Username and profile Image
                                         saveUserInfo();
 
+                                        // Sends a notification to the user after signing up successfully
+                                        // Creating an explicit intent for the activity in the app
+                                        Intent intent = new Intent(UserSignUpActivity.this, UserLoginActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        PendingIntent pendingIntent = PendingIntent.getActivity(UserSignUpActivity.this, 0, intent, 0);
+
+                                        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(UserSignUpActivity.this, CHANNEL_ID)
+                                                .setSmallIcon(R.mipmap.app_icon_round)
+                                                .setContentTitle(getString(R.string.app_name))
+                                                .setContentText("Sign Up Successful. A verification link has been\n" +
+                                                        " sent to " + mAuth.getCurrentUser().getEmail() + "." +
+                                                        " Please visit your inbox to verify\n" +
+                                                        " our email address. Thanks for joining us!")
+                                                .setStyle(new NotificationCompat.BigTextStyle()
+                                                        .bigText("Sign Up Successful. A verification link has been\n" +
+                                                                " sent to " + mAuth.getCurrentUser().getEmail() + "." +
+                                                                " Please visit your inbox to verify\n" +
+                                                                " our email address. Thanks for joining us!"))
+                                                // Set the intent that will fire when the user taps the notification
+                                                .setWhen(System.currentTimeMillis())
+                                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                                                .setContentIntent(pendingIntent)
+                                                .setAutoCancel(true);
+
+                                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(UserSignUpActivity.this);
+                                        notificationManager.notify(notificationId,mBuilder.build());
+
                                         // Call to the method to send Verification Email
                                         sendVerificationEmail();
 
@@ -247,7 +280,6 @@ public class UserSignUpActivity extends AppCompatActivity {
                                         Snackbar.make(nestedScrollView,
                                                 getString(R.string.text_sign_up_and_verification_sent),
                                                 Snackbar.LENGTH_LONG).show();
-
 
                                         // clear TextFields
                                         clearTextFields();
@@ -259,13 +291,19 @@ public class UserSignUpActivity extends AppCompatActivity {
 
                                     }
 
-                                    progressBar1.setVisibility(View.GONE);
+                                    // dismisses the dialog
+                                    //progressBar1.setVisibility(View.GONE);
+                                    progressDialog.dismiss();
                                 }
                             });
 
                         }
                         else {
-                            progressBar1.setVisibility(View.GONE);
+
+                            // dismisses the dialog
+                            //progressBar1.setVisibility(View.GONE);
+                            progressDialog.dismiss();
+
                             // displays an error message
                             Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
                         }
@@ -291,6 +329,9 @@ public class UserSignUpActivity extends AppCompatActivity {
                 }
 
                 else{
+
+                    // signs user out
+                    mAuth.signOut();
 
                     // display an error message
                     Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
