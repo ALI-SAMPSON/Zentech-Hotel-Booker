@@ -41,6 +41,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oshi.libsearchtoolbar.SearchAnimationToolbar;
@@ -84,6 +85,8 @@ public class HomeActivity extends AppCompatActivity implements
 
     // Creating List of Rooms class.
     List<Rooms> roomsList;
+
+    ArrayList<Rooms> searchList;
 
     // Creating progressBar
     ProgressBar progressBar;
@@ -161,8 +164,7 @@ public class HomeActivity extends AppCompatActivity implements
         // Sets the Layout of the Recycler View and uses a spanCount of 2
         recyclerView.setLayoutManager(new GridLayoutManager(HomeActivity.this,2));
 
-        /*StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3,LinearLayout.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);*/
+        searchList = new ArrayList<>();
 
         roomsList = new ArrayList<>();
 
@@ -388,29 +390,96 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public boolean onQueryTextSubmit(String s) {
 
-                roomRef.orderByChild("room_type").equalTo("Single").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Rooms room_found = dataSnapshot.getChildren().iterator().next().getValue(Rooms.class);
-                    }
+                // if searchView is not empty
+                if(!s.isEmpty()){
+                    /*method to search for
+                      data in firebase database
+                    */
+                    searchForRoom(s);
+                }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                //else
+                else{
+                    /*method to search for
+                      data in firebase database
+                    */
+                    searchForRoom("");
+                }
 
                 return false;
-
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                return false;
+
+                // if searchView is not empty
+                if(!s.isEmpty()){
+                    /*method to search for
+                      data in firebase database
+                    */
+                    searchForRoom(s);
+                }
+
+                //else
+                else{
+                    /*method to search for
+                      data in firebase database
+                    */
+                    searchForRoom("");
+                }
+
+                return true;
             }
         });
 
         return true;
+    }
+
+    private void searchForRoom(String s)
+    {
+
+        // gets reference to the database
+        databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
+
+        // creates a query to initiate the search
+        Query query =  databaseReference.orderByChild("room_type")
+                .startAt(s)
+                .endAt(s + "\uf8ff");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.hasChildren()){
+
+                    //clears the arrayList
+                    searchList.clear();
+
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                        final Rooms rooms = snapshot.getValue(Rooms.class);
+
+                        //adds the rooms searched to the arrayList
+                        searchList.add(rooms);
+
+                    }
+
+                    RecyclerViewAdapterUser recyclerViewAdapterUserSearch =
+                            new RecyclerViewAdapterUser(HomeActivity.this,searchList);
+                    recyclerView.setAdapter(recyclerViewAdapterUserSearch);
+                    recyclerViewAdapterUserSearch.notifyDataSetChanged();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // display message if error occurs
+                Toast.makeText(HomeActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override

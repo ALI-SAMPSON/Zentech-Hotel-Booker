@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name" translatable="false">ACH BOOKING APP</string>
-    <string name="app_name1" translatable="false">ACCRA CITY HOTEL</string>
+    <string name="app_name" translatable="false">ACH BOOKER</string>
+    <string name="app_name1" translatable="false">ACCRA CITY HOTEL BOOKER</string>
 
-    <string name="application_name" translatable="false">ACH BOOKING APP</string>
-    <string name="application_name_1" translatable="false">ACCRA CITY HOTEL</string>
+    <string name="application_name" translatable="false">ACH BOOKER</string>
+    <string name="application_name_1" translatable="false">ACCRA CITY HOTEL BOOKER</string>
     <string name="hint_email" translatable="false">Email</string>
     <string name="hint_password" translatable="false">Password</string>
     <string name="hint_confirm_password" translatable="false">Confirm Password</string>
@@ -32,7 +32,8 @@
     <string name="admin_dash_board" translatable="false">ADMIN DASHBOARD</string>
     <string name="about_us_title" translatable="false">About Us</string>
     <string name="title_who_we_are" translatable="false">WHO WE ARE</string>
-    <string name="about_us_sub_title" translatable="false">Accra City Hotel Booking app is a mobile application specification android,
+    <string name="about_us_sub_title" translatable="false">
+        ACH Booker is a mobile application specification android,
         developed by iCODE Labs to help this guest house keep with its management.
         iCODE Labs was established in the year 2017 to undertake the development
         of mobile application for institutions or societies in need. It consists of
@@ -67,7 +68,8 @@
     <string name="text_please_wait" translatable="false">Please wait...</string>
 
     <!-- Reset password string -->
-    <string name="instruct_reset_password" translatable="false">"We have sent you instructions to reset your password!"</string>
+    <string name="instruct_reset_password" translatable="false">
+        "We have sent you instructions to reset your password!"</string>
 
     <!-- Home activity menu items -->
     <string name="text_about" translatable="false">About Us</string>
@@ -80,7 +82,7 @@
 
 
     <string name="text_about_us" translatable="false">
-        Accra City Hotel is a unique mobile application
+        ACH Booker is a unique mobile application
         developed to help clients or users to easily book hotel
         rooms and make payments instantly through any mobile
         money payment platform and Credit or Debit Card.
@@ -98,7 +100,7 @@
     <string name="hint_vision" translatable="false">Vision</string>
 
     <string name="text_overview" translatable="false">
-        ACH Booking app seeks to avoid inconveniences,
+        ACH Booker seeks to avoid inconveniences,
         caused as a result of one going to Hotel or guest
         house for a room and all to realized that the
         rooms are all occupied. With  this system in place
@@ -118,7 +120,7 @@
     </string>
 
     <string name="welcome_message" translatable="false">
-        ACH Booking app has a lot to offer you.
+        ACH Booker has a lot to offer you.
         Open the drawer on the left of the screen
         to update your profile, checks payments and
         contact us if needed and freely book a room.
@@ -140,7 +142,6 @@
     <string name="sign_out_msg" translatable="false">Are you sure you want to Sign out?</string>
     <string name="text_update" translatable="false">UPDATE</string>
     <string name="text_update_profile" translatable="false">Update Profile</string>
-
 
     <!-- Navigation drawer strings -->
     <string name="profile" translatable="false">Profile</string>
@@ -182,7 +183,9 @@
     <string name="text_cancel" translatable="false">Cancel</string>
     <string name="text_pay" translatable="false">Pay</string>
     <string name="exit_app_message" translatable="false">Please press again to exit</string>
-    <string name="verification_link_sent" translatable="false">a verification link has been sent to you mail, please visit your inbox and verify</string>
+    <string name="verification_link_sent" translatable="false">
+        a verification link has been sent to you mail,
+        please visit your inbox and verify</string>
     <string name="text_sign_up_and_verification_sent" translatable="false">
         Sign Up Successful!. A verification link has been
         sent to your mail, please visit your inbox to verify
@@ -193,6 +196,9 @@
         Email address is not verified,
         please verify your email from your inbox
     </string>
+
+    <string name="text_comfort"
+        translatable="false">...your home of comfort</string>
 
     <!--Developer-->
     <string name="watermark" translatable="false">Created by <b>iCODE labs</b> © 2018</string>

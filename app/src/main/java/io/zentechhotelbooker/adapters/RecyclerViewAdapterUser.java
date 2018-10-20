@@ -66,7 +66,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         YoYo.with(Techniques.RubberBand).playOn(holder.room_cardView);
 
         // sets text to the TextViews
-        holder.room_type.setText(" Room Type : " + rooms.getRoom_type());
+        holder.room_type.setText(rooms.getRoom_type());
         holder.room_price.setText(" Price : GH¢ " + rooms.getPrice());
 
         final String user_image = holder.user.getPhotoUrl().toString();
