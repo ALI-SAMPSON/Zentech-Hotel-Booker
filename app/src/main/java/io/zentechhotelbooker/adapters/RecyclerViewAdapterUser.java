@@ -63,11 +63,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         */
 
         // animation to cardView
-        YoYo.with(Techniques.RubberBand).playOn(holder.room_cardView);
+        YoYo.with(Techniques.ZoomIn).playOn(holder.room_cardView);
 
         // sets text to the TextViews
         holder.room_type.setText(rooms.getRoom_type());
         holder.room_price.setText(" Price : GH¢ " + rooms.getPrice());
+        //holder.room_price.setText(" GH¢ " + rooms.getPrice());
 
         final String user_image = holder.user.getPhotoUrl().toString();
 

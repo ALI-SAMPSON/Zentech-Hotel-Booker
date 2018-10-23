@@ -1,9 +1,14 @@
 package io.zentechhotelbooker.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 // search bar imported libraries
 import android.app.SearchManager;
+import android.graphics.Color;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.content.Context;
@@ -26,7 +31,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,6 +55,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oshi.libsearchtoolbar.SearchAnimationToolbar;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +65,7 @@ import io.zentechhotelbooker.adapters.RecyclerViewAdapterUser;
 import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
+
 
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener{
@@ -368,63 +379,85 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+
         MenuInflater Inflater = getMenuInflater();
         Inflater.inflate(R.menu.menu_user,menu);
 
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        /*MenuItem searchItem = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView)MenuItemCompat.getActionView(searchItem);*/
+        final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+
+        // Change search close button image
+
+        /*
+        ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
+        closeButton.setImageResource(R.drawable.ic_close);
+
+        // Set hint and the text colors
+
+        EditText txtSearch = ( searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
+        txtSearch.setHint("Search..");
+        txtSearch.setHintTextColor(Color.DKGRAY);
+        txtSearch.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        // Set the cursor
+
+        AutoCompleteTextView searchTextView =  searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchTextView, R.drawable.search_cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        */
+
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         // setting a Linear Layout transition on the searchView
-        //LinearLayout searchBar =  searchView.findViewById(R.id.toolbar);
-        //searchBar.setLayoutTransition(new LayoutTransition());
+        /*LinearLayout searchBar =  searchView.findViewById(R.id.lib_search_animation_toolbar);
+        LayoutTransition transition = new LayoutTransition();
+        searchBar.setLayoutTransition(transition);*/
         // Do not iconify the widget; expand it by default
         searchView.setIconifiedByDefault(false);
+        // Enable Submit Button
         searchView.setSubmitButtonEnabled(true);
         searchView.setIconified(true);
         searchView.setQueryRefinementEnabled(true);
 
+
         // adding a QueryListener on the searchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit(String text) {
 
                 // if searchView is not empty
-                if(!s.isEmpty()){
-                    /*method to search for
-                      data in firebase database
-                    */
-                    searchForRoom(s);
+                if(!text.isEmpty()){
+                    searchForRoom(text);
+                    searchView.clearFocus();
                 }
 
                 //else
                 else{
-                    /*method to search for
-                      data in firebase database
-                    */
                     searchForRoom("");
                 }
 
-                return false;
+                return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextChange(String text) {
 
                 // if searchView is not empty
-                if(!s.isEmpty()){
-                    /*method to search for
-                      data in firebase database
-                    */
-                    searchForRoom(s);
+                if(!text.isEmpty()){
+                    searchForRoom(text);
                 }
 
                 //else
                 else{
-                    /*method to search for
-                      data in firebase database
-                    */
                     searchForRoom("");
                 }
 
@@ -435,9 +468,9 @@ public class HomeActivity extends AppCompatActivity implements
         return true;
     }
 
+    // method to perform search in database for room type
     private void searchForRoom(String s)
     {
-
         // gets reference to the database
         databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
@@ -446,7 +479,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -482,7 +515,9 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
+
     @Override
+    @TargetApi(11)
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mDrawerToggle.onOptionsItemSelected(item)){
             return true;
