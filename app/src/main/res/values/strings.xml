@@ -197,8 +197,10 @@
         please verify your email from your inbox
     </string>
 
-    <string name="text_comfort"
-        translatable="false">...your home of comfort</string>
+    <string name="title_more_Images"
+        translatable="false">More Images</string>
+
+    <string name="text_comfort" translatable="false">...your home of comfort</string>
 
     <!--Developer-->
     <string name="watermark" translatable="false">Created by <b>iCODE labs</b> © 2018</string>

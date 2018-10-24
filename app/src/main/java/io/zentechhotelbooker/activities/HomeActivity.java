@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.graphics.Color;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.content.Context;
@@ -63,13 +65,14 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterUser;
+import io.zentechhotelbooker.fragments.FragmentRooms;
 import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
 
 
 public class HomeActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener, RecyclerViewAdapterUser.onItemClickListener{
 
     private DrawerLayout mDrawerLayout;
 
@@ -80,6 +83,8 @@ public class HomeActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
 
     private Users users;
+
+    private Rooms rooms;
 
     // Creating DataReference
     DatabaseReference databaseReference;
@@ -127,8 +132,8 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
 
         mDrawerLayout = findViewById(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
@@ -194,6 +199,8 @@ public class HomeActivity extends AppCompatActivity implements
 
         recyclerView.setAdapter(recyclerViewAdapterUser);
 
+        recyclerViewAdapterUser.setOnItemClickListener(HomeActivity.this);
+
         // Assign id to ProgressBar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setIndeterminate(true);
@@ -202,6 +209,8 @@ public class HomeActivity extends AppCompatActivity implements
         progressBar.setVisibility(View.VISIBLE);
 
         users = new Users();
+
+        rooms = new Rooms();
 
         // Getting instance of the FirbaseAuth class
         mAuth = FirebaseAuth.getInstance();
@@ -709,6 +718,24 @@ public class HomeActivity extends AppCompatActivity implements
         super.finish();
         // Add fadein-to-fadeout animation to the activity
         CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this," long click on a room to view options ",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCancelClick(int position) {}
+
+    @Override
+    public void viewMoreImagesClick(int position) {
+        //FragmentRooms room_fragment = new FragmentRooms();
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new FragmentRooms())
+                        .addToBackStack(null).commit();
+                        */
     }
 
 }

@@ -5,9 +5,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,6 +29,7 @@ import java.util.List;
 
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.activities.MakePaymentActivity;
+import io.zentechhotelbooker.fragments.FragmentRooms;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
@@ -30,6 +37,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
     private Context mCtx;
     private List<Rooms> roomsList;
+
+    // private member variable
+    private onItemClickListener mListener;
 
     public RecyclerViewAdapterUser(Context mCtx, List<Rooms> roomsList){
         this.mCtx = mCtx;
@@ -94,6 +104,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 // Creates new Intent
                 Intent intent = new Intent(mCtx, MakePaymentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -134,7 +145,8 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         return roomsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener,View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
 
         // Creating objects of the views
         CardView room_cardView;
@@ -159,9 +171,73 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
 
+            // OnClickListeners for the ContextMenu
+            itemView.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
+
         }
 
+        @Override
+        public void onClick(View view) {
+            if(mListener != null){
+                int position  = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+                    mListener.onItemClick(position);
+                }
+            }
+        }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            //contextMenu.setHeaderTitle("Select Action");
+            MenuItem viewRoomImages = contextMenu.add(Menu.NONE,1,1,"View More Images");
+            MenuItem cancel = contextMenu.add(Menu.NONE,2,2, "Cancel");
+
+
+            viewRoomImages.setOnMenuItemClickListener(this);
+            cancel.setOnMenuItemClickListener(this);
+
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            if(mListener != null){
+                int position  = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+
+                    // Check menuItem Clicked and respond accordingly
+                    switch (menuItem.getItemId()){
+                        case 1 :
+                            mListener.viewMoreImagesClick(position);
+                            return true;
+                        case 2:
+                            mListener.onCancelClick(position);
+                            return true;
+                    }
+
+                }
+            }
+            return false;
+        }
+    }
+
+    // Interface for ContextMenu
+    public interface onItemClickListener{
+
+        // Method to handle default clicks
+        void onItemClick(int position);
+
+        // Method to handle ViewRoom (dismiss ContextMenu) Clicks
+        void onCancelClick(int position);
+
+        // Method to handle deletion of item
+        void viewMoreImagesClick(int position);
+
+    }
+
+    // OnItemClickListener implementing the interface
+    public void setOnItemClickListener(onItemClickListener listener){
+        mListener = listener;
     }
 
 

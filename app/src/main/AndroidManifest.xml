@@ -4,11 +4,11 @@
     android:installLocation="auto">
 
     <supports-screens
+        android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true"
-        android:anyDensity="true"/>
+        android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -34,12 +34,12 @@
             android:name=".activities.AdminDashBoardActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents"></activity>
+            android:theme="@style/AppTheme.AdminComponents" />
         <activity
             android:name=".activities.AddRoomsActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents"></activity>
+            android:theme="@style/AppTheme.AdminComponents" />
         <activity
             android:name=".activities.DeleteRoomsActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
@@ -89,8 +89,7 @@
             android:name=".activities.UpdateUserProfileActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar">
-        </activity>
+            android:theme="@style/AppTheme.ActionBar"></activity>
         <activity
             android:name=".activities.UserLoginActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
@@ -98,32 +97,37 @@
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- Deep linking intent-filter to identify app online when users search -->
-            <!--<intent-filter android:label="@string/filter_title_con_care_gh">
+            <!--
+                <intent-filter android:label="@string/filter_title_con_care_gh">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />-->
+                <category android:name="android.intent.category.BROWSABLE" />
+            -->
             <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-            <!--<data android:scheme="http"
+            <!--
+                <data android:scheme="http"
                 android:host="www.example.com"
-                android:pathPrefix="/google" /> -->
-            <!-- note that the leading "/" is required for pathPrefix-->
+                android:pathPrefix="/google" />
+            -->
+            <!-- note that the leading "/" is required for pathPrefix -->
             <!-- Accepts URIs that begin with "example://gizmos” -->
-            <!--<data android:scheme="example"
+            <!--
+        <data android:scheme="example"
                 android:host="google" />
-        </intent-filter> -->
+        </intent-filter>
+            -->
 
         </activity>
         <activity
             android:name=".activities.UserSignUpActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.HomeActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBarHome"></activity>
+            android:theme="@style/AppTheme.NoActionBarHome" />
         <activity
             android:name=".activities.MakePaymentActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
@@ -138,28 +142,32 @@
             android:name=".activities.AboutUsUserActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"></activity>
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".activities.ContactUsUserActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"></activity>
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".activities.CheckUserPaymentActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"></activity>
+            android:theme="@style/AppTheme.ActionBar" />
 
         <!-- Searchable Activity -->
-        <activity android:name=".activities.SearchActivity"
+        <activity
+            android:name=".activities.SearchActivity"
             android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                        android:resource="@xml/searchable"/>
-        </activity>
 
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".fragments.FragmentRooms"
+            android:theme="@style/AppTheme.NoActionBarHome"></activity>
     </application>
 
 </manifest>

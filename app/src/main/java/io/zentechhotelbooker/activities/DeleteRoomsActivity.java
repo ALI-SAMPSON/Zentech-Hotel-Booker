@@ -87,8 +87,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // Assign activity this to progress bar.
         progressBar = findViewById(R.id.progressBar);
 
-        //viewRooms();
-
         // Calling the method to display rooms in the firebase database
         loadUploadedRoomDetails();
 
