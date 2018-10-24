@@ -123,7 +123,7 @@
             android:name=".activities.HomeActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBarHome"></activity>
         <activity
             android:name=".activities.MakePaymentActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"

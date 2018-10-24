@@ -14,5 +14,6 @@
     <dimen name="spacing_small">5dp</dimen>
     <dimen name="avatar_radius">48dp</dimen>
     <dimen name="card_elevation">5dp</dimen>
+    <dimen name="recyclerview_elevation">-10dp</dimen>
     
 </resources>

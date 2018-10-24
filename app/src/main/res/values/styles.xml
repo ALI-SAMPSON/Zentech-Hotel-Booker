@@ -10,6 +10,15 @@
     </style>
 
     <!-- Base application theme. -->
+    <style name="AppTheme.NoActionBarHome" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/background_super_dark</item>
+        <item name="colorPrimaryDark">@color/edit_text_color</item>
+        <item name="colorAccent">@color/colorBlue</item>
+        <!-- <item name="android:textColorHint">@color/colorBlue</item> -->
+    </style>
+
+    <!-- Base application theme. -->
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <!-- Customize your theme here. -->
@@ -75,6 +84,14 @@
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryDark">@color/materialGreen</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/background_super_dark</item>
+        <item name="colorPrimaryDark">@color/edit_text_color</item>
+        <item name="colorAccent">@color/colorBlue</item>
+    </style>
+
 
 
 </resources>

@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.Menu;
@@ -53,7 +54,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.oshi.libsearchtoolbar.SearchAnimationToolbar;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -114,11 +115,20 @@ public class HomeActivity extends AppCompatActivity implements
      upon successful login into the application*/
     private  static boolean isFirstRun = true;
 
+    Toolbar toolbar;
+
+    // material searchView
+    MaterialSearchView searchView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+        setSupportActionBar(toolbar);
 
         mDrawerLayout = findViewById(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
@@ -135,6 +145,7 @@ public class HomeActivity extends AppCompatActivity implements
         // Checks for available support action bar
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.home));
+            getSupportActionBar().setElevation(5.0f);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -199,6 +210,9 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Calling method to display a welcome message
         displayWelcomeMessage();
+
+        // method call
+        //searchView();
 
     }
 
@@ -377,66 +391,59 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
+    //material searchView code
+    public void searchView(){
+
+        searchView = findViewById(R.id.search_view);
+        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        searchView.setEllipsize(true);
+        searchView.setSubmitOnClick(true);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(getApplicationContext(),query,Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+            }
+        });
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
         MenuInflater Inflater = getMenuInflater();
         Inflater.inflate(R.menu.menu_user,menu);
+        MenuItem item = menu.findItem(R.id.menu_search);
 
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        /*MenuItem searchItem = menu.findItem(R.id.menu_search);
-        SearchView searchView = (SearchView)MenuItemCompat.getActionView(searchItem);*/
-        final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-
-        // Change search close button image
-
-        /*
-        ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
-        closeButton.setImageResource(R.drawable.ic_close);
-
-        // Set hint and the text colors
-
-        EditText txtSearch = ( searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
-        txtSearch.setHint("Search..");
-        txtSearch.setHintTextColor(Color.DKGRAY);
-        txtSearch.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-        // Set the cursor
-
-        AutoCompleteTextView searchTextView =  searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        try {
-            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-            mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(searchTextView, R.drawable.search_cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        */
-
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        // setting a Linear Layout transition on the searchView
-        /*LinearLayout searchBar =  searchView.findViewById(R.id.lib_search_animation_toolbar);
-        LayoutTransition transition = new LayoutTransition();
-        searchBar.setLayoutTransition(transition);*/
-        // Do not iconify the widget; expand it by default
-        searchView.setIconifiedByDefault(false);
-        // Enable Submit Button
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setIconified(true);
-        searchView.setQueryRefinementEnabled(true);
-
-
-        // adding a QueryListener on the searchView
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        // Material SearchView
+        searchView = findViewById(R.id.search_view);
+        searchView.setMenuItem(item);
+        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        searchView.setEllipsize(true);
+        searchView.setSubmitOnClick(true);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String text) {
-
+            public boolean onQueryTextSubmit(String query) {
                 // if searchView is not empty
-                if(!text.isEmpty()){
-                    searchForRoom(text);
+                if(!query.isEmpty()){
+                    searchForRoom(query);
                     searchView.clearFocus();
                 }
 
@@ -449,11 +456,10 @@ public class HomeActivity extends AppCompatActivity implements
             }
 
             @Override
-            public boolean onQueryTextChange(String text) {
-
+            public boolean onQueryTextChange(String query) {
                 // if searchView is not empty
-                if(!text.isEmpty()){
-                    searchForRoom(text);
+                if(!query.isEmpty()){
+                    searchForRoom(query);
                 }
 
                 //else
@@ -462,6 +468,18 @@ public class HomeActivity extends AppCompatActivity implements
                 }
 
                 return true;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
             }
         });
 
@@ -523,21 +541,18 @@ public class HomeActivity extends AppCompatActivity implements
             return true;
         }
         switch (item.getItemId()){
-            /*case R.id.menu_search:
+            case R.id.menu_search:
                 // call method
                return true;
-            case android.R.id.home:
+            /*case android.R.id.home:
                 onBackPressed();
                 return true;*/
             case R.id.menu_about_us:
-                // finishes the activity
-                finish();
-                // open AboutUsUserActivity activity
-                startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
-                // Add left-to-right animation to the activity
-                CustomIntent.customType(HomeActivity.this,"left-to-right");
+                // method call
+                openAboutUs();
                 break;
             case R.id.menu_exit:
+
                 // call to the method to exit the application
                 exitApplication();
 
@@ -585,6 +600,16 @@ public class HomeActivity extends AppCompatActivity implements
         return true;
     }
 
+    // Method to Open About Us page
+    private void openAboutUs(){
+        // open AboutUsUserActivity activity
+        startActivity(new Intent(HomeActivity.this,AboutUsUserActivity.class));
+        // Add left-to-right animation to the activity
+        CustomIntent.customType(HomeActivity.this,"left-to-right");
+        // finishes the activity
+        finish();
+    }
+
     // method to close the app and kill all processes
     private void exitApplication(){
 
@@ -617,12 +642,10 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-
-       /* boolean handledByToolbar = toolbar.onBackPressed();
-
-        if(!handledByToolbar){
-            super.onBackPressed();
-        }*/
+        //checks if searchView is opened
+        if(searchView.isSearchOpen()){
+            searchView.closeSearch();
+        }
 
         if(doublePressBackToExitApp){
             super.onBackPressed();
