@@ -58,7 +58,9 @@ public class AddRoomsActivity extends AppCompatActivity {
     private DatabaseReference roomRef;
 
     private CircleImageView circleImageView;
-    private int image_request_code = 2;
+    private static final int image_request_code = 2;
+
+    private static final int multiple_images_request_code = 3;
 
     // Folder path for Firebase Storage.
     String Storage_Path = "Hotel Room Images/";
@@ -153,6 +155,16 @@ public class AddRoomsActivity extends AppCompatActivity {
         CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
     }
 
+
+    //onclick listener for button to add more images
+    public void addMultipleImages(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select Image"),multiple_images_request_code);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -171,6 +183,30 @@ public class AddRoomsActivity extends AppCompatActivity {
             }
 
         }
+
+        if(requestCode == multiple_images_request_code && resultCode == RESULT_OK){
+
+            if(data.getClipData() != null){
+                Toast.makeText(AddRoomsActivity.this,"Multiple Images Selected",Toast.LENGTH_LONG).show();
+            }
+            else if(data.getData() != null && data != null) {
+                FilePathUri = data.getData();
+
+                try {
+                    // Getting selected image into Bitmap.
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),FilePathUri);
+                    // Setting up bitmap selected image into ImageView.
+                    circleImageView.setImageBitmap(bitmap);
+                }
+                catch (Exception e){
+                    Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+
+
+        }
+
     }
 
     // Creating Method to get the selected image file Extension from File Path URI.
@@ -356,4 +392,5 @@ public class AddRoomsActivity extends AppCompatActivity {
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
     }
+
 }

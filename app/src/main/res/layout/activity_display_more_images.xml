@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange_light"
-    tools:context=".fragments.FragmentRooms">
+    tools:context=".activities.DisplayMoreImagesActivity">
 
+    <!--
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -18,5 +18,6 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
     </android.support.v7.widget.Toolbar>
+    -->
 
 </android.support.constraint.ConstraintLayout>

@@ -1,19 +1,8 @@
 package io.zentechhotelbooker.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 // search bar imported libraries
-import android.app.SearchManager;
-import android.graphics.Color;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -28,18 +17,10 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
-import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,17 +36,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterUser;
-import io.zentechhotelbooker.fragments.FragmentRooms;
 import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
@@ -730,12 +708,13 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void viewMoreImagesClick(int position) {
-        //FragmentRooms room_fragment = new FragmentRooms();
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, new FragmentRooms())
-                        .addToBackStack(null).commit();
-                        */
+
+        //open the activity to view more Images
+        startActivity(new Intent(HomeActivity.this,DisplayMoreImagesActivity.class));
+
+        // Add fadein-to-fadeout animation to the activity
+        CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+
     }
 
 }

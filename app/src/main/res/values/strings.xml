@@ -197,8 +197,12 @@
         please verify your email from your inbox
     </string>
 
-    <string name="title_more_Images"
+    <string name="text_more_images"
         translatable="false">More Images</string>
+    <string name="text_add_multiple_images"
+        translatable="false">Add Multiple Images</string>
+
+    <string name="title_more_Images" translatable="false">More Images</string>
 
     <string name="text_comfort" translatable="false">...your home of comfort</string>
 

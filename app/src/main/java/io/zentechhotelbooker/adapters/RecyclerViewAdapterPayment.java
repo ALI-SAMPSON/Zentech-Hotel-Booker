@@ -46,7 +46,7 @@ public class RecyclerViewAdapterPayment extends RecyclerView.Adapter<RecyclerVie
         final Payments payments = paymentsList.get(position);
 
         // animation to cardView
-        YoYo.with(Techniques.BounceInUp).playOn(holder.cardView);
+        YoYo.with(Techniques.ZoomIn).playOn(holder.cardView);
 
         holder.user_name.setText(" Username : " + payments.getUser_name());
         holder.room_number.setText(" Room Type : "  + payments.getRoom_type());
@@ -75,6 +75,7 @@ public class RecyclerViewAdapterPayment extends RecyclerView.Adapter<RecyclerVie
         public ViewHolder(View itemView) {
             super(itemView);
 
+            cardView = itemView.findViewById(R.id.payment_cardView);
             room_image = itemView.findViewById(R.id.room_image);
             user_name = itemView.findViewById(R.id.user_name);
             room_number = itemView.findViewById(R.id.room_number);

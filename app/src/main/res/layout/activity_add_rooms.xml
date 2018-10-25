@@ -71,7 +71,8 @@
                             android:textSize="16sp"
                             android:hint="@string/room_number"
                             android:inputType="numberDecimal"
-                            android:importantForAutofill="no" tools:targetApi="o"/>
+                            android:importantForAutofill="no"
+                            tools:targetApi="o"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <!-- TextInputLayout and AppCompatEdiText for Price -->
@@ -79,7 +80,7 @@
                         android:id="@+id/textInputLayoutPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="0dp"
                         android:layout_gravity="center"
                         android:gravity="center_horizontal"
@@ -98,7 +99,8 @@
                             android:textSize="16sp"
                             android:hint="@string/price"
                             android:inputType="numberDecimal"
-                            android:importantForAutofill="no" tools:targetApi="o" />
+                            android:importantForAutofill="no"
+                            tools:targetApi="o" />
                     </android.support.design.widget.TextInputLayout>
 
                     <!--TextInputLayout and LinearLayout and spinner View for Payment Method-->
@@ -107,8 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="40dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="0dp"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
@@ -152,12 +153,33 @@
                         </LinearLayout>
                     </android.support.design.widget.TextInputLayout>
 
+                    <!-- Add More Images Button  -->
+                    <Button
+                        android:id="@+id/btn_add"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="30dp"
+                        android:layout_width="230dp"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_add_multiple_images"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18sp"
+                        android:textAllCaps="false"
+                        android:textStyle="normal"
+                        android:textAlignment="center"
+                        android:background="@drawable/round_corner_button_reset_password"
+                        android:onClick="addMultipleImages"/>
+
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
             <!-- Add Button  -->
-            <android.support.v7.widget.AppCompatButton
+            <Button
                 android:id="@+id/appCompatButtonLogin"
                 android:layout_marginTop="80dp"
                 android:layout_width="280dp"
@@ -179,8 +201,8 @@
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_below="@+id/appCompatButtonLogin"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"

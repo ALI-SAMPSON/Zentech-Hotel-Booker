@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 27
     defaultConfig {
         applicationId "io.zentechhotelbooker"
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion 16
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,10 +31,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     // view libraries
     //implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.google.firebase:firebase-core:11.8.0'
     implementation 'com.google.firebase:firebase-crash:11.8.0'
@@ -53,14 +53,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     // animation dependency for cardView
-    implementation 'com.android.support:support-compat:28.0.0'
+    implementation 'com.android.support:support-compat:27.1.1'
     implementation 'com.daimajia.easing:library:2.0@aar'
     implementation 'com.daimajia.androidanimations:library:2.3@aar'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:animated-vector-drawable:28.0.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    //implementation 'com.android.support:animated-vector-drawable27.1.1'
 
     // library to add a circular reveal during search
-    implementation 'com.android.support:transition:28.0.0'
+    implementation 'com.android.support:transition:27.1.1'
     implementation 'com.github.udioshi85:libSearchToolbar:1.3.0'
 
     // Add Crashlytics dependency
