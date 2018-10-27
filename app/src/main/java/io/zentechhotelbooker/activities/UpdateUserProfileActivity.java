@@ -33,6 +33,7 @@ import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
 
 public class UpdateUserProfileActivity extends AppCompatActivity {
@@ -55,6 +56,8 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     RelativeLayout relativeLayout;
+
+    Users users;
 
     // Creating FirebaseAuth
     FirebaseAuth mAuth;
@@ -81,6 +84,8 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
         progressBar1 = findViewById(R.id.progressBar1);
 
         relativeLayout = findViewById(R.id.relativeLayout);
+
+        users = new Users();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -149,7 +154,15 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressBar.setVisibility(View.GONE);
-                            profileImageUrl = taskSnapshot.getDownloadUrl().toString();
+                            profileImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Uri downloadUrl = uri;
+                                    profileImageUrl = downloadUrl.toString();
+                                    users.setImageUrl(profileImageUrl);
+                                }
+                            });
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -239,12 +252,12 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home:
-                // finishes the HomeActivity
-                finish();
                 // starts the HomeActivity
                 startActivity(new Intent(UpdateUserProfileActivity.this,HomeActivity.class));
                 // Add a custom animation to the activity
                 CustomIntent.customType(UpdateUserProfileActivity.this,"fadein-to-fadeout");
+                // finishes the HomeActivity
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }

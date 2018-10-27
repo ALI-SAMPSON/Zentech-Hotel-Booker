@@ -406,9 +406,15 @@ public class UserSignUpActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // dismisses the progress Bar and stores the image Url of the image in a String variable
                             progressBar.setVisibility(View.GONE);
-                            profileImageUrl = taskSnapshot.getDownloadUrl().toString();
-                            // sets the Url of the Image to field in the database
-                            users.setImageUrl(profileImageUrl);
+                            profileImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Uri downloadUrl = uri;
+                                    profileImageUrl = downloadUrl.toString();
+                                    // sets the Url of the Image to field in the database
+                                    users.setImageUrl(profileImageUrl);
+                                }
+                            });
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override

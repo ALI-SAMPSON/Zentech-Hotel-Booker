@@ -3,9 +3,11 @@ package io.zentechhotelbooker.activities;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -57,7 +60,7 @@ public class AddRoomsActivity extends AppCompatActivity {
     private FirebaseDatabase roomdB;
     private DatabaseReference roomRef;
 
-    private CircleImageView circleImageView;
+    private ImageView roomImage;
     private static final int image_request_code = 2;
 
     private static final int multiple_images_request_code = 3;
@@ -105,7 +108,7 @@ public class AddRoomsActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        circleImageView = findViewById(R.id.circularImageView);
+        roomImage = findViewById(R.id.imageView);
         editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
 
@@ -143,7 +146,7 @@ public class AddRoomsActivity extends AppCompatActivity {
     public void onSelectImage(View view){
 
         // add animation to the view
-        YoYo.with(Techniques.RubberBand).playOn(circleImageView);
+        YoYo.with(Techniques.RubberBand).playOn(roomImage);
 
         // Creating intent.
         Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -176,34 +179,11 @@ public class AddRoomsActivity extends AppCompatActivity {
                 // Getting selected image into Bitmap.
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),FilePathUri);
                 // Setting up bitmap selected image into ImageView.
-                circleImageView.setImageBitmap(bitmap);
+                roomImage.setImageBitmap(bitmap);
             }
             catch (Exception e){
                 Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
             }
-
-        }
-
-        if(requestCode == multiple_images_request_code && resultCode == RESULT_OK){
-
-            if(data.getClipData() != null){
-                Toast.makeText(AddRoomsActivity.this,"Multiple Images Selected",Toast.LENGTH_LONG).show();
-            }
-            else if(data.getData() != null && data != null) {
-                FilePathUri = data.getData();
-
-                try {
-                    // Getting selected image into Bitmap.
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),FilePathUri);
-                    // Setting up bitmap selected image into ImageView.
-                    circleImageView.setImageBitmap(bitmap);
-                }
-                catch (Exception e){
-                    Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
-                }
-            }
-
-
 
         }
 
@@ -231,7 +211,7 @@ public class AddRoomsActivity extends AppCompatActivity {
             // progressBar.setVisibility(View.VISIBLE);
             progressDialog.show();
 
-            StorageReference storageReference2nd = storageReference
+            final StorageReference storageReference2nd = storageReference
                     .child(Storage_Path + System.currentTimeMillis() +
                             "." + GetFileExtension(FilePathUri));
 
@@ -241,10 +221,18 @@ public class AddRoomsActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
+                            storageReference2nd.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Uri downloadUrl = uri;
+                                    String imageDownloadUrl = downloadUrl.toString();
+                                    rooms.setRoom_image(imageDownloadUrl);
+                                }
+                            });
+
                             //get input from the editText fields
                             String room_number = editTextRoomNumber.getText().toString().trim();
                             String price = editTextPrice.getText().toString().trim();
-                            String imageDownloadUrl = taskSnapshot.getDownloadUrl().toString();
                             String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
 
                             // displays the progressBar
@@ -255,7 +243,6 @@ public class AddRoomsActivity extends AppCompatActivity {
                             rooms.setRoom_number(room_number);
                             rooms.setRoom_type(room_type);
                             rooms.setPrice(price);
-                            rooms.setRoom_image(imageDownloadUrl);
 
                             // Getting image upload ID.
                             String ImageUploadID = databaseReference.push().getKey();
@@ -317,7 +304,7 @@ public class AddRoomsActivity extends AppCompatActivity {
         if(room_number.isEmpty()){
 
             // Adds an animation to shake the view
-            YoYo.with(Techniques.FadeInDown).playOn(circleImageView);
+            YoYo.with(Techniques.FadeInDown).playOn(roomImage);
 
             // Adds an animation to shake the view
             YoYo.with(Techniques.Shake).playOn(spinnerLayout);
@@ -343,6 +330,7 @@ public class AddRoomsActivity extends AppCompatActivity {
             UploadImageFileToFirebaseStorage();
         }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -393,4 +381,22 @@ public class AddRoomsActivity extends AppCompatActivity {
         CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
     }
 
+    // onclick Listener for continue button
+    public void onContinueButtonClick(View view) {
+
+        //get input from the editText fields
+        String room_number = editTextRoomNumber.getText().toString().trim();
+        String room_price = editTextPrice.getText().toString().trim();
+        String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
+
+        // starts the about us activity
+        Intent intentContinue = new Intent(AddRoomsActivity.this,AddRoomImagesActivity.class);
+        intentContinue.putExtra("room_number", room_number);
+        intentContinue.putExtra("room_price",room_price);
+        intentContinue.putExtra("room_type",room_type);
+        startActivity(intentContinue);
+
+        // Adds an up-to-bottom animation to the activity
+        CustomIntent.customType(AddRoomsActivity.this,"right-to-left");
+    }
 }

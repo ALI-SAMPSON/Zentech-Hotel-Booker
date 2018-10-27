@@ -65,7 +65,7 @@
 
     <!-- String progress dialog -->
     <string name="text_uploading_details" translatable="false">Uploading Details</string>
-    <string name="text_please_wait" translatable="false">Please wait...</string>
+    <string name="text_please_wait" translatable="false">please wait...</string>
 
     <!-- Reset password string -->
     <string name="instruct_reset_password" translatable="false">
@@ -197,10 +197,14 @@
         please verify your email from your inbox
     </string>
 
-    <string name="text_more_images"
-        translatable="false">More Images</string>
-    <string name="text_add_multiple_images"
-        translatable="false">Add Multiple Images</string>
+    <string name="text_more_images" translatable="false">More Images</string>
+    <string name="text_add_multiple_images" translatable="false">Add Multiple Images</string>
+    <string name="text_select_images"
+        translatable="false">Select Images of Room</string>
+    <string name="text_continue"
+        translatable="false">Continue</string>
+    <string name="text_add_room_images"
+        translatable="false">Add Room Images</string>
 
     <string name="title_more_Images" translatable="false">More Images</string>
 
