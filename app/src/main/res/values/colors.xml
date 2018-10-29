@@ -63,6 +63,8 @@
     <color name="colorPink">#FE5BDC</color>
     <color name="orange_light">#FE7058</color>
     <color name="orange_deep">#F1553F</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="darkRed">	#8B0000</color>
     <color name="dark_violet">#9400D3</color>
     <color name="blue_violet">#8A2BE2</color>
 

@@ -85,19 +85,24 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         // using Glide Library to load images
         Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
 
-
-        /*holder.paymentRef.child(rooms.getRoom_number()).addListenerForSingleValueEvent(new ValueEventListener() {
+        // checks for booked and non-booked rooms
+        holder.paymentRef.child(rooms.getRoom_number()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                // disables the cardView if room is booked
-                //holder.room_cardView.setEnabled(false);
-                holder.room_cardView.setClickable(false);
-                //holder.room_cardView.setFocusable(false);
-                // displays a text with caption "Booked" to user
-                holder.tv_room_booked.setVisibility(View.VISIBLE);
-                // animation to cardView
-                YoYo.with(Techniques.Shake).playOn(holder.room_cardView);
+                if(dataSnapshot.exists()){
+                    // disables the cardView if room is booked
+                    //holder.room_cardView.setEnabled(false);
+                    holder.room_cardView.setClickable(false);
+                    holder.room_cardView.setFocusable(false);
+                    // displays a text with caption "Booked" to user
+                    holder.tv_room_booked.setVisibility(View.VISIBLE);
+
+                }
+                else{
+                    // dismisses the textView
+                    holder.tv_room_booked.setVisibility(View.GONE);
+                }
 
             }
 
@@ -107,9 +112,10 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
-        */
 
 
+
+        // checks if rooms are booked or not when user clicks on the cardView
         holder.room_cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +128,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                         if (dataSnapshot.exists()) {
 
                             // disables the cardView if room is booked
-                            //holder.room_cardView.setEnabled(false);
+                            holder.room_cardView.setEnabled(false);
                             holder.room_cardView.setClickable(false);
                             holder.room_cardView.setFocusable(false);
 
