@@ -458,18 +458,6 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-
-            }
-        });
-
         return true;
     }
 

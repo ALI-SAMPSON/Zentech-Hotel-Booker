@@ -262,19 +262,6 @@ public class MakePaymentActivity extends AppCompatActivity {
                             " Room is already booked by another user. Please try another room!",
                             Snackbar.LENGTH_LONG).show();
 
-                    //checks if room has been booked
-                    /*if (room_number.equals(payments.getRoom_number())) {
-
-                        // hides the progressBar
-                        progressDialog.dismiss();
-
-                        //clearBothTextFields(); //call to this method
-                        Snackbar.make(nestedScrollView,
-                                " Room is already booked by another user. Please try another room!",
-                                Snackbar.LENGTH_LONG).show();
-                        return;
-
-                    }*/
 
                 }
 
@@ -313,7 +300,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 nm.notify(0, notification);
 
                                 // Method call to the class to send SMS
-                                sendSMS();
+                                // sendSMS();
 
                             }
                             else {

@@ -206,6 +206,9 @@
     <string name="text_add_room_images"
         translatable="false">Add Room Images</string>
 
+    <string name="text_booked"
+        translatable="false">Booked</string>
+
     <string name="title_more_Images" translatable="false">More Images</string>
 
     <string name="text_comfort" translatable="false">...your home of comfort</string>

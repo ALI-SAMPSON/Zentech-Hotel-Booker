@@ -27,6 +27,20 @@
             android:src="@drawable/hotel_2"
             android:scaleType="centerCrop"/>
 
+        <TextView
+            android:id="@+id/tv_room_booked"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/card_elevation"
+            app:fontFamily="@font/nunito_extrabold"
+            android:textColor="@color/colorWhite"
+            android:text="@string/text_booked"
+            android:visibility="visible"
+            android:layout_gravity="center" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="35dp"
@@ -36,7 +50,7 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/room_type"
+            android:id="@+id/tv_room_type"
             android:layout_below="@+id/room_image"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
@@ -49,8 +63,8 @@
 
 
         <TextView
-            android:id="@+id/room_price"
-            android:layout_below="@+id/room_type"
+            android:id="@+id/tv_room_price"
+            android:layout_below="@+id/tv_room_type"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

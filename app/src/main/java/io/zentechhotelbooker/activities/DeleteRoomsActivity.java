@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -78,6 +79,8 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
         // Creating an object of the RecyclerAdapter
         recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,roomsList);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(recyclerViewAdapterAdmin);
 
