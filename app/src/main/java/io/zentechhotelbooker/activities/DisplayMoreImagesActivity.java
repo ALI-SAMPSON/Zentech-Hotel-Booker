@@ -34,7 +34,7 @@ public class DisplayMoreImagesActivity extends AppCompatActivity {
                 // goes back ot the home Page
                 startActivity(new Intent(DisplayMoreImagesActivity.this,HomeActivity.class));
                 // Add fadein-to-fadeout animation to the activity
-                CustomIntent.customType(DisplayMoreImagesActivity.this,"fadein-to-fadeout");
+                CustomIntent.customType(DisplayMoreImagesActivity.this,"left-to-right");
                 break;
                 default:
                     break;

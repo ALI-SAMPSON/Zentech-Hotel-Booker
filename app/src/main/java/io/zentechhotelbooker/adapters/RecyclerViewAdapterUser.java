@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.activities.DisplayMoreImagesActivity;
 import io.zentechhotelbooker.activities.MakePaymentActivity;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
@@ -196,9 +198,19 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             }
         });
 
-    }
-
-    public void checkBookedRooms(){
+        // OnclickListener for button to view more images of a rooms
+        holder.btn_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // opens the Display more Images Activity
+                Intent intent = new Intent(mCtx,DisplayMoreImagesActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("images",rooms.getRoom_image());
+                mCtx.startActivity(intent);
+                // Add a custom animation to the activity
+                CustomIntent.customType(mCtx, "right-to-left");
+            }
+        });
 
     }
 
@@ -262,6 +274,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         TextView tv_room_booked;
         TextView tv_room_type;
         TextView tv_room_price;
+        Button btn_view;
 
         FirebaseAuth mAuth;
 
@@ -279,6 +292,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             tv_room_booked = itemView.findViewById(R.id.tv_room_booked);
             tv_room_type = itemView.findViewById(R.id.tv_room_type);
             tv_room_price = itemView.findViewById(R.id.tv_room_price);
+            btn_view = itemView.findViewById(R.id.button_view);
 
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
