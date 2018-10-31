@@ -171,11 +171,15 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".activities.AddRoomImagesActivity"
+        <activity
+            android:name=".activities.AddRoomImagesActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents">
-        </activity>
+            android:theme="@style/AppTheme.AdminComponents"></activity>
+        <activity android:name=".activities.ViewRoomDetailsActivity"
+            android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar"/>
     </application>
 
 </manifest>

@@ -227,15 +227,14 @@ public class AddRoomImagesActivity extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         Uri downloadUrl = uri;
                         roomImageUrl = downloadUrl.toString();
-                        //rooms.setRoom_image(roomImageUrl);
                     }
                 });
 
                 // setting fields to the object og the class Rooms
-                rooms.setRoom_image(roomImageUrl);
-                rooms.setRoom_number(room_number);
-                rooms.setRoom_type(room_type);
-                rooms.setPrice(room_price);
+                rooms.setRoomImage_url(roomImageUrl);
+                rooms.setRoomNumber(room_number);
+                rooms.setRoomType(room_type);
+                rooms.setRoomPrice(room_price);
 
                 // Getting image upload ID.
                 String ImageUploadID = roomRef.push().getKey();

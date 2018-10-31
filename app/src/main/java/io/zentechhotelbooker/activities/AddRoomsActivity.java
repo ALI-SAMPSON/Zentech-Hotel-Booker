@@ -71,8 +71,10 @@ public class AddRoomsActivity extends AppCompatActivity {
     // Root Database Name for Firebase Database.
     public static String Database_Path = "Rooms";
 
-    // Creating URI
+    // Creating URI for room images
     Uri FilePathUri;
+
+    String imageUrl;
 
     // Creating StorageReference and DatabaseReference object.
     StorageReference storageReference;
@@ -149,23 +151,14 @@ public class AddRoomsActivity extends AppCompatActivity {
         YoYo.with(Techniques.RubberBand).playOn(roomImage);
 
         // Creating intent.
-        Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent imageIntent = new Intent();
         // Setting intent type as image to select image from phone storage.
         imageIntent.setType("image/*");
         imageIntent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(imageIntent,"Please Select Image"),image_request_code);
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
-    }
 
-
-    //onclick listener for button to add more images
-    public void addMultipleImages(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Select Image"),multiple_images_request_code);
     }
 
     @Override
@@ -198,99 +191,6 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         // Returning the file Extension.
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-
-    }
-
-    // Creating UploadImageFileToFirebaseStorage method to upload image on storage.
-    public void UploadImageFileToFirebaseStorage(){
-
-        // Checking whether FilePathUri Is empty or not.
-        if(FilePathUri != null){
-
-            // display progressBar to show that image is uploading
-            // progressBar.setVisibility(View.VISIBLE);
-            progressDialog.show();
-
-            final StorageReference storageReference2nd = storageReference
-                    .child(Storage_Path + System.currentTimeMillis() +
-                            "." + GetFileExtension(FilePathUri));
-
-            // Adding addOnSuccessListener to second StorageReference.
-            storageReference2nd.putFile(FilePathUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            storageReference2nd.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Uri downloadUrl = uri;
-                                    String imageDownloadUrl = downloadUrl.toString();
-                                    rooms.setRoom_image(imageDownloadUrl);
-                                }
-                            });
-
-                            //get input from the editText fields
-                            String room_number = editTextRoomNumber.getText().toString().trim();
-                            String price = editTextPrice.getText().toString().trim();
-                            String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
-
-                            // displays the progressBar
-                            //progressBar.setVisibility(View.GONE);
-                            progressDialog.dismiss();
-
-                            // setting fields to the object og the class Rooms
-                            rooms.setRoom_number(room_number);
-                            rooms.setRoom_type(room_type);
-                            rooms.setPrice(price);
-
-                            // Getting image upload ID.
-                            String ImageUploadID = databaseReference.push().getKey();
-
-                            // Adding image upload id s child element into databaseReference.
-                            databaseReference .child(ImageUploadID).setValue(rooms);
-
-                            // Showing success message.
-                            Snackbar.make(scrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
-
-                            // Method Call
-                            clearTextFields();
-
-                        }
-                    })
-                    // If something goes wrong
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            // Hiding the progressBar.
-                            //progressBar.setVisibility(View.GONE);
-                            progressDialog.dismiss();
-
-                            // Showing exception error message.
-                            Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
-
-                        }
-                    })
-            // On progress change upload time.
-            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    // Setting progressBar visible.
-                    //progressBar.setVisibility(View.VISIBLE);
-                    progressDialog.show();
-
-                }
-            });
-
-
-        }
-
-        else {
-            // Showing Alert message.
-            Snackbar.make(scrollView, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
-        }
 
     }
 
@@ -327,24 +227,109 @@ public class AddRoomsActivity extends AppCompatActivity {
         }
         else{
             // Calling method to upload selected image onto Firebase storage.
-            UploadImageFileToFirebaseStorage();
+            addRoomDetailsToDatabase();
         }
     }
 
+    // Creating UploadImageFileToFirebaseStorage method to upload image on storage.
+    public void addRoomDetailsToDatabase(){
+
+        // Checking whether FilePathUri Is empty or not.
+        if(FilePathUri != null){
+
+            // display progressBar to show that image is uploading
+            progressDialog.show();
+
+            final StorageReference mStorageRef = FirebaseStorage.getInstance()
+                    .getReference(Storage_Path + System.currentTimeMillis() +
+                            "." + GetFileExtension(FilePathUri));
+                    /*.child(Storage_Path + System.currentTimeMillis() +
+                            "." + GetFileExtension(FilePathUri));
+                            */
+
+            // Adding addOnSuccessListener to second StorageReference.
+            mStorageRef.putFile(FilePathUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            imageUrl = taskSnapshot.getDownloadUrl().toString();
+                            rooms.setRoomImage_url(imageUrl);
+
+                            /*mStorageRef.getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri downloadUrl) {
+                                    imageUrl = downloadUrl.toString();
+                                    rooms.setRoomImage_url(downloadUrl.toString());
+                                }
+                            });
+                            */
+
+                            //get input from the editText fields
+                            String room_number = editTextRoomNumber.getText().toString().trim();
+                            String room_price = editTextPrice.getText().toString().trim();
+                            String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
+
+                            // setting fields to the object og the class Rooms
+                            //rooms.setRoomImage_url(imageUrl);
+                            rooms.setRoomNumber(room_number);
+                            rooms.setRoomPrice(room_price);
+                            rooms.setRoomType(room_type);
+
+                            // Getting image unique key of the node.
+                            String roomKey = databaseReference.push().getKey();
+
+                            // Adding image upload id s child element into databaseReference.
+                            databaseReference .child(roomKey).setValue(rooms);
+
+                            // displays the progressDialog
+                            progressDialog.dismiss();
+
+                            // Showing success message.
+                            Snackbar.make(scrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
+
+                            // Method Call
+                            clearTextFields();
+
+                        }
+                    })
+                    // If something goes wrong
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            // Hiding the progressDialog.
+                            progressDialog.dismiss();
+
+                            // Showing exception error message.
+                            Snackbar.make(scrollView,e.getMessage(),Snackbar.LENGTH_LONG).show();
+
+                        }
+                    });
+
+        }
+
+        else {
+            // Showing Alert message.
+            Snackbar.make(scrollView, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
+        }
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
 
-                // finish activity
-                finish();
-
                 //send user back to the adminDashboard
                 startActivity(new Intent(AddRoomsActivity.this,AdminDashBoardActivity.class));
 
                 // Adds a fadein-fadeout animations to the activity
                 CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
+
+                // finish activity
+                finish();
 
                 break;
             default:

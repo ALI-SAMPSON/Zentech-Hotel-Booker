@@ -42,6 +42,8 @@ public class AdminLoginActivity extends AppCompatActivity {
 
     private Admin admin;
 
+    private FirebaseDatabase admindB;
+
     private DatabaseReference adminRef;
 
     private Animation shake;
@@ -66,7 +68,9 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         admin = new Admin();
 
-        adminRef = FirebaseDatabase.getInstance().getReference("Admin");
+        admindB = FirebaseDatabase.getInstance();
+
+        adminRef = admindB.getReference("Admin");
 
         shake = AnimationUtils.loadAnimation(this,R.anim.anim_shake);
 

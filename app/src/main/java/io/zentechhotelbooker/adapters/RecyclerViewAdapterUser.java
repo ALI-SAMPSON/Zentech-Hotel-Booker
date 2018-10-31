@@ -78,17 +78,17 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         YoYo.with(Techniques.ZoomIn).playOn(holder.room_cardView);
 
         // sets text to the TextViews
-        holder.tv_room_type.setText(rooms.getRoom_type());
-        holder.tv_room_price.setText(" Price : GH¢ " + rooms.getPrice());
+        holder.tv_room_type.setText(rooms.getRoomType());
+        holder.tv_room_price.setText(" Price : GH¢ " + rooms.getRoomPrice());
         //holder.room_price.setText(" GH¢ " + rooms.getPrice());
 
         final String user_image = holder.user.getPhotoUrl().toString();
 
         // using Glide Library to load images
-        Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
+        Glide.with(mCtx).load(rooms.getRoomImage_url()).into(holder.room_image);
 
         // checks for booked and non-booked rooms
-        holder.paymentRef.child(rooms.getRoom_number()).addListenerForSingleValueEvent(new ValueEventListener() {
+        holder.paymentRef.child(rooms.getRoomNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -123,7 +123,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             public void onClick(View view) {
 
                 //code to the check if room has been booked already
-                holder.paymentRef.child(rooms.getRoom_number()).addListenerForSingleValueEvent(new ValueEventListener() {
+                holder.paymentRef.child(rooms.getRoomNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //gets a snapshot of the data in the database
@@ -159,9 +159,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                     Intent intent = new Intent(mCtx, MakePaymentActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     // passing data to the payment activity
-                                    intent.putExtra("room_number", rooms.getRoom_number());
-                                    intent.putExtra("room_type", rooms.getRoom_type());
-                                    intent.putExtra("room_price", "GH¢ " + rooms.getPrice());
+                                    intent.putExtra("room_number", rooms.getRoomNumber());
+                                    intent.putExtra("room_type", rooms.getRoomType());
+                                    intent.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
                                     intent.putExtra("user_image", user_image);
                                     // starting the activity
                                     mCtx.startActivity(intent);
@@ -205,7 +205,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 // opens the Display more Images Activity
                 Intent intent = new Intent(mCtx,DisplayMoreImagesActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("images",rooms.getRoom_image());
+                intent.putExtra("images",rooms.getRoomImage_url());
                 mCtx.startActivity(intent);
                 // Add a custom animation to the activity
                 CustomIntent.customType(mCtx, "right-to-left");

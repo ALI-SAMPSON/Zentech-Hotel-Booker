@@ -66,11 +66,11 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
         YoYo.with(Techniques.BounceInDown).playOn(holder.cardView);
 
         // getting the input from the database and setting them to the textViews
-        holder.room_type.setText(" Room Type : " + rooms.getRoom_type());
-        holder.room_price.setText(" Price : GH¢" + rooms.getPrice());
+        holder.room_type.setText(rooms.getRoomType());
+        holder.room_price.setText(" Price : GH¢" + rooms.getRoomPrice());
 
         //Loading image into Glide using the glide library.
-        Glide.with(mCtx).load(rooms.getRoom_image()).into(holder.room_image);
+        Glide.with(mCtx).load(rooms.getRoomImage_url()).into(holder.room_image);
 
     }
 
@@ -107,8 +107,8 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
             cardView = itemView.findViewById(R.id.room_cardView);
 
             room_image = itemView.findViewById(R.id.room_image);
-            room_type = itemView.findViewById(R.id.room_type);
-            room_price = itemView.findViewById(R.id.room_price);
+            room_type = itemView.findViewById(R.id.tv_room_type);
+            room_price = itemView.findViewById(R.id.tv_room_price);
 
             progressBar = itemView.findViewById(R.id.progressBar);
 

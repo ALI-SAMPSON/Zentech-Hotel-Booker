@@ -215,7 +215,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                 final String selectedKey = selectedRoom.getKey();
 
                 // getting the reference of the room
-                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoom_image());
+                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoomImage_url());
                 roomImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

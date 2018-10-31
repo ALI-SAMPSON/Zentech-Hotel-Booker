@@ -423,6 +423,7 @@ public class HomeActivity extends AppCompatActivity implements
         searchView = findViewById(R.id.search_view);
         searchView.setMenuItem(item);
         searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        searchView.dismissSuggestions();
         searchView.setEllipsize(true);
         searchView.setSubmitOnClick(true);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -468,7 +469,7 @@ public class HomeActivity extends AppCompatActivity implements
         databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
         // creates a query to initiate the search
-        Query query =  databaseReference.orderByChild("room_type")
+        Query query =  databaseReference.orderByChild("roomType")
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 

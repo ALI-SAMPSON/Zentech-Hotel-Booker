@@ -5,10 +5,10 @@ import com.google.firebase.database.Exclude;
 public class Rooms {
 
     //database fields for the database
-    private String room_image;
-    private String room_number;
-    private String room_type;
-    private String price;
+    private String roomImage_url;
+    private String roomNumber;
+    private String roomType;
+    private String roomPrice;
     // key to store the key reference of the data to delete
     private String key;
     private String user_ImageUrl;
@@ -17,43 +17,43 @@ public class Rooms {
     public Rooms(){}
 
     //constructor with two or more parameters
-    public Rooms(String room_image,String room_number,String room_type,String price){
-        this.room_image = room_image;
-        this.room_number = room_number;
-        this.room_type = room_type;
-        this.price = price;
+    public Rooms(String roomImage_url,String roomNumber,String roomType,String roomPrice){
+        this.roomImage_url = roomImage_url;
+        this.roomNumber = roomNumber;
+        this.roomType = roomType;
+        this.roomPrice = roomPrice;
     }
 
     //Getter and Setter method for Room Image
-    public void setRoom_image(String room_image){
-        this.room_image = room_image;
+    public void setRoomImage_url(String roomImage_url){
+        this.roomImage_url = roomImage_url;
     }
-    public String getRoom_image(){
-        return room_image;
+    public String getRoomImage_url(){
+        return roomImage_url;
     }
 
     //Getter and Setter method for Room number
-    public void setRoom_number(String room_number){
-        this.room_number = room_number;
+    public void setRoomNumber(String roomNumber){
+        this.roomNumber = roomNumber;
     }
-    public String getRoom_number(){
-        return room_number;
+    public String getRoomNumber(){
+        return roomNumber;
     }
 
     //Getter and Setter method for Room Type
-    public void setRoom_type(String room_type){
-        this.room_type = room_type;
+    public void setRoomType(String roomType){
+        this.roomType = roomType;
     }
-    public String getRoom_type(){
-        return room_type;
+    public String getRoomType(){
+        return roomType;
     }
 
     //Getter and Setter method for Room price
-    public void setPrice(String price){
-        this.price = price;
+    public void setRoomPrice(String roomPrice){
+        this.roomPrice = roomPrice;
     }
-    public String getPrice(){
-        return price;
+    public String getRoomPrice(){
+        return roomPrice;
     }
 
     @Exclude
