@@ -35,6 +35,7 @@ import java.util.List;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.activities.DisplayMoreImagesActivity;
 import io.zentechhotelbooker.activities.MakePaymentActivity;
+import io.zentechhotelbooker.activities.ViewRoomDetailsActivity;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
@@ -42,9 +43,6 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
     private Context mCtx;
     private List<Rooms> roomsList;
-
-    // private member variable
-    private onItemClickListener mListener;
 
     public RecyclerViewAdapterUser(Context mCtx, List<Rooms> roomsList) {
         this.mCtx = mCtx;
@@ -143,46 +141,22 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                             Toast.makeText(mCtx, "Room is already booked", Toast.LENGTH_LONG).show();
                         }
                         else {
-                            // Creates an Alert Dialog
-                            AlertDialog.Builder builder = new AlertDialog.Builder(mCtx,
-                                    android.R.style.Theme_Material_Dialog_Alert);
-                            builder.setTitle("Book this Room");
-                            builder.setMessage("Are you sure you want to book this room and make payment for it?");
-                            builder.setCancelable(false);
 
-                            // set the Positive button for alert dialog
-                            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                            // Creates new Intent and passes the strings to the intent to be opened
+                            Intent intent = new Intent(mCtx, ViewRoomDetailsActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            // passing data to the payment activity
+                            intent.putExtra("user_name",holder.user.getDisplayName());
+                            intent.putExtra("room_number", rooms.getRoomNumber());
+                            intent.putExtra("room_type", rooms.getRoomType());
+                            intent.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
+                            intent.putExtra("room_image_url",rooms.getRoomImage_url());
+                            intent.putExtra("user_image", user_image);
+                            // starting the activity
+                            mCtx.startActivity(intent);
+                            // Add a custom animation to the activity
+                            CustomIntent.customType(mCtx,"left-to-right");
 
-                                    // Creates new Intent
-                                    Intent intent = new Intent(mCtx, MakePaymentActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    // passing data to the payment activity
-                                    intent.putExtra("room_number", rooms.getRoomNumber());
-                                    intent.putExtra("room_type", rooms.getRoomType());
-                                    intent.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
-                                    intent.putExtra("user_image", user_image);
-                                    // starting the activity
-                                    mCtx.startActivity(intent);
-                                    // Add a custom animation to the activity
-                                    CustomIntent.customType(mCtx, "right-to-left");
-
-                                }
-                            });
-
-                            // set the Positive button for alert dialog
-                            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    // dismiss the dialogue interface
-                                    dialogInterface.dismiss();
-                                }
-                            });
-
-                            //
-                            AlertDialog alertDialog = builder.create();
-                            alertDialog.show();
                         }
 
                     }
@@ -198,74 +172,15 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             }
         });
 
-        // OnclickListener for button to view more images of a rooms
-        holder.btn_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // opens the Display more Images Activity
-                Intent intent = new Intent(mCtx,DisplayMoreImagesActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("images",rooms.getRoomImage_url());
-                mCtx.startActivity(intent);
-                // Add a custom animation to the activity
-                CustomIntent.customType(mCtx, "right-to-left");
-            }
-        });
 
     }
-
-    // method to call the alert Dialog
-    /*public void showAlertDialog() {
-        // Creates an Alert Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(mCtx, android.R.style.Theme_Material_Dialog_Alert);
-        builder.setTitle("Book this Room");
-        builder.setMessage("Are you sure you want to book this room and make payment for it?");
-        builder.setCancelable(false);
-
-        // set the Positive button for alert dialog
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                // Creates new Intent
-                Intent intent = new Intent(mCtx, MakePaymentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // passing data to the payment activity
-                intent.putExtra("room_number", rooms.getRoom_number());
-                intent.putExtra("room_type", rooms.getRoom_type());
-                intent.putExtra("room_price", "GH¢ " + rooms.getPrice());
-                intent.putExtra("user_image", user_image);
-                // starting the activity
-                mCtx.startActivity(intent);
-                // Add a custom animation to the activity
-                CustomIntent.customType(mCtx, "right-to-left");
-
-            }
-        });
-
-        // set the Positive button for alert dialog
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // dismiss the dialogue interface
-                dialogInterface.dismiss();
-            }
-        });
-
-        //
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-    }
-    */
 
     @Override
     public int getItemCount() {
         return roomsList.size();
     }
 
-     public class ViewHolder extends RecyclerView.ViewHolder implements
-            View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
+     public class ViewHolder extends RecyclerView.ViewHolder{
 
         // Creating objects of the views
         CardView room_cardView;
@@ -274,7 +189,6 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         TextView tv_room_booked;
         TextView tv_room_type;
         TextView tv_room_price;
-        Button btn_view;
 
         FirebaseAuth mAuth;
 
@@ -292,79 +206,13 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             tv_room_booked = itemView.findViewById(R.id.tv_room_booked);
             tv_room_type = itemView.findViewById(R.id.tv_room_type);
             tv_room_price = itemView.findViewById(R.id.tv_room_price);
-            btn_view = itemView.findViewById(R.id.button_view);
 
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
             paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
 
-            // OnClickListeners for the ContextMenu
-            itemView.setOnClickListener(this);
-            itemView.setOnCreateContextMenuListener(this);
-
         }
 
-        @Override
-        public void onClick(View view) {
-            if (mListener != null) {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    mListener.onItemClick(position);
-                }
-            }
-        }
-
-        @Override
-        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            //contextMenu.setHeaderTitle("Select Action");
-            MenuItem viewRoomImages = contextMenu.add(Menu.NONE, 1, 1, "View More Images");
-            MenuItem cancel = contextMenu.add(Menu.NONE, 2, 2, "Cancel");
-
-
-            viewRoomImages.setOnMenuItemClickListener(this);
-            cancel.setOnMenuItemClickListener(this);
-
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            if (mListener != null) {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-
-                    // Check menuItem Clicked and respond accordingly
-                    switch (menuItem.getItemId()) {
-                        case 1:
-                            mListener.viewMoreImagesClick(position);
-                            return true;
-                        case 2:
-                            mListener.onCancelClick(position);
-                            return true;
-                    }
-
-                }
-            }
-            return false;
-        }
-    }
-
-    // Interface for ContextMenu
-    public interface onItemClickListener {
-
-        // Method to handle default clicks
-        void onItemClick(int position);
-
-        // Method to handle ViewRoom (dismiss ContextMenu) Clicks
-        void onCancelClick(int position);
-
-        // Method to handle deletion of item
-        void viewMoreImagesClick(int position);
-
-    }
-
-    // OnItemClickListener implementing the interface
-    public void setOnItemClickListener(onItemClickListener listener) {
-        mListener = listener;
     }
 
 }

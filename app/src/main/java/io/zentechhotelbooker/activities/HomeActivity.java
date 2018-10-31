@@ -50,7 +50,7 @@ import maes.tech.intentanim.CustomIntent;
 
 
 public class HomeActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, RecyclerViewAdapterUser.onItemClickListener{
+        NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout mDrawerLayout;
 
@@ -176,8 +176,6 @@ public class HomeActivity extends AppCompatActivity implements
         recyclerViewAdapterUser = new RecyclerViewAdapterUser(HomeActivity.this,roomsList);
 
         recyclerView.setAdapter(recyclerViewAdapterUser);
-
-        recyclerViewAdapterUser.setOnItemClickListener(HomeActivity.this);
 
         // Assign id to ProgressBar
         progressBar = findViewById(R.id.progressBar);
@@ -422,8 +420,7 @@ public class HomeActivity extends AppCompatActivity implements
         // Material SearchView
         searchView = findViewById(R.id.search_view);
         searchView.setMenuItem(item);
-        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-        searchView.dismissSuggestions();
+        //searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         searchView.setEllipsize(true);
         searchView.setSubmitOnClick(true);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -685,25 +682,6 @@ public class HomeActivity extends AppCompatActivity implements
         super.finish();
         // Add fadein-to-fadeout animation to the activity
         CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        Toast.makeText(this," long click on a room to view options ",Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onCancelClick(int position) {}
-
-    @Override
-    public void viewMoreImagesClick(int position) {
-
-        //open the activity to view more Images
-        startActivity(new Intent(HomeActivity.this,DisplayMoreImagesActivity.class));
-
-        // Add fadein-to-fadeout animation to the activity
-        CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
-
     }
 
 }

@@ -100,16 +100,22 @@ public class AboutUsUserActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AboutUsUserActivity.this,HomeActivity.class));
+        // Add right-to-left animation to the activity
+        CustomIntent.customType(AboutUsUserActivity.this,"right-to-left");
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                // finishes and
-                // starts the next activity
-                finish();
-
                 startActivity(new Intent(AboutUsUserActivity.this,HomeActivity.class));
                 // Add right-to-left animation to the activity
                 CustomIntent.customType(AboutUsUserActivity.this,"right-to-left");
+                // finishes and starts the next activity
+                finish();
                 break;
             default:
                 break;

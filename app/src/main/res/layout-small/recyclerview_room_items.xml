@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:layout_margin="2dp"
-            android:src="@drawable/hotel_2"
+            android:src="@drawable/hotel_room"
             android:scaleType="centerCrop"/>
 
         <TextView
@@ -38,7 +38,7 @@
             app:fontFamily="@font/nunito_extrabold"
             android:textColor="@color/colorRed"
             android:text="@string/text_booked"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_gravity="center" />
 
         <ProgressBar
@@ -61,7 +61,6 @@
             android:text="@string/room_type"
             android:layout_gravity="center" />
 
-
         <TextView
             android:id="@+id/tv_room_price"
             android:layout_below="@+id/tv_room_type"
@@ -73,22 +72,6 @@
             app:fontFamily="@font/nunito_semibold"
             android:text="@string/price"
             android:layout_gravity="center"/>
-
-        <Button
-            android:id="@+id/button_view"
-            android:layout_below="@+id/tv_room_price"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:layout_centerHorizontal="true"
-            android:text="@string/more_images"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            app:fontFamily="@font/nunito_semibold"
-            android:background="@drawable/round_corner_button_login"
-            android:layout_margin="5dp"/>
 
     </RelativeLayout>
 

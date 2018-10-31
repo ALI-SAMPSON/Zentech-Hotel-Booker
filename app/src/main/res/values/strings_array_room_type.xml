@@ -3,14 +3,14 @@
 
     <string-array name="room_type">
         <item>Select Room</item>
-        <item>Single</item>
-        <item>Double</item>
-        <item>Triple</item>
-        <item>Quad</item>
-        <item>King</item>
-        <item>Queen</item>
-        <item>Twin</item>
-        <item>Double-double</item>
+        <item>Single Room</item>
+        <item>Double Room</item>
+        <item>Triple Room</item>
+        <item>Quad Room</item>
+        <item>King Room</item>
+        <item>Queen Room</item>
+        <item>Twin Room</item>
+        <item>Double-double Room</item>
     </string-array>
 
 </resources>

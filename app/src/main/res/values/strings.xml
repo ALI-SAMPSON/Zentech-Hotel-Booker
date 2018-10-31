@@ -88,6 +88,28 @@
         money payment platform and Credit or Debit Card.
     </string>
 
+    <string name="hotel_name" translatable="false">
+        Accra City Hotel
+    </string>
+
+    <string name="title_about_hotel" translatable="false">
+        About Hotel
+    </string>
+
+    <string name="about_hotel" translatable="false">
+        Accra City Hotel is a city hotel that provides users
+        access to all that makes Accra an exciting place
+        to visit. The hotel provides fantastic facilities both for
+        high quality entertainment purposes and high
+        class relaxation. This is ideal for holidaymakers and
+        business travellers.
+    </string>
+
+    <string name="about_hotel_short" translatable="false">
+        Accra City Hotel is a city hotel that provides users
+        access to all...
+    </string>
+
     <string name="text_contact_us" translatable="false">
         If you have any issues or suggestions regarding
         the use of the application , feel free to contact
@@ -209,43 +231,57 @@
 
     <string name="title_more_Images" translatable="false">More Images</string>
 
-    <string name="text_more_details"
-        translatable="false">More Details</string>
+    <string name="text_more_details" translatable="false">More Details</string>
 
-    <string name="text_room_selection"
-        translatable="false">Room selection</string>
+    <string name="text_room_selection" translatable="false">Room selection</string>
 
-    <string name="single_room"
-        translatable="false">Single Room</string>
+    <string name="single_room" translatable="false">Single Room</string>
 
-    <string name="text_breakfast"
-        translatable="false">Breakfast:</string>
+    <string name="text_breakfast" translatable="false">Breakfast:</string>
 
-    <string name="text_lunch"
-        translatable="false">Lunch:</string>
+    <string name="text_breakfast_included" translatable="false">Breakfast : included</string>
 
-    <string name="text_supper"
-        translatable="false">Supper:</string>
+    <string name="text_lunch" translatable="false">Lunch:</string>
 
-    <string name="text_book_now"
-        translatable="false">Book Now</string>
+    <string name="text_lunch_included" translatable="false">Lunch : included</string>
 
-    <string name="currency_symbol"
-        translatable="false">GH¢</string>
+    <string name="text_supper" translatable="false">Supper:</string>
 
-    <string name="text_about_hotel"
-        translatable="false">About Hotel</string>
+    <string name="text_supper_excluded" translatable="false">Supper : excluded</string>
 
-    <string name="text_see_more_details"
-        translatable="false">See More Rooms</string>
+    <string name="text_book_now" translatable="false">Book Now</string>
 
-    <string name="text_important_info"
-        translatable="false">Important Information</string>
+    <string name="currency_symbol" translatable="false">GH¢</string>
+
+    <string name="text_about_hotel" translatable="false">About Hotel</string>
+
+    <string name="text_see_more_details" translatable="false">See More Rooms</string>
+
+    <string name="text_important_info" translatable="false">Important Information</string>
+
+    <string name="title_room_details" translatable="false">Room Details</string>
+
+    <!-- List of important rules to note about the Hotel -->
+    <string name="important_info_1" translatable="false">
+        \u2022 Check-in is 2pm and check-out is 12am each day
+    </string>
+
+    <string name="important_info_2" translatable="false">
+        \u2022 A Photo ID will be requested upon check-in and check-out
+    </string>
+
+    <string name="important_info_3" translatable="false">
+        \u2022 Bed Type request should be made directly with the Hotel management
+    </string>
+
+    <string name="important_info_4" translatable="false">
+        \u2022 Room prices and fees are subject to change
+    </string>
 
     <string name="text_comfort" translatable="false">...your home of comfort</string>
 
     <!--Developer-->
     <string name="watermark" translatable="false">Created by <b>iCODE labs</b> © 2018</string>
-    <string name="todo">TODO</string>
+    <string name="todo" translatable="false">TODO</string>
 
 </resources>

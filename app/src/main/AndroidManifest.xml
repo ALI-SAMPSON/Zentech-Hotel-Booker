@@ -175,11 +175,24 @@
             android:name=".activities.AddRoomImagesActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents"></activity>
-        <activity android:name=".activities.ViewRoomDetailsActivity"
+            android:theme="@style/AppTheme.AdminComponents" />
+        <activity
+            android:name=".activities.ViewRoomDetailsActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"/>
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".fragments.AboutHotelFragment"
+            android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".fragments.ImportantInformationFragment"
+            android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar" />
+        <!-- Activity to display AboutHotelFragment and ImportantInformationFragment -->
+        <activity android:name=".fragments.MoreDetailsFragment"></activity>
     </application>
 
 </manifest>
