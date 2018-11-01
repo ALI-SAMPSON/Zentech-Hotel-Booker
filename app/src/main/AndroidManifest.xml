@@ -192,7 +192,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar" />
         <!-- Activity to display AboutHotelFragment and ImportantInformationFragment -->
-        <activity android:name=".fragments.MoreDetailsFragment"></activity>
+        <activity android:name=".fragments.MoreDetailsFragment"
+            android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActionBar">
+        </activity>
     </application>
 
 </manifest>
