@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.MoreDetailsFragment">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_point_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="16sp"
+        android:padding="@dimen/card_elevation"
+        app:fontFamily="@font/nunito_semibold"
+        android:text="@string/body_more_details"
+        android:visibility="visible"
+        android:layout_gravity="center|start" />
+
+</LinearLayout>

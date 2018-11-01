@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.fragments.AboutHotelFragment;
 import io.zentechhotelbooker.fragments.ImportantInformationFragment;
+import io.zentechhotelbooker.fragments.MoreDetailsFragment;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
@@ -122,7 +123,9 @@ public class ViewRoomDetailsActivity extends AppCompatActivity {
     }
 
     public void moreDetailsBtn(View view) {
-
+        // sends user to the AboutHotelFragment
+        startActivity(new Intent(ViewRoomDetailsActivity.this, MoreDetailsFragment.class));
+        CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
     }
 
     public void bookRoomBtn(View view) {

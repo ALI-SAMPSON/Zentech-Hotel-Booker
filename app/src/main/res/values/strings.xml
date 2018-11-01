@@ -261,6 +261,18 @@
 
     <string name="title_room_details" translatable="false">Room Details</string>
 
+
+    <string name="title_more_details"
+        translatable="false">
+       More Details
+    </string>
+
+    <string name="body_more_details"
+        translatable="false">
+        Accra City Hotel is 30 mins from Accra Sports Stadium
+        and 1 hour drive from Accra mall
+    </string>
+
     <!-- List of important rules to note about the Hotel -->
     <string name="important_info_1" translatable="false">
         \u2022 Check-in is 2pm and check-out is 12am each day
