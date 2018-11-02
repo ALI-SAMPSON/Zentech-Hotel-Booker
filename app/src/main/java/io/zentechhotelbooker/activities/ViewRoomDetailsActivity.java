@@ -1,6 +1,8 @@
 package io.zentechhotelbooker.activities;
 
 import android.app.AlertDialog;
+import android.os.PersistableBundle;
+import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.fragments.AboutHotelFragment;
@@ -20,7 +24,7 @@ import io.zentechhotelbooker.fragments.MoreDetailsFragment;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
-public class ViewRoomDetailsActivity extends AppCompatActivity {
+public class ViewRoomDetailsActivity extends AppCompatActivity{
 
     Rooms rooms;
 
@@ -38,6 +42,11 @@ public class ViewRoomDetailsActivity extends AppCompatActivity {
     String room_number;
     String room_type;
     String room_price;
+
+    String saved_user_name;
+    String saved_image_url;
+    String saved_room_type;
+    String saved_room_price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +69,9 @@ public class ViewRoomDetailsActivity extends AppCompatActivity {
         tv_supper = findViewById(R.id.tv_supper);
         tv_room_price = findViewById(R.id.tv_room_price);
 
-        rooms = new Rooms();
-
-        // method call
-        GetPassingStringIntents();
-
-    }
-
-    // get String intents
-    private void GetPassingStringIntents(){
-
         // getting StringExtras from any of the cardViews
-        // when user clicks on it
+        // when user clicks on it in the HomeActivity
         Intent intent = getIntent();
-
         user_name = intent.getStringExtra("user_name");
         user_image = intent.getStringExtra("user_image");
         room_image_url = intent.getStringExtra("room_image_url");
@@ -81,7 +79,47 @@ public class ViewRoomDetailsActivity extends AppCompatActivity {
         room_type = intent.getStringExtra("room_type");
         room_price = intent.getStringExtra("room_price");
 
-        // Glide Library to load respective Room Image into imageView
+        rooms = new Rooms();
+
+        // get the savedInstanceState and sets them to the respective views
+        if(savedInstanceState != null && savedInstanceState.getSerializable("saved_room_image_url") != null){
+            saved_image_url = savedInstanceState.getString("saved_room_image_url");
+            // Glide Library to load imageUrl from the HomeActivity
+            Glide.with(this)
+                    .load(saved_image_url)
+                    .into(room_image);
+        }
+        if(savedInstanceState != null && savedInstanceState.getSerializable("saved_room_type") != null){
+            saved_room_type = savedInstanceState.getString("saved_room_type");
+            tv_room_type.setText(saved_room_type);
+        }
+        if(savedInstanceState != null && savedInstanceState.getSerializable("saved_room_price") != null){
+            saved_room_price = savedInstanceState.getString("saved_room_price");
+            tv_room_type.setText(saved_room_price);
+        }
+
+        // method call
+        settingValues();
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("saved_room_image_url",room_image_url);
+        savedInstanceState.putString("saved_room_type",room_type);
+        savedInstanceState.putString("saved_room_price",room_price);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    // get String intents
+    private void settingValues(){
+
+        // Glide Library to load imageUrl from the HomeActivity
         Glide.with(this)
                 .load(room_image_url)
                 .into(room_image);
@@ -93,33 +131,6 @@ public class ViewRoomDetailsActivity extends AppCompatActivity {
         tv_supper.setText(getString(R.string.text_supper_excluded));
         tv_room_price.setText(room_price);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Glide Library to load respective Room Image into imageView
-        Glide.with(this)
-                .load(room_image_url)
-                .into(room_image);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Glide Library to load respective Room Image into imageView
-        Glide.with(this)
-                .load(tv_room_image_url.getText().toString())
-                .into(room_image);
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        // Glide Library to load respective Room Image into imageView
-        Glide.with(this)
-                .load(tv_room_image_url.getText().toString())
-                .into(room_image);
     }
 
     public void moreDetailsBtn(View view) {
@@ -183,13 +194,23 @@ public class ViewRoomDetailsActivity extends AppCompatActivity {
 
     public void aboutHotelBtn(View view) {
         // sends user to the AboutHotelFragment
-        startActivity(new Intent(ViewRoomDetailsActivity.this, AboutHotelFragment.class));
+        Intent intentAbout = new Intent(ViewRoomDetailsActivity.this,AboutHotelFragment.class);
+        intentAbout.putExtra("room_image_url_1",room_image_url);
+        intentAbout.putExtra("room_type_1",room_type);
+        intentAbout.putExtra("room_price_1",room_price);
+        startActivity(intentAbout);
         CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
     }
 
     public void importantInfoBtn(View view) {
         // sends user to the ImportantInformationFragment
-        startActivity(new Intent(ViewRoomDetailsActivity.this, ImportantInformationFragment.class));
+        // sends user to the AboutHotelFragment
+        Intent intentAbout = new Intent(ViewRoomDetailsActivity.this,AboutHotelFragment.class);
+        intentAbout.putExtra("room_image_url_2",room_image_url);
+        intentAbout.putExtra("room_type_2",room_type);
+        intentAbout.putExtra("room_price_2",room_price);
+        startActivity(intentAbout);
+        CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
         CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
     }
 

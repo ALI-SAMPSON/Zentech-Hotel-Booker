@@ -113,7 +113,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_margin="5dp"
-                android:src="@drawable/hotel_2"
+                android:background="@drawable/hotel_room"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/todo" />
 

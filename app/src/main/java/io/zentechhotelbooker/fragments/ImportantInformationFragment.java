@@ -11,6 +11,11 @@ import maes.tech.intentanim.CustomIntent;
 
 public class ImportantInformationFragment extends AppCompatActivity {
 
+    // strings to get intent Extras from the previous activity
+    String room_image_url_2;
+    String room_type_2;
+    String room_price_2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,13 +27,24 @@ public class ImportantInformationFragment extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        // getting the image url of the room
+        Intent intent = getIntent();
+        room_image_url_2 = intent.getStringExtra("room_image_url_2");
+        room_type_2 = intent.getStringExtra("room_type_2");
+        room_price_2 = intent.getStringExtra("room_price_2");
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         // send user back to this activity
-        startActivity(new Intent(ImportantInformationFragment.this,ViewRoomDetailsActivity.class));
+        // opens activity on back button press and passes the StringExtra of the Room Image
+        Intent intentHome = new Intent(ImportantInformationFragment.this,ViewRoomDetailsActivity.class);
+        intentHome.putExtra("room_image_url_2",room_image_url_2);
+        intentHome.putExtra("room_type_2",room_type_2);
+        intentHome.putExtra("room_price_2",room_price_2);
+        startActivity(intentHome);
         CustomIntent.customType(ImportantInformationFragment.this,"right-to-left");
     }
 
@@ -37,7 +53,12 @@ public class ImportantInformationFragment extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 // send user back to this activity
-                startActivity(new Intent(ImportantInformationFragment.this,ViewRoomDetailsActivity.class));
+                // opens activity on back button press and passes the StringExtra of the Room Image
+                Intent intentHome = new Intent(ImportantInformationFragment.this,ViewRoomDetailsActivity.class);
+                intentHome.putExtra("room_image_url_2",room_image_url_2);
+                intentHome.putExtra("room_type_2",room_type_2);
+                intentHome.putExtra("room_price_2",room_price_2);
+                startActivity(intentHome);
                 CustomIntent.customType(ImportantInformationFragment.this,"right-to-left");
                 break;
                 default:
