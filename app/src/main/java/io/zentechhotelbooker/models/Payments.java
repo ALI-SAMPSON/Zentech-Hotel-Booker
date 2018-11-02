@@ -7,23 +7,38 @@ public class Payments {
     String user_name;
     String room_number;
     String room_type;
+
     String price;
     String payment_method;
     String mobile_number;
     String imageUrl;
+
+    // Columns for food Served in room
+    private String breakfastServed;
+    private String lunchServed;
+    private String supperServed;
 
 
     //default constructor
     public Payments(){}
 
     //constructor with two or more parameters
-    public Payments(String uid, String user_name, String room_number, String room_type,String price,String mobile_number){
+    public Payments(String uid, String user_name,
+                    String room_number,
+                    String room_type,
+                    String price,String mobile_number,
+                    String breakfastServed,
+                    String lunchServed,
+                    String supperServed){
         this.uid = uid;
         this.user_name = user_name;
         this.room_number = room_number;
         this.room_type = room_type;
         this.price = price;
         this.mobile_number = mobile_number;
+        this.breakfastServed = breakfastServed;
+        this.lunchServed = lunchServed;
+        this.supperServed = supperServed;
     }
 
     //Getter and Setter method for Uid
@@ -64,6 +79,29 @@ public class Payments {
     }
     public String getPrice(){
         return price;
+    }
+
+    public void setBreakfastServed(String breakfastServed){
+        this.breakfastServed = breakfastServed;
+    }
+    public String getBreakfastServed(){
+        return breakfastServed;
+    }
+
+    public void setLunchServed(String lunchServed) {
+        this.lunchServed = lunchServed;
+    }
+
+    public String getLunchServed() {
+        return lunchServed;
+    }
+
+    public void setSupperServed(String supperServed) {
+        this.supperServed = supperServed;
+    }
+
+    public String getSupperServed() {
+        return supperServed;
     }
 
     //Getter and Setter method for Payment method

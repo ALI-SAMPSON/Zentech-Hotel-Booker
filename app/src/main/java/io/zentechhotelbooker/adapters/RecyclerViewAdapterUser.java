@@ -149,6 +149,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                             intent.putExtra("user_name",holder.user.getDisplayName());
                             intent.putExtra("room_number", rooms.getRoomNumber());
                             intent.putExtra("room_type", rooms.getRoomType());
+                            intent.putExtra("breakfast","Breakfast : " + rooms.getBreakfastServed());
+                            intent.putExtra("lunch","Lunch : " + rooms.getLunchServed());
+                            intent.putExtra("supper","Supper : " + rooms.getSupperServed());
                             intent.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
                             intent.putExtra("room_image_url",rooms.getRoomImage_url());
                             intent.putExtra("user_image", user_image);

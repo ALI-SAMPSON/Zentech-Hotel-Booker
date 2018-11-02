@@ -182,6 +182,19 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //goes back to the AdminDashboard
+        startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
+
+        // Adds a bottom-to-up animations to the activity
+        CustomIntent.customType(DeleteRoomsActivity.this,"fadein-to-fadeout");
+
+        // finishes the activity
+        finish();
+    }
+
     // Methods implemented in the recyclerView for this activity
     @Override
     public void onItemClick(int position) {

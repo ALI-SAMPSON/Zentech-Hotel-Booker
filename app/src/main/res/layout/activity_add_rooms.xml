@@ -33,7 +33,7 @@
                 android:layout_below="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="0dp"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
@@ -56,39 +56,10 @@
                     tools:targetApi="o"/>
             </android.support.design.widget.TextInputLayout>
 
-            <!-- TextInputLayout and AppCompatEdiText for Price -->
+            <!--TextInputLayout and LinearLayout and spinner View for Room -->
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/container_price"
+                android:id="@+id/container_roomType"
                 android:layout_below="@+id/container_roomNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="0dp"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:textColorHint="@color/colorBlue">
-                <EditText
-                    android:id="@+id/editTextPrice"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|center_horizontal"
-                    android:textColor="@color/materialGreen"
-                    android:drawableStart="@drawable/ic_payment"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:textColorHint="@color/buttonLight"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:textSize="16sp"
-                    android:hint="@string/price"
-                    android:inputType="numberDecimal"
-                    android:importantForAutofill="no"
-                    tools:targetApi="o" />
-            </android.support.design.widget.TextInputLayout>
-
-            <!--TextInputLayout and LinearLayout and spinner View for Payment Method-->
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/container_gender"
-                android:layout_below="@+id/container_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -97,7 +68,7 @@
                 android:orientation="horizontal">
                 <LinearLayout
                     android:id="@+id/spinnerLayout"
-                    android:layout_width="290dp"
+                    android:layout_width="250dp"
                     android:orientation="horizontal"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -132,56 +103,201 @@
                 </LinearLayout>
             </android.support.design.widget.TextInputLayout>
 
-            <!-- Add More Images Button  -->
-            <!--
-            <Button
-                android:id="@+id/btn_add"
-                android:layout_below="@+id/container_gender"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:layout_width="300dp"
-                android:layout_centerHorizontal="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
+            <!--TextInputLayout and LinearLayout and spinner View for Payment Method-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/container_breakfast"
+                android:layout_below="@+id/container_roomType"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_add"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                android:textAlignment="center"
-                android:background="@drawable/nice_design_button_green"
-                android:onClick="onAddRoomButtonClick"/>
-                -->
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="250dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+                    <!--TextView View  and Spinner View for Voter's Gender-->
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/textViewBreakfast"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_breakfast"
+                        android:drawablePadding="@dimen/padding_normal"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorBlue"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1.11"
+                        android:layout_marginStart="10dp" />
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        android:layout_marginEnd="10dp">
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/spinnerBreakfast"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <!--TextInputLayout and LinearLayout and spinner View for Lunch-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/container_lunch"
+                android:layout_below="@+id/container_breakfast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="250dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+                    <!--TextView View  and Spinner View for Voter's Gender-->
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/textViewLunch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_lunch"
+                        android:drawablePadding="@dimen/padding_normal"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorBlue"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1.11"
+                        android:layout_marginStart="10dp" />
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        android:layout_marginEnd="10dp">
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/spinnerLunch"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <!--TextInputLayout and LinearLayout and spinner View for Supper-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/container_supper"
+                android:layout_below="@+id/container_lunch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="250dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+                    <!--TextView View  and Spinner View for Voter's Gender-->
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/textViewSupper"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_supper"
+                        android:drawablePadding="@dimen/padding_normal"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorBlue"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1.11"
+                        android:layout_marginStart="10dp" />
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        android:layout_marginEnd="10dp">
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/spinnerSupper"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- TextInputLayout and AppCompatEdiText for Price -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/container_price"
+                android:layout_below="@+id/container_supper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:textColorHint="@color/colorBlue">
+                <EditText
+                    android:id="@+id/editTextPrice"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal"
+                    android:textColor="@color/materialGreen"
+                    android:drawableStart="@drawable/ic_payment"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:textColorHint="@color/buttonLight"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:textSize="16sp"
+                    android:hint="@string/price"
+                    android:inputType="numberDecimal"
+                    android:importantForAutofill="no"
+                    tools:targetApi="o" />
+            </android.support.design.widget.TextInputLayout>
 
             <!-- Add Button  -->
             <Button
                 android:id="@+id/buttonAddRoom"
                 android:layout_marginTop="25dp"
+                android:layout_marginBottom="30dp"
                 android:layout_width="300dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/container_gender"
+                android:layout_below="@+id/container_price"
                 android:text="@string/text_add"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlue"
                 android:fontFamily="@font/nunito_semibold"
                 android:textSize="18sp"
                 android:textAllCaps="false"
                 android:textStyle="normal"
                 android:textAlignment="center"
-                android:background="@drawable/nice_design_button_green"
+                android:background="@drawable/round_light_button"
                 android:onClick="onAddRoomButtonClick"/>
 
             <!-- Continue Button  -->
+            <!--
             <Button
                 android:id="@+id/buttonAddImages"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_width="300dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
@@ -190,14 +306,15 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/buttonAddRoom"
                 android:text="@string/text_add_multiple_images"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlue"
                 android:fontFamily="@font/nunito_semibold"
                 android:textSize="18sp"
                 android:textAllCaps="false"
                 android:textStyle="normal"
                 android:textAlignment="center"
-                android:background="@drawable/nice_design_button_green_opp"
+                android:background="@drawable/round_light_button"
                 android:onClick="onContinueButtonClick"/>
+                -->
 
             <!--
             <ProgressBar
@@ -211,23 +328,6 @@
                 android:layout_margin="5dp"
                 android:visibility="gone"/>
                 -->
-
-            <!--<android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                app:rippleColor="@color/colorWhite"
-                app:fabSize="normal"
-                android:src="@drawable/ic_contact_us_white"
-                android:onClick="openContactUs">
-            </android.support.design.widget.FloatingActionButton>-->
 
         </RelativeLayout>
 

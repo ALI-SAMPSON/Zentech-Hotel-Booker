@@ -104,20 +104,35 @@ public class AboutUsAdminActivity extends AppCompatActivity implements View.OnCl
         switch (item.getItemId()){
             case android.R.id.home:
 
-                // finishes this activity
-                finish();
-
                 // Opens the About Us activity
                 startActivity(new Intent(AboutUsAdminActivity.this,AdminDashBoardActivity.class));
 
                 // Adds a bottom-to-up animations to the activity
                 CustomIntent.customType(AboutUsAdminActivity.this, "bottom-to-up");
 
+                // finishes this activity
+                finish();
+
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // Opens the About Us activity
+        startActivity(new Intent(AboutUsAdminActivity.this,AdminDashBoardActivity.class));
+
+        // Adds a bottom-to-up animations to the activity
+        CustomIntent.customType(AboutUsAdminActivity.this, "bottom-to-up");
+
+        // finishes this activity
+        finish();
+
     }
 
     @Override

@@ -102,11 +102,29 @@ public class ResetUserPasswordActivity extends AppCompatActivity {
 
     // method to go back
     public void goBackButton(View view) {
-        // finishes the current activity and open the resetPassword Activity
-        finish();
         // starts the activity
         startActivity(new Intent(ResetUserPasswordActivity.this, UserLoginActivity.class));
         // Add fadein-to-fadeout animation to the activity
+        CustomIntent.customType(ResetUserPasswordActivity.this,"fadein-to-fadeout");
+        // finishes the current activity and open the resetPassword Activity
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // starts the activity
+        startActivity(new Intent(ResetUserPasswordActivity.this, UserLoginActivity.class));
+        // Add fadein-to-fadeout animation to the activity
+        CustomIntent.customType(ResetUserPasswordActivity.this,"fadein-to-fadeout");
+        // finishes the current activity and open the resetPassword Activity
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        // Add a rotateout-to-rotatein animation to the activity
         CustomIntent.customType(ResetUserPasswordActivity.this,"fadein-to-fadeout");
     }
 }

@@ -263,6 +263,17 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // starts the HomeActivity
+        startActivity(new Intent(UpdateUserProfileActivity.this,HomeActivity.class));
+        // Add a custom animation to the activity
+        CustomIntent.customType(UpdateUserProfileActivity.this,"fadein-to-fadeout");
+        // finishes the HomeActivity
+        finish();
+    }
+
+    @Override
     public void finish() {
         super.finish();
         // Add a custom animation to the activity

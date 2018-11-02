@@ -53,9 +53,21 @@ public class AddRoomsActivity extends AppCompatActivity {
     private EditText editTextRoomNumber;
     private EditText editTextPrice;
 
-    // Objects for the spinner view
+    // spinner view for roomType
     private AppCompatSpinner spinnerRoomType;
-    private ArrayAdapter<CharSequence> arrayAdapter;
+    private ArrayAdapter<CharSequence> arrayAdapterRoomType;
+
+    // spinner view for breakfast
+    private AppCompatSpinner spinnerBreakfast;
+    private ArrayAdapter<CharSequence> arrayAdapterBreakfast;
+
+    // spinner view for lunch
+    private AppCompatSpinner spinnerLunch;
+    private ArrayAdapter<CharSequence> arrayAdapterLunch;
+
+    // spinner view for supper
+    private AppCompatSpinner spinnerSupper;
+    private ArrayAdapter<CharSequence> arrayAdapterSupper;
 
     private FirebaseDatabase roomdB;
     private DatabaseReference roomRef;
@@ -114,10 +126,29 @@ public class AddRoomsActivity extends AppCompatActivity {
         editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
 
+        // view referencing and adapter initialization
         spinnerRoomType = findViewById(R.id.spinnerRoomType);
-        arrayAdapter = ArrayAdapter.createFromResource(this,R.array.room_type,R.layout.spinner_item_add_room);
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_add_room);
-        spinnerRoomType.setAdapter(arrayAdapter);
+        arrayAdapterRoomType = ArrayAdapter.createFromResource(this,R.array.room_type,R.layout.spinner_item_add_room);
+        arrayAdapterRoomType.setDropDownViewResource(R.layout.spinner_dropdown_item_add_room);
+        spinnerRoomType.setAdapter(arrayAdapterRoomType);
+
+        // view referencing and adapter initialization
+        spinnerBreakfast = findViewById(R.id.spinnerBreakfast);
+        arrayAdapterBreakfast = ArrayAdapter.createFromResource(this,R.array.food_type,R.layout.spinner_item_add_room);
+        arrayAdapterBreakfast.setDropDownViewResource(R.layout.spinner_dropdown_item_add_room);
+        spinnerBreakfast.setAdapter(arrayAdapterBreakfast);
+
+        // view referencing and adapter initialization
+        spinnerLunch = findViewById(R.id.spinnerLunch);
+        arrayAdapterLunch = ArrayAdapter.createFromResource(this,R.array.food_type,R.layout.spinner_item_add_room);
+        arrayAdapterLunch.setDropDownViewResource(R.layout.spinner_dropdown_item_add_room);
+        spinnerLunch.setAdapter(arrayAdapterLunch);
+
+        // view referencing and adapter initialization
+        spinnerSupper = findViewById(R.id.spinnerSupper);
+        arrayAdapterSupper = ArrayAdapter.createFromResource(this,R.array.food_type,R.layout.spinner_item_add_room);
+        arrayAdapterSupper.setDropDownViewResource(R.layout.spinner_dropdown_item_add_room);
+        spinnerSupper.setAdapter(arrayAdapterSupper);
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -266,16 +297,23 @@ public class AddRoomsActivity extends AppCompatActivity {
                             });
                             */
 
-                            //get input from the editText fields
+                            //get input from the editText views and spinner views
                             String room_number = editTextRoomNumber.getText().toString().trim();
-                            String room_price = editTextPrice.getText().toString().trim();
                             String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
+                            String breakfast = spinnerBreakfast.getSelectedItem().toString().trim();
+                            String lunch = spinnerLunch.getSelectedItem().toString().trim();
+                            String supper = spinnerSupper.getSelectedItem().toString().trim();
+                            String room_price = editTextPrice.getText().toString().trim();
 
                             // setting fields to the object og the class Rooms
                             //rooms.setRoomImage_url(imageUrl);
                             rooms.setRoomNumber(room_number);
-                            rooms.setRoomPrice(room_price);
                             rooms.setRoomType(room_type);
+                            rooms.setBreakfastServed(breakfast);
+                            rooms.setLunchServed(lunch);
+                            rooms.setSupperServed(supper);
+                            rooms.setRoomPrice(room_price);
+
 
                             // Getting image unique key of the node.
                             String roomKey = databaseReference.push().getKey();
@@ -357,6 +395,19 @@ public class AddRoomsActivity extends AppCompatActivity {
         // finishes the current activity
         finish();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //send user back to the adminDashboard
+        startActivity(new Intent(AddRoomsActivity.this,AdminDashBoardActivity.class));
+
+        // Adds a fadein-fadeout animations to the activity
+        CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
+
+        // finish activity
+        finish();
     }
 
     @Override

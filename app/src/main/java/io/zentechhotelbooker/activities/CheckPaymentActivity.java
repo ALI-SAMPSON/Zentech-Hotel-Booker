@@ -241,6 +241,17 @@ public class CheckPaymentActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //navigates to the AdminDashboard activity
+        startActivity(new Intent(CheckPaymentActivity.this,AdminDashBoardActivity.class));
+        // Add a up-to-bottom animation to the activity
+        CustomIntent.customType(CheckPaymentActivity.this,"fadein-to-fadeout");
+        // finishes the activity
+        finish();
+    }
+
+    @Override
     public void finish() {
         super.finish();
         // Add a up-to-bottom animation to the activity

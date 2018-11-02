@@ -13,4 +13,9 @@
         <item>Double-double Room</item>
     </string-array>
 
+    <string-array name="food_type">
+        <item>Included</item>
+        <item>Excluded</item>
+    </string-array>
+
 </resources>

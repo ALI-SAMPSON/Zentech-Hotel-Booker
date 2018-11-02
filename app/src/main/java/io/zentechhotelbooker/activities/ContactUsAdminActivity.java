@@ -27,13 +27,25 @@ public class ContactUsAdminActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                // starts the home Activity
-                ContactUsAdminActivity.this.finish();
                 startActivity(new Intent(ContactUsAdminActivity.this,AdminDashBoardActivity.class));
+                // Adds a bottom-to-up animations to the activity
+                CustomIntent.customType(ContactUsAdminActivity.this,"right-to-left");
+                // starts the home Activity
+                finish();
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(ContactUsAdminActivity.this,AdminDashBoardActivity.class));
+        // Adds a bottom-to-up animations to the activity
+        CustomIntent.customType(ContactUsAdminActivity.this,"right-to-left");
+        // starts the home Activity
+        finish();
     }
 
     @Override

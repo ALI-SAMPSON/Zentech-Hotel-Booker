@@ -44,11 +44,17 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     String room_number;
     String room_type;
     String room_price;
+    String breakfast_food;
+    String lunch_food;
+    String supper_food;
 
     String saved_user_name;
     String saved_image_url;
     String saved_room_type;
     String saved_room_price;
+    String saved_breadfast_food;
+    String saved_lunch_food;
+    String saved_supper_food;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +86,14 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
         room_number = intent.getStringExtra("room_number");
         room_type = intent.getStringExtra("room_type");
         room_price = intent.getStringExtra("room_price");
+        breakfast_food = intent.getStringExtra("breakfast");
+        lunch_food = intent.getStringExtra("lunch");
+        supper_food = intent.getStringExtra("supper");
 
         rooms = new Rooms();
 
         // get the savedInstanceState and sets them to the respective views
-        if(savedInstanceState != null && savedInstanceState.getString("saved_room_image_url") != null){
+        /*if(savedInstanceState != null && savedInstanceState.getString("saved_room_image_url") != null){
             saved_image_url = savedInstanceState.getString("saved_room_image_url");
             // Glide Library to load imageUrl from the HomeActivity
             Glide.with(this)
@@ -99,7 +108,19 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
             saved_room_price = savedInstanceState.getString("saved_room_price");
             tv_room_type.setText(saved_room_price);
         }
-
+        if(savedInstanceState != null && savedInstanceState.getString("saved_breadfast_food") != null){
+            saved_breadfast_food = savedInstanceState.getString("saved_breadfast_food");
+            tv_room_type.setText(saved_breadfast_food);
+        }
+        if(savedInstanceState != null && savedInstanceState.getString("saved_lunch_food") != null){
+            saved_lunch_food = savedInstanceState.getString("saved_lunch_food");
+            tv_room_type.setText(saved_lunch_food);
+        }
+        if(savedInstanceState != null && savedInstanceState.getString("saved_supper_food") != null){
+            saved_supper_food = savedInstanceState.getString("saved_supper_food");
+            tv_room_type.setText(saved_supper_food);
+        }
+        */
         // method call
         settingValues();
 
@@ -111,6 +132,9 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
         savedInstanceState.putString("saved_room_image_url",room_image_url);
         savedInstanceState.putString("saved_room_type",room_type);
         savedInstanceState.putString("saved_room_price",room_price);
+        savedInstanceState.putString("saved_breadfast_food",breakfast_food);
+        savedInstanceState.putString("saved_lunch_food",lunch_food);
+        savedInstanceState.putString("saved_supper_food",supper_food);
     }
 
 
@@ -130,6 +154,15 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
             saved_room_price = savedInstanceState.getString("saved_room_price");
             tv_room_type.setText(saved_room_price);
 
+            saved_breadfast_food = savedInstanceState.getString("saved_breadfast_food");
+            tv_breakfast.setText(saved_breadfast_food);
+
+            saved_lunch_food = savedInstanceState.getString("saved_lunch_food");
+            tv_lunch.setText(lunch_food);
+
+            saved_supper_food = savedInstanceState.getString("saved_supper_food");
+            tv_supper.setText(saved_supper_food);
+
     }
 
     // get String intents
@@ -142,9 +175,9 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
 
         tv_room_image_url.setText(room_image_url);
         tv_room_type.setText(room_type);
-        tv_breakfast.setText(getString(R.string.text_breakfast_included));
-        tv_lunch.setText(getString(R.string.text_lunch_included));
-        tv_supper.setText(getString(R.string.text_supper_excluded));
+        tv_breakfast.setText(breakfast_food);
+        tv_lunch.setText(lunch_food);
+        tv_supper.setText(supper_food);
         tv_room_price.setText(room_price);
 
     }
@@ -177,6 +210,9 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
                 intentBook.putExtra("room_number", room_number);
                 intentBook.putExtra("room_type", room_type);
                 intentBook.putExtra("room_price",  room_price);
+                intentBook.putExtra("breakfast_food", breakfast_food);
+                intentBook.putExtra("lunch_food", lunch_food);
+                intentBook.putExtra("supper_food",  supper_food);
                 intentBook.putExtra("room_image_url",room_image_url);
                 intentBook.putExtra("user_image", user_image);
                 // starting the activity

@@ -107,14 +107,27 @@ public class ResetAdminPasswordActivity extends AppCompatActivity {
 
     // method to go back
     public void goBackButton(View view) {
-        // finishes the current activity and open the resetPassword Activity
-        finish();
-
         // starts activity
         startActivity(new Intent(ResetAdminPasswordActivity.this, AdminDashBoardActivity.class));
 
         // Add a fadein-to-fadeout animation to the activity
         CustomIntent.customType(ResetAdminPasswordActivity.this,"fadein-to-fadeout");
+
+        // finishes the current activity and open the resetPassword Activity
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // starts activity
+        startActivity(new Intent(ResetAdminPasswordActivity.this, AdminDashBoardActivity.class));
+
+        // Add a fadein-to-fadeout animation to the activity
+        CustomIntent.customType(ResetAdminPasswordActivity.this,"fadein-to-fadeout");
+
+        // finishes the current activity and open the resetPassword Activity
+        finish();
     }
 
     @Override

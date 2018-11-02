@@ -233,6 +233,12 @@ public class MakePaymentActivity extends AppCompatActivity {
         String mobile_number = editTextMomoNumber.getText().toString().trim();
         String payment_method  =  spinnerPaymentMethod.getSelectedItem().toString().trim();
 
+        // getting string extras from previous activity
+        Intent intent = getIntent();
+        String breakfast = intent.getStringExtra("breakfast_food");
+        String lunch  = intent.getStringExtra("lunch_food");
+        String supper = intent.getStringExtra("supper_food");
+
         final String room_number = tv_room_number.getText().toString().trim();
 
         //sets the values from the EditText Fields to those in the database
@@ -244,6 +250,9 @@ public class MakePaymentActivity extends AppCompatActivity {
         payments.setMobile_number(mobile_number);
         payments.setPayment_method(payment_method);
         payments.setImageUrl(user_image);
+        payments.setBreakfastServed(breakfast);
+        payments.setLunchServed(lunch);
+        payments.setSupperServed(supper);
 
         //code to the check if room has been booked already
         paymentRef.child(room_number).addListenerForSingleValueEvent(new ValueEventListener() {
