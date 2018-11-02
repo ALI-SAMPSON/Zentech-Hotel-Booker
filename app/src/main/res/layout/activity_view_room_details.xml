@@ -63,7 +63,6 @@
         android:layout_below="@+id/tv_more_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/card_elevation"
         android:layout_margin="5dp"
         android:text="@string/title_more_details"
         android:textSize="16sp"

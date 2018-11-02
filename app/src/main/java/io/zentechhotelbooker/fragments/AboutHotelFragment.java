@@ -21,10 +21,6 @@ public class AboutHotelFragment extends AppCompatActivity{
     TextView tv_hotel_name;
     TextView tv_about_hotel;
 
-    // strings to get intent Extras from the previous activity
-    String room_image_url_1;
-    String room_type_1;
-    String room_price_1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,11 +42,6 @@ public class AboutHotelFragment extends AppCompatActivity{
         tv_hotel_name.setText(getString(R.string.hotel_name));
         tv_about_hotel.setText(getString(R.string.about_hotel));
 
-        // getting the image url of the room
-        Intent intent = getIntent();
-        room_image_url_1 = intent.getStringExtra("room_image_url_1");
-        room_type_1 = intent.getStringExtra("room_type_1");
-        room_price_1 = intent.getStringExtra("room_price_1");
 
     }
 
@@ -60,9 +51,6 @@ public class AboutHotelFragment extends AppCompatActivity{
             case android.R.id.home:
                 // opens activity on back button press and passes the StringExtra of the Room Image
                 Intent intentHome = new Intent(AboutHotelFragment.this,ViewRoomDetailsActivity.class);
-                intentHome.putExtra("room_image_url_1",room_image_url_1);
-                intentHome.putExtra("room_type_1",room_type_1);
-                intentHome.putExtra("room_price_1",room_price_1);
                 startActivity(intentHome);
                 CustomIntent.customType(AboutHotelFragment.this, "right-to-left");
         }
@@ -74,9 +62,6 @@ public class AboutHotelFragment extends AppCompatActivity{
         super.onBackPressed();
         // opens activity on back button press and passes the StringExtra of the Room Image
         Intent intentHome = new Intent(AboutHotelFragment.this,ViewRoomDetailsActivity.class);
-        intentHome.putExtra("room_image_url_1",room_image_url_1);
-        intentHome.putExtra("room_type_1",room_type_1);
-        intentHome.putExtra("room_price_1",room_price_1);
         startActivity(intentHome);
         CustomIntent.customType(AboutHotelFragment.this, "right-to-left");
     }

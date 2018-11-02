@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -82,18 +84,18 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
         rooms = new Rooms();
 
         // get the savedInstanceState and sets them to the respective views
-        if(savedInstanceState != null && savedInstanceState.getSerializable("saved_room_image_url") != null){
+        if(savedInstanceState != null && savedInstanceState.getString("saved_room_image_url") != null){
             saved_image_url = savedInstanceState.getString("saved_room_image_url");
             // Glide Library to load imageUrl from the HomeActivity
             Glide.with(this)
                     .load(saved_image_url)
                     .into(room_image);
         }
-        if(savedInstanceState != null && savedInstanceState.getSerializable("saved_room_type") != null){
+        if(savedInstanceState != null && savedInstanceState.getString("saved_room_type") != null){
             saved_room_type = savedInstanceState.getString("saved_room_type");
             tv_room_type.setText(saved_room_type);
         }
-        if(savedInstanceState != null && savedInstanceState.getSerializable("saved_room_price") != null){
+        if(savedInstanceState != null && savedInstanceState.getString("saved_room_price") != null){
             saved_room_price = savedInstanceState.getString("saved_room_price");
             tv_room_type.setText(saved_room_price);
         }
@@ -111,9 +113,23 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
         savedInstanceState.putString("saved_room_price",room_price);
     }
 
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+
+        // get the savedInstanceState and sets them to the respective views
+            saved_image_url = savedInstanceState.getString("saved_room_image_url");
+            // Glide Library to load imageUrl from the HomeActivity
+            Glide.with(this).load(saved_image_url).into(room_image);
+
+        // restores the text and sets it to the textViews
+            saved_room_type = savedInstanceState.getString("saved_room_type");
+            tv_room_type.setText(saved_room_type);
+
+            saved_room_price = savedInstanceState.getString("saved_room_price");
+            tv_room_type.setText(saved_room_price);
+
     }
 
     // get String intents
@@ -160,7 +176,7 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
                 intentBook.putExtra("user_name",user_name);
                 intentBook.putExtra("room_number", room_number);
                 intentBook.putExtra("room_type", room_type);
-                intentBook.putExtra("room_price", "GH¢ " + room_price);
+                intentBook.putExtra("room_price",  room_price);
                 intentBook.putExtra("room_image_url",room_image_url);
                 intentBook.putExtra("user_image", user_image);
                 // starting the activity
@@ -195,9 +211,6 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     public void aboutHotelBtn(View view) {
         // sends user to the AboutHotelFragment
         Intent intentAbout = new Intent(ViewRoomDetailsActivity.this,AboutHotelFragment.class);
-        intentAbout.putExtra("room_image_url_1",room_image_url);
-        intentAbout.putExtra("room_type_1",room_type);
-        intentAbout.putExtra("room_price_1",room_price);
         startActivity(intentAbout);
         CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
     }
@@ -206,11 +219,7 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
         // sends user to the ImportantInformationFragment
         // sends user to the AboutHotelFragment
         Intent intentAbout = new Intent(ViewRoomDetailsActivity.this,AboutHotelFragment.class);
-        intentAbout.putExtra("room_image_url_2",room_image_url);
-        intentAbout.putExtra("room_type_2",room_type);
-        intentAbout.putExtra("room_price_2",room_price);
         startActivity(intentAbout);
-        CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
         CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
     }
 
@@ -223,15 +232,32 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_share,menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-
                 startActivity(new Intent(ViewRoomDetailsActivity.this,HomeActivity.class));
-
                 CustomIntent.customType(ViewRoomDetailsActivity.this,"right-to-left");
-
                 break;
+
+            case R.id.menu_share:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.setAction(android.content.Intent.ACTION_SEND);
+                String sharingBody = "https://www.zentechgh.com/";
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Accra City Hotel");
+                sharingIntent.putExtra(Intent.EXTRA_TEXT,sharingBody);
+                startActivity(Intent.createChooser(sharingIntent,"Share with"));
+                break;
+
+                default:
+                    break;
         }
         return super.onOptionsItemSelected(item);
     }

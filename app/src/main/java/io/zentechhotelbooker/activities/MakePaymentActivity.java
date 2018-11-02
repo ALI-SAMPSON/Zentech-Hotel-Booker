@@ -13,6 +13,8 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -208,7 +210,6 @@ public class MakePaymentActivity extends AppCompatActivity {
             editTextMomoNumber.setError(getString(R.string.phone_invalid));
             editTextMomoNumber.requestFocus();
             return;
-            //Snackbar.make(nestedScrollView,"Momo number are required fields",Snackbar.LENGTH_LONG).show();
         }
         else{
             //method call
@@ -223,7 +224,6 @@ public class MakePaymentActivity extends AppCompatActivity {
         final String user_image = getIntent().getStringExtra("user_image");
 
         // displays the progressBar
-        //progressBar.setVisibility(View.VISIBLE);
         progressDialog.show();
 
         //gets text from the user
@@ -439,21 +439,32 @@ public class MakePaymentActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_share,menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             //sends user to the Home Activity
             case android.R.id.home:
-
-                // finishes the activity
-                finish();
-
                 // starts the home activity
-                startActivity(new Intent(MakePaymentActivity.this,HomeActivity.class));
-
+                startActivity(new Intent(MakePaymentActivity.this,ViewRoomDetailsActivity.class));
                 // Add a custom animation to the activity
                 CustomIntent.customType(MakePaymentActivity.this,"fadein-to-fadeout");
-
+                // finishes the activity
+                finish();
                 break;
+            case R.id.menu_share:
+                // open the sharing Intent
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String sharingBody = "https://www.zentechgh.com/";
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT,"Accra City Hotel");
+                sharingIntent.putExtra(Intent.EXTRA_TEXT,sharingBody);
+                startActivity(Intent.createChooser(sharingIntent,"Share with"));
             default:
                 break;
         }
@@ -471,21 +482,21 @@ public class MakePaymentActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         // Add a custom animation to the activity
-        CustomIntent.customType(MakePaymentActivity.this,"bottom-to-up");
+        CustomIntent.customType(MakePaymentActivity.this,"right-to-left");
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        // finish the activity
-        finish();
-
         // starts the activity
-        startActivity(new Intent(MakePaymentActivity.this,HomeActivity.class));
+        startActivity(new Intent(MakePaymentActivity.this,ViewRoomDetailsActivity.class));
 
         // Add a custom animation to the activity
         CustomIntent.customType(MakePaymentActivity.this,"fadein-to-fadeout");
+
+        // finishes the activity
+        finish();
 
     }
 }
