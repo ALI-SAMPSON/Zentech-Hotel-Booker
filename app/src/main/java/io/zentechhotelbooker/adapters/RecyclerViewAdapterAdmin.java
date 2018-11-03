@@ -1,6 +1,7 @@
 package io.zentechhotelbooker.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,18 +14,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.activities.ViewRoomDetailsActivity;
 import io.zentechhotelbooker.models.Rooms;
+import maes.tech.intentanim.CustomIntent;
 
 public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewAdapterAdmin.ViewHolder> {
 
@@ -72,6 +79,76 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
         //Loading image into Glide using the glide library.
         Glide.with(mCtx).load(rooms.getRoomImage_url()).into(holder.room_image);
 
+
+        // checks for booked and non-booked rooms
+        holder.paymentRef.child(rooms.getRoomNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()){
+                    // disables the cardView if room is booked
+                    //holder.room_cardView.setEnabled(false);
+                    holder.cardView.setClickable(false);
+                    holder.cardView.setFocusable(false);
+                    // displays a text with caption "Booked" to user
+                    holder.tv_room_booked.setVisibility(View.VISIBLE);
+
+                }
+                else{
+                    // dismisses the textView
+                    holder.tv_room_booked.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // display an error message
+                Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // checks if rooms are booked or not when user clicks on the cardView
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //code to the check if room has been booked already
+                holder.paymentRef.child(rooms.getRoomNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //gets a snapshot of the data in the database
+                        if (dataSnapshot.exists()) {
+
+                            // disables the cardView if room is booked
+                            holder.cardView.setEnabled(false);
+                            holder.cardView.setClickable(false);
+                            holder.cardView.setFocusable(false);
+
+                            holder.tv_room_booked.setVisibility(View.VISIBLE);
+
+                            // animation to cardView
+                            YoYo.with(Techniques.Shake).playOn(holder.cardView);
+
+                            // displays a warning message
+                            Toast.makeText(mCtx, "Room is already booked", Toast.LENGTH_LONG).show();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // display an error message
+                        Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+            }
+        });
+
+
     }
 
     // class to return the size of the rooms added to the database
@@ -85,6 +162,8 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
         // Creating object of the classes
         RecyclerView recyclerView;
+        // Creating objects of the views
+        TextView tv_room_booked;
         CardView cardView;
         ImageView room_image;
         TextView room_type;
@@ -93,6 +172,8 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
         ProgressBar progressBar;
 
         DatabaseReference  mDatabaseRef;
+
+        DatabaseReference paymentRef;
 
         FirebaseStorage mStorage;
 
@@ -109,10 +190,13 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
             room_image = itemView.findViewById(R.id.room_image);
             room_type = itemView.findViewById(R.id.tv_room_type);
             room_price = itemView.findViewById(R.id.tv_room_price);
+            tv_room_booked = itemView.findViewById(R.id.tv_room_booked);
 
             progressBar = itemView.findViewById(R.id.progressBar);
 
             mDatabaseRef = FirebaseDatabase.getInstance().getReference("Rooms");
+
+            paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
 
             // creating an instance of a Firebase Storage
             mStorage = FirebaseStorage.getInstance();

@@ -206,14 +206,14 @@ public class HomeActivity extends AppCompatActivity implements
         super.onStart();
         if(mAuth.getCurrentUser() == null){
 
-            // finishes activity
-            finish();
-
             // starts the login activity currently logged in user is null(no logged in user)
             startActivity(new Intent(this,UserLoginActivity.class));
 
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(HomeActivity.this, "fadein-to-fadeout");
+
+            // finishes activity
+            finish();
         }
         else if(mAuth.getCurrentUser() != null){
 

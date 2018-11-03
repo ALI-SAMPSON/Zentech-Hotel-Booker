@@ -269,6 +269,9 @@
     <string name="title_share"
         translatable="false">Share</string>
 
+    <string name="text_no_payments"
+        translatable="false">Ooops! No payments have been made yet</string>
+
     <string name="body_more_details"
         translatable="false">
         Accra City Hotel is 30 minutes from Accra Sports Stadium

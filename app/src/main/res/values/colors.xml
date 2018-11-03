@@ -57,6 +57,7 @@
     <color name="buttonDark">#232733</color>
     <color name="buttonLight">#262A36</color>
 
+    <color name="error_color">#E23F06</color>
 
     <!--Color for admin UI -->
     <color name="colorBlue">#0E81D1</color>

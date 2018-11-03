@@ -114,7 +114,6 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         });
 
 
-
         // checks if rooms are booked or not when user clicks on the cardView
         holder.room_cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +139,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                             // displays a warning message
                             Toast.makeText(mCtx, "Room is already booked", Toast.LENGTH_LONG).show();
                         }
-                        else {
+                        else{
 
                             // Creates new Intent and passes the strings to the intent to be opened
                             Intent intent = new Intent(mCtx, ViewRoomDetailsActivity.class);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -65,6 +66,10 @@ public class CheckPaymentActivity extends AppCompatActivity {
     // Creating a ValueEvent Listener.
     private ValueEventListener mDBListener;
 
+    // ImageView and TextView for error checking
+    ImageView errorImage;
+    TextView errorText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,9 @@ public class CheckPaymentActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        errorImage = findViewById(R.id.error_icon);
+        errorText = findViewById(R.id.tv_error);
+
         // Assign id to RecyclerView.
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -85,7 +93,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         // Setting RecyclerView layout as LinearLayout.
-        recyclerView.setLayoutManager(new GridLayoutManager(CheckPaymentActivity.this,2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(CheckPaymentActivity.this));
 
         paymentsList = new ArrayList<>();
 
@@ -137,11 +145,13 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
                     paymentsList.add(payments);
 
-                    // check if all children are empty, that no payments made
-                    if(paymentSnapshot.getChildren() == null){
-                        // display a message
-                        Toast.makeText(CheckPaymentActivity.this,"No Payments made yet",Toast.LENGTH_LONG).show();
+                    // checks if there is no payment made
+                    /*if(!dataSnapshot.exists() || paymentSnapshot.getValue(Payments.class) == null){
+                        // set the visibility of the views to visible
+                        errorImage.setVisibility(View.VISIBLE);
+                        errorText.setVisibility(View.VISIBLE);
                     }
+                    */
 
                 }
 

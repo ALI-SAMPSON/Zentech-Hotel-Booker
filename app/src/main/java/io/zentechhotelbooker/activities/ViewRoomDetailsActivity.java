@@ -263,7 +263,6 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(ViewRoomDetailsActivity.this,HomeActivity.class));
-
         CustomIntent.customType(ViewRoomDetailsActivity.this,"right-to-left");
     }
 

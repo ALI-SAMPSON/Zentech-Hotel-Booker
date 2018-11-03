@@ -50,7 +50,7 @@ public class RecyclerViewAdapterPayment extends RecyclerView.Adapter<RecyclerVie
 
         holder.user_name.setText(" Username : " + payments.getUser_name());
         holder.room_number.setText(" Room Type : "  + payments.getRoom_type());
-        holder.room_price.setText(" Price : GHC " + payments.getPrice());
+        holder.room_price.setText(" Price : " + payments.getPrice());
         holder.mobile_number.setText(" M. Number : " + payments.getMobile_number());
         Glide.with(mCtx).load(payments.getImageUrl()).into(holder.room_image);
 
