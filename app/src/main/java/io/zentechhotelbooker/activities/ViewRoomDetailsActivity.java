@@ -14,10 +14,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
+import com.github.aakira.expandablelayout.ExpandableLayout;
 
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.fragments.AboutHotelFragment;
@@ -38,6 +40,7 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     TextView tv_supper;
     TextView tv_room_price;
 
+
     String user_name;
     String user_image;
     String room_image_url;
@@ -48,17 +51,15 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     String lunch_food;
     String supper_food;
 
-    String saved_user_name;
-    String saved_image_url;
-    String saved_room_type;
-    String saved_room_price;
-    String saved_breadfast_food;
-    String saved_lunch_food;
-    String saved_supper_food;
+    // Expandable layouts
+    ExpandableLayout expandableLayout1;
+    ExpandableLayout expandableLayout2;
+    ExpandableLayout expandableLayout3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_view_room_details);
 
         if(getSupportActionBar() != null){
@@ -67,6 +68,9 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+
+        rooms = new Rooms();
 
         // getting referencer to the TextView in the Layout resource file
         room_image = findViewById(R.id.room_image);
@@ -90,78 +94,108 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
         lunch_food = intent.getStringExtra("lunch");
         supper_food = intent.getStringExtra("supper");
 
-        rooms = new Rooms();
-
-        // get the savedInstanceState and sets them to the respective views
-        /*if(savedInstanceState != null && savedInstanceState.getString("saved_room_image_url") != null){
-            saved_image_url = savedInstanceState.getString("saved_room_image_url");
-            // Glide Library to load imageUrl from the HomeActivity
-            Glide.with(this)
-                    .load(saved_image_url)
-                    .into(room_image);
-        }
-        if(savedInstanceState != null && savedInstanceState.getString("saved_room_type") != null){
-            saved_room_type = savedInstanceState.getString("saved_room_type");
-            tv_room_type.setText(saved_room_type);
-        }
-        if(savedInstanceState != null && savedInstanceState.getString("saved_room_price") != null){
-            saved_room_price = savedInstanceState.getString("saved_room_price");
-            tv_room_type.setText(saved_room_price);
-        }
-        if(savedInstanceState != null && savedInstanceState.getString("saved_breadfast_food") != null){
-            saved_breadfast_food = savedInstanceState.getString("saved_breadfast_food");
-            tv_room_type.setText(saved_breadfast_food);
-        }
-        if(savedInstanceState != null && savedInstanceState.getString("saved_lunch_food") != null){
-            saved_lunch_food = savedInstanceState.getString("saved_lunch_food");
-            tv_room_type.setText(saved_lunch_food);
-        }
-        if(savedInstanceState != null && savedInstanceState.getString("saved_supper_food") != null){
-            saved_supper_food = savedInstanceState.getString("saved_supper_food");
-            tv_room_type.setText(saved_supper_food);
-        }
-        */
         // method call
         settingValues();
 
     }
 
+
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("saved_room_image_url",room_image_url);
-        savedInstanceState.putString("saved_room_type",room_type);
-        savedInstanceState.putString("saved_room_price",room_price);
-        savedInstanceState.putString("saved_breadfast_food",breakfast_food);
-        savedInstanceState.putString("saved_lunch_food",lunch_food);
-        savedInstanceState.putString("saved_supper_food",supper_food);
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putString("saved_image_url",room_image_url);
+        outState.putString("saved_room_type",room_type);
+        outState.putString("saved_room_price",room_price);
+        outState.putString("saved_breakfast_food",breakfast_food);
+        outState.putString("saved_lunch_food",lunch_food);
+        outState.putString("saved_supper_food",supper_food);
+
+        super.onSaveInstanceState(outState);
     }
+
 
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        // get the savedInstanceState and sets them to the respective views
-            saved_image_url = savedInstanceState.getString("saved_room_image_url");
+        /*
+        if(savedInstanceState != null) {
             // Glide Library to load imageUrl from the HomeActivity
-            Glide.with(this).load(saved_image_url).into(room_image);
+            Glide.with(this).load(savedInstanceState.getString("saved_image_url")).into(room_image);
+            Toast.makeText(ViewRoomDetailsActivity.this,
+                    " Saved Image Url Instance : " + saved_image_url, Toast.LENGTH_LONG).show();
+            // restores the text and sets it to the textViews
+            tv_room_type.setText(savedInstanceState.getString("saved_room_type"));
+            tv_room_type.setText(savedInstanceState.getString("saved_room_price"));
+            tv_breakfast.setText(savedInstanceState.getString("saved_breakfast_food"));
+            tv_lunch.setText(savedInstanceState.getString("saved_lunch_food"));
+            tv_supper.setText(savedInstanceState.getString("saved_supper_food"));
 
-        // restores the text and sets it to the textViews
-            saved_room_type = savedInstanceState.getString("saved_room_type");
+        }
+        */
+
+        if (room_image.getDrawable() == null) {
+            String saved_image_url = savedInstanceState.getString("saved_image_url");
+            // Glide Library to load imageUrl from the HomeActivity
+            //Glide.with(this).load(saved_image_url).into(room_image);
+            Toast.makeText(ViewRoomDetailsActivity.this,
+                    " Saved Image Url Instance : " + saved_image_url, Toast.LENGTH_LONG).show();
+        }
+        if (tv_room_type.getText().toString().equals("")) {
+            // restores the text and sets it to the textViews
+            String saved_room_type = savedInstanceState.getString("saved_room_type");
             tv_room_type.setText(saved_room_type);
+        }
+        if (tv_room_price.getText().toString().equals("")) {
+            String saved_room_price = savedInstanceState.getString("saved_room_price");
+            tv_room_price.setText(saved_room_price);
+        }
+        if (tv_breakfast.getText().toString().equals("")) {
+            String saved_breakfast_food = savedInstanceState.getString("saved_breakfast_food");
+            tv_breakfast.setText(saved_breakfast_food);
+        }
+        if(tv_lunch.getText().toString().equals("")) {
+            String saved_lunch_food = savedInstanceState.getString("saved_lunch_food");
+            tv_lunch.setText(saved_lunch_food);
+        }
 
-            saved_room_price = savedInstanceState.getString("saved_room_price");
-            tv_room_type.setText(saved_room_price);
-
-            saved_breadfast_food = savedInstanceState.getString("saved_breadfast_food");
-            tv_breakfast.setText(saved_breadfast_food);
-
-            saved_lunch_food = savedInstanceState.getString("saved_lunch_food");
-            tv_lunch.setText(lunch_food);
-
-            saved_supper_food = savedInstanceState.getString("saved_supper_food");
+        if(tv_supper.getText().toString().equals("")) {
+            String saved_supper_food = savedInstanceState.getString("saved_supper_food");
             tv_supper.setText(saved_supper_food);
+        }
+
+            /*
+            // get the savedInstanceState and sets them to the respective views
+            String saved_image_url = savedInstanceState.getString("saved_image_url");
+            if(saved_image_url != null && room_image_url == null){
+                // Glide Library to load imageUrl from the HomeActivity
+                Glide.with(this).load(saved_image_url).into(room_image);
+                Toast.makeText(ViewRoomDetailsActivity.this,
+                        " Saved Image Url Instance : "  + saved_image_url,Toast.LENGTH_LONG).show();
+            }
+            // restores the text and sets it to the textViews
+            String saved_room_type = savedInstanceState.getString("saved_room_type");
+            if(saved_room_type != null && room_type == null){
+                tv_room_type.setText(saved_room_type);
+            }
+            String saved_room_price = savedInstanceState.getString("saved_room_price");
+            if(saved_room_price != null && room_price == null){
+                tv_room_type.setText(saved_room_price);
+            }
+            String saved_breakfast_food = savedInstanceState.getString("saved_breakfast_food");
+            if(saved_breakfast_food != null && breakfast_food == null ){
+                tv_breakfast.setText(saved_breakfast_food);
+            }
+            String saved_lunch_food = savedInstanceState.getString("saved_lunch_food");
+            if(saved_lunch_food != null && lunch_food == null){
+                tv_lunch.setText(saved_lunch_food);
+            }
+            String saved_supper_food = savedInstanceState.getString("saved_supper_food");
+            if(saved_supper_food != null && supper_food == null){
+                tv_supper.setText(saved_supper_food);
+            }
+            */
 
     }
 
@@ -183,9 +217,10 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     }
 
     public void moreDetailsBtn(View view) {
-        // sends user to the AboutHotelFragment
-        startActivity(new Intent(ViewRoomDetailsActivity.this, MoreDetailsFragment.class));
-        CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
+
+        expandableLayout1 =  findViewById(R.id.expandableLayout1);
+        // toggle expand or close
+        expandableLayout1.toggle();
     }
 
     public void bookRoomBtn(View view) {
@@ -242,21 +277,18 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
         // sends user to the HomeActivity
         startActivity(new Intent(ViewRoomDetailsActivity.this, HomeActivity.class));
         CustomIntent.customType(ViewRoomDetailsActivity.this,"right-to-left");
+        // finish the activity
+        finish();
     }
 
     public void aboutHotelBtn(View view) {
-        // sends user to the AboutHotelFragment
-        Intent intentAbout = new Intent(ViewRoomDetailsActivity.this,AboutHotelFragment.class);
-        startActivity(intentAbout);
-        CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
+       expandableLayout2 = findViewById(R.id.expandableLayout2);
+       expandableLayout2.toggle(); // toggle expand or close
     }
 
     public void importantInfoBtn(View view) {
-        // sends user to the ImportantInformationFragment
-        // sends user to the AboutHotelFragment
-        Intent intentAbout = new Intent(ViewRoomDetailsActivity.this,AboutHotelFragment.class);
-        startActivity(intentAbout);
-        CustomIntent.customType(ViewRoomDetailsActivity.this,"left-to-right");
+        expandableLayout3 = findViewById(R.id.expandableLayout3);
+        expandableLayout3.toggle(); // toggle expand or close
     }
 
     @Override

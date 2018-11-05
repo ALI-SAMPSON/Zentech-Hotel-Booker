@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import io.zentechhotelbooker.R;
-import io.zentechhotelbooker.activities.HomeActivity;
 import io.zentechhotelbooker.activities.ViewRoomDetailsActivity;
 import maes.tech.intentanim.CustomIntent;
 
@@ -15,7 +14,7 @@ public class MoreDetailsFragment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_more_details_fragment);
+        setContentView(R.layout.fragment_more_details);
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.title_more_details));

@@ -45,7 +45,7 @@
     -->
 
     <TextView
-        android:id="@+id/tv_more_details"
+        android:id="@+id/tv_details"
         android:layout_below="@+id/hotel_image"
         android:layout_centerHorizontal="false"
         android:layout_width="wrap_content"
@@ -59,8 +59,8 @@
         android:layout_gravity="center" />
 
     <Button
-        android:id="@+id/btn_more_details"
-        android:layout_below="@+id/tv_more_details"
+        android:id="@+id/expandable_btn_more_details"
+        android:layout_below="@+id/tv_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -70,13 +70,44 @@
         android:textColor="@color/colorPrimaryDark"
         android:fontFamily="@font/nunito_semibold"
         android:background="@color/colorWhite"
-        android:drawableEnd="@drawable/ic_next"
+        android:drawableStart="@drawable/ic_arrow_drop_down"
+        android:drawableEnd="@drawable/ic_arrow_drop_down"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         card_view:targetApi="lollipop"
         android:onClick="moreDetailsBtn"/>
 
+    <!-- Expandable Layout provides an easy way to create
+         a view called header with an expandable view.
+         Views are external layout to allow a maximum of customization." -->
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expandable_btn_more_details"
+        android:background="@color/white_snow"
+        android:padding="0dp"
+        app:ael_duration="400"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_more_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:padding="@dimen/card_elevation"
+            app:fontFamily="@font/nunito_semibold"
+            android:text="@string/body_more_details"
+            android:layout_gravity="center|start" />
+
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
     <TextView
         android:id="@+id/tv_room_selection"
-        android:layout_below="@+id/btn_more_details"
+        android:layout_below="@+id/expandableLayout1"
         android:layout_centerHorizontal="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -142,6 +173,7 @@
                     android:padding="@dimen/card_elevation"
                     app:fontFamily="@font/nunito_semibold"
                     android:text="@string/text_breakfast"/>
+
 
                 <TextView
                     android:id="@+id/tv_lunch"
@@ -224,8 +256,9 @@
         android:drawableEnd="@drawable/ic_next"
         android:onClick="seeMoreRoomsBtn"/>
 
+    <!--
     <TextView
-        android:id="@+id/tv_about_hotel"
+        android:id="@+id/tv_hotel"
         android:layout_below="@+id/btn_see_more_rooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -234,10 +267,11 @@
         android:padding="@dimen/card_elevation"
         app:fontFamily="@font/nunito_extrabold"
         android:text="@string/text_about_hotel"/>
+        -->
 
     <Button
         android:id="@+id/btn_about_hotel"
-        android:layout_below="@+id/tv_about_hotel"
+        android:layout_below="@+id/btn_see_more_rooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -246,25 +280,126 @@
         android:fontFamily="@font/nunito_semibold"
         android:textSize="16sp"
         android:textAllCaps="false"
-        android:text="@string/about_hotel_short"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/text_about_hotel"
+        android:drawableStart="@drawable/ic_arrow_drop_down"
+        android:drawableEnd="@drawable/ic_arrow_drop_down"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         android:background="@color/colorWhite"
-        android:drawableEnd="@drawable/ic_next"
         android:onClick="aboutHotelBtn"/>
+
+    <!-- Expandable Layout provides an easy way to create
+        a view called header with an expandable view.
+        Views are external layout to allow a maximum of customization." -->
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_about_hotel"
+        android:background="@color/white_snow"
+        android:padding="0dp"
+        app:ael_duration="400"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_about_hotel"
+            android:layout_below="@+id/tv_hotel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_margin="10dp"
+            android:text="@string/about_hotel"
+            android:fontFamily="@font/nunito_semibold"
+            android:padding="@dimen/card_elevation"
+            android:textAllCaps="false"
+            android:layout_gravity="center|start"/>
+
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
     <Button
         android:id="@+id/btn_info"
-        android:layout_below="@+id/btn_about_hotel"
+        android:layout_below="@+id/expandableLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_important_info"
         android:layout_margin="5dp"
-        android:textSize="16sp"
         android:fontFamily="@font/nunito_semibold"
+        android:textSize="16sp"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryDark"
+        android:drawableStart="@drawable/ic_arrow_drop_down"
+        android:drawableEnd="@drawable/ic_arrow_drop_down"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         android:background="@color/colorWhite"
-        android:drawableEnd="@drawable/ic_next"
         android:onClick="importantInfoBtn"/>
+
+    <!-- Expandable Layout provides an easy way to create
+        a view called header with an expandable view.
+        Views are external layout to allow a maximum of customization." -->
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_info"
+        android:background="@color/white_snow"
+        android:padding="0dp"
+        app:ael_duration="400"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_point_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_margin="10dp"
+            android:padding="@dimen/card_elevation"
+            app:fontFamily="@font/nunito_semibold"
+            android:text="@string/important_info_1"
+            android:layout_gravity="center|start" />
+
+        <TextView
+            android:id="@+id/tv_point_2"
+            android:layout_below="@+id/tv_point_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:padding="@dimen/card_elevation"
+            app:fontFamily="@font/nunito_semibold"
+            android:text="@string/important_info_2"
+            android:layout_gravity="center|start" />
+
+        <TextView
+            android:id="@+id/tv_point_3"
+            android:layout_below="@+id/tv_point_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:padding="@dimen/card_elevation"
+            app:fontFamily="@font/nunito_semibold"
+            android:text="@string/important_info_3"
+            android:layout_gravity="center|start" />
+
+        <TextView
+            android:id="@+id/tv_point_4"
+            android:layout_below="@+id/tv_point_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:padding="@dimen/card_elevation"
+            app:fontFamily="@font/nunito_semibold"
+            android:text="@string/important_info_4"
+            android:layout_gravity="center|start" />
+
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
 </RelativeLayout>
 
