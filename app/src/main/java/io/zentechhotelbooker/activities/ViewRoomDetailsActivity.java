@@ -219,8 +219,7 @@ public class ViewRoomDetailsActivity extends AppCompatActivity{
     public void moreDetailsBtn(View view) {
 
         expandableLayout1 =  findViewById(R.id.expandableLayout1);
-        // toggle expand or close
-        expandableLayout1.toggle();
+        expandableLayout1.toggle(); // toggle expand or close
     }
 
     public void bookRoomBtn(View view) {
