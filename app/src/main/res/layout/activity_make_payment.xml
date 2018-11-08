@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/payment_bg"
+    android:background="@mipmap/payment_bg"
     android:id="@+id/nestedScrollView"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center_horizontal"
-            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:textAlignment="center"
             android:textColorHint="@color/colorWhite">
             <EditText
@@ -37,10 +37,10 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="0dp"
+                android:layout_marginStart="0dp"
                 app:fontFamily="@font/nunito_semibold"
                 android:drawablePadding="@dimen/spacing_normal"
-                android:drawableLeft="@drawable/ic_person_white"
+                android:drawableStart="@drawable/ic_person_white"
                 android:hint="@string/hint_username"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -136,7 +136,7 @@
                 <!--TextView View  and Spinner View for Voter's Gender-->
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/textViewPaymentMethod"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:text="@string/text_payment_method"
                     app:fontFamily="@font/nunito_semibold"
@@ -146,7 +146,7 @@
                     android:textSize="19sp"
                     android:gravity=""
                     android:textColor="@color/colorWhite"
-                    android:layout_marginLeft="1dp"
+                    android:layout_marginStart="1dp"
                     android:layout_marginTop="4dp"
                     android:layout_weight="1.11" />
                 <LinearLayout
@@ -155,13 +155,13 @@
                     android:orientation="horizontal"
                     android:layout_height="40dp"
                     android:weightSum="1"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginEnd="10dp">
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/spinnerPaymentMethod"
                         android:layout_width="150dp"
                         android:layout_height="40dp"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="10dp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -181,9 +181,9 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="0dp"
+                android:layout_marginStart="0dp"
                 android:hint="@string/hint_momo_number"
-                android:drawableLeft="@drawable/ic_phone"
+                android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"

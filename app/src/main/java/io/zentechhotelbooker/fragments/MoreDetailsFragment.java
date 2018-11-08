@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import io.zentechhotelbooker.R;
-import io.zentechhotelbooker.activities.ViewRoomDetailsActivity;
+import io.zentechhotelbooker.activities.ViewRoomDetailsUserActivity;
 import maes.tech.intentanim.CustomIntent;
 
 public class MoreDetailsFragment extends AppCompatActivity {
@@ -28,7 +28,7 @@ public class MoreDetailsFragment extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(MoreDetailsFragment.this,ViewRoomDetailsActivity.class));
+        startActivity(new Intent(MoreDetailsFragment.this,ViewRoomDetailsUserActivity.class));
 
         CustomIntent.customType(MoreDetailsFragment.this,"right-to-left");
     }
@@ -38,7 +38,7 @@ public class MoreDetailsFragment extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
 
-                startActivity(new Intent(MoreDetailsFragment.this,ViewRoomDetailsActivity.class));
+                startActivity(new Intent(MoreDetailsFragment.this,ViewRoomDetailsUserActivity.class));
 
                 CustomIntent.customType(MoreDetailsFragment.this,"right-to-left");
 

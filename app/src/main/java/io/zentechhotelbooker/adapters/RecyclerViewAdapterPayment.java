@@ -48,10 +48,10 @@ public class RecyclerViewAdapterPayment extends RecyclerView.Adapter<RecyclerVie
         // animation to cardView
         YoYo.with(Techniques.ZoomIn).playOn(holder.cardView);
 
-        holder.user_name.setText(" Username : " + payments.getUser_name());
-        holder.room_number.setText(" Room Type : "  + payments.getRoom_type());
-        holder.room_price.setText(" Price : " + payments.getPrice());
-        holder.mobile_number.setText(" M. Number : " + payments.getMobile_number());
+        holder.user_name.setText("Username : " + payments.getUser_name());
+        holder.mobile_number.setText("Phone : " + payments.getMobile_number());
+        holder.room_price.setText("Price : " + payments.getPrice());
+        holder.room_number.setText(payments.getRoom_type());
         Glide.with(mCtx).load(payments.getImageUrl()).into(holder.room_image);
 
     }

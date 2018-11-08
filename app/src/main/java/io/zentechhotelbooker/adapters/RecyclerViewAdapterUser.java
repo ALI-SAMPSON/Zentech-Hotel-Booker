@@ -5,13 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,9 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import io.zentechhotelbooker.R;
-import io.zentechhotelbooker.activities.DisplayMoreImagesActivity;
 import io.zentechhotelbooker.activities.MakePaymentActivity;
-import io.zentechhotelbooker.activities.ViewRoomDetailsActivity;
+import io.zentechhotelbooker.activities.ViewRoomDetailsUserActivity;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
@@ -95,6 +90,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                     //holder.room_cardView.setEnabled(false);
                     holder.room_cardView.setClickable(false);
                     holder.room_cardView.setFocusable(false);
+
+                    // disables the View Details button if room is booked
+                    holder.viewDetails.setEnabled(false);
+                    holder.viewDetails.setClickable(false);
+                    holder.viewDetails.setFocusable(false);
+
                     // displays a text with caption "Booked" to user
                     holder.tv_room_booked.setVisibility(View.VISIBLE);
 
@@ -131,6 +132,11 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                             holder.room_cardView.setClickable(false);
                             holder.room_cardView.setFocusable(false);
 
+                            // disables the View Details button if room is booked
+                            holder.viewDetails.setEnabled(false);
+                            holder.viewDetails.setClickable(false);
+                            holder.viewDetails.setFocusable(false);
+
                             holder.tv_room_booked.setVisibility(View.VISIBLE);
 
                             // animation to cardView
@@ -141,23 +147,51 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                         }
                         else{
 
-                            // Creates new Intent and passes the strings to the intent to be opened
-                            Intent intent = new Intent(mCtx, ViewRoomDetailsActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            // passing data to the payment activity
-                            intent.putExtra("user_name",holder.user.getDisplayName());
-                            intent.putExtra("room_number", rooms.getRoomNumber());
-                            intent.putExtra("room_type", rooms.getRoomType());
-                            intent.putExtra("breakfast","Breakfast : " + rooms.getBreakfastServed());
-                            intent.putExtra("lunch","Lunch : " + rooms.getLunchServed());
-                            intent.putExtra("supper","Supper : " + rooms.getSupperServed());
-                            intent.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
-                            intent.putExtra("room_image_url",rooms.getRoomImage_url());
-                            intent.putExtra("user_image", user_image);
-                            // starting the activity
-                            mCtx.startActivity(intent);
-                            // Add a custom animation to the activity
-                            CustomIntent.customType(mCtx,"left-to-right");
+                             // Creates an Alert Dialog
+                           AlertDialog.Builder builder = new AlertDialog.Builder(mCtx,
+                                   android.R.style.Theme_Material_Dialog_Alert);
+                           builder.setTitle("Book this Room");
+                           builder.setMessage("Are you sure you want to book this room and make payment for it?");
+                           builder.setCancelable(false);
+
+                           // set the Positive button for alert dialog
+                           builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialogInterface, int i) {
+
+                                   // Creates new Intent
+                                   Intent intentBook = new Intent(mCtx, MakePaymentActivity.class);
+                                   intentBook.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                   // passing data to the payment activity
+                                   intentBook.putExtra("user_name",holder.user.getDisplayName());
+                                   intentBook.putExtra("room_number", rooms.getRoomNumber());
+                                   intentBook.putExtra("room_type", rooms.getRoomType());
+                                   intentBook.putExtra("room_price",  rooms.getRoomPrice());
+                                   intentBook.putExtra("breakfast_food", rooms.getBreakfastServed());
+                                   intentBook.putExtra("lunch_food", rooms.getLunchServed());
+                                   intentBook.putExtra("supper_food",  rooms.getSupperServed());
+                                   intentBook.putExtra("room_image_url",rooms.getRoomImage_url());
+                                   intentBook.putExtra("user_image", user_image);
+                                   // starting the activity
+                                   mCtx.startActivity(intentBook);
+                                   // Add a custom animation to the activity
+                                   CustomIntent.customType(mCtx, "left-to-right");
+
+                               }
+                           });
+
+                           // set the Positive button for alert dialog
+                           builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialogInterface, int i) {
+                                   // dismiss the dialogue interface
+                                   dialogInterface.dismiss();
+                               }
+                           });
+
+                           //
+                           AlertDialog alertDialog = builder.create();
+                           alertDialog.show();
 
                         }
 
@@ -171,8 +205,37 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                     }
                 });
 
+
             }
         });
+
+
+
+       // OnClickListener for More Details Button
+       holder.viewDetails.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               // Creates new Intent and passes the strings to the intent to be opened
+               Intent intentDetails = new Intent(mCtx, ViewRoomDetailsUserActivity.class);
+               intentDetails.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               // passing data to the payment activity
+               intentDetails.putExtra("user_name",holder.user.getDisplayName());
+               intentDetails.putExtra("room_number", rooms.getRoomNumber());
+               intentDetails.putExtra("room_type", rooms.getRoomType());
+               intentDetails.putExtra("breakfast","Breakfast : " + rooms.getBreakfastServed());
+               intentDetails.putExtra("lunch","Lunch : " + rooms.getLunchServed());
+               intentDetails.putExtra("supper","Supper : " + rooms.getSupperServed());
+               intentDetails.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
+               intentDetails.putExtra("room_image_url",rooms.getRoomImage_url());
+               intentDetails.putExtra("user_image", user_image);
+               // starting the activity
+               mCtx.startActivity(intentDetails);
+               // Add a custom animation to the activity
+               CustomIntent.customType(mCtx, "fadein-to-fadeout");
+
+           }
+       });
 
 
     }
@@ -192,6 +255,8 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         TextView tv_room_type;
         TextView tv_room_price;
 
+        Button viewDetails;
+
         FirebaseAuth mAuth;
 
         FirebaseUser user;
@@ -208,6 +273,8 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             tv_room_booked = itemView.findViewById(R.id.tv_room_booked);
             tv_room_type = itemView.findViewById(R.id.tv_room_type);
             tv_room_price = itemView.findViewById(R.id.tv_room_price);
+
+            viewDetails = itemView.findViewById(R.id.btn_view);
 
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterPayment;
 import io.zentechhotelbooker.models.Payments;
+import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
 
@@ -66,6 +69,16 @@ public class CheckPaymentActivity extends AppCompatActivity {
     // Creating a ValueEvent Listener.
     private ValueEventListener mDBListener;
 
+    private static String Payment_path = "Payments";
+
+    // material searchView
+    MaterialSearchView searchView;
+
+    ArrayList<Payments> searchList;
+
+    // Creating DataReference
+    DatabaseReference dBRef;
+
     // ImageView and TextView for error checking
     ImageView errorImage;
     TextView errorText;
@@ -74,6 +87,10 @@ public class CheckPaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_payment);
+
+        // Creating an object of the toolbar
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //checks if the support actionbar is not null
         if(getSupportActionBar() != null){
@@ -93,9 +110,11 @@ public class CheckPaymentActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         // Setting RecyclerView layout as LinearLayout.
-        recyclerView.setLayoutManager(new LinearLayoutManager(CheckPaymentActivity.this));
+        recyclerView.setLayoutManager(new GridLayoutManager(CheckPaymentActivity.this, 2));
 
         paymentsList = new ArrayList<>();
+
+        searchList = new ArrayList<>();
 
         recyclerViewAdapterPayment = new RecyclerViewAdapterPayment(CheckPaymentActivity.this,paymentsList);
 
@@ -234,6 +253,93 @@ public class CheckPaymentActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search,menu);
+        MenuItem item = menu.findItem(R.id.menu_search);
+
+        searchView = findViewById(R.id.search_view);
+        searchView.setMenuItem(item);
+        searchView.setSubmitOnClick(true);
+        searchView.setEllipsize(true);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // test if searchView is not empty
+                if(!query.isEmpty()){
+                    searchForRoom(query);
+                    searchView.clearFocus();
+                }
+
+                //else
+                else{
+                    searchForRoom("");
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // test if searchView is not empty
+                if(!query.isEmpty()){
+                    searchForRoom(query);
+                }
+                else{
+                    searchForRoom("");
+                }
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+    private void searchForRoom(String s){
+
+        dBRef = FirebaseDatabase.getInstance().getReference(Payment_path);
+
+        Query query = dBRef.orderByChild("user_name")
+                .startAt(s)
+                .endAt(s + "\uf8ff");
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()){
+
+                    // clears the searchList
+                    searchList.clear();
+
+                    for(DataSnapshot paymentSnapshot : dataSnapshot.getChildren()){
+
+                        final Payments payments = paymentSnapshot.getValue(Payments.class);
+
+                        //adds the rooms searched to the arrayList
+                        searchList.add(payments);
+
+                    }
+
+                    RecyclerViewAdapterPayment mAdapterSearchPayment =
+                            new RecyclerViewAdapterPayment(CheckPaymentActivity.this, searchList);
+                    recyclerView.setAdapter(mAdapterSearchPayment);
+                    mAdapterSearchPayment.notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // display message if error occurs
+                Toast.makeText(CheckPaymentActivity.this,
+                        databaseError.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             //navigates to the AdminDashboard activity
@@ -243,6 +349,11 @@ public class CheckPaymentActivity extends AppCompatActivity {
                 CustomIntent.customType(CheckPaymentActivity.this,"fadein-to-fadeout");
                 // finishes the activity
                 finish();
+                break;
+            case R.id.menu_welcome:
+                Toast.makeText(CheckPaymentActivity.this,
+                        getString(R.string.welcome_text),
+                        Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

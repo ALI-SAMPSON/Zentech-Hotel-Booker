@@ -261,19 +261,15 @@
 
     <string name="title_room_details" translatable="false">Room Details</string>
 
-    <string name="title_more_details"
-        translatable="false">
+    <string name="title_more_details" translatable="false">
        More Details
     </string>
 
-    <string name="title_share"
-        translatable="false">Share</string>
+    <string name="title_share" translatable="false">Share</string>
 
-    <string name="text_no_payments"
-        translatable="false">Ooops! No payments have been made yet</string>
+    <string name="text_no_payments" translatable="false">Ooops! No payments have been made yet</string>
 
-    <string name="body_more_details"
-        translatable="false">
+    <string name="body_more_details" translatable="false">
         Accra City Hotel is 30 minutes from Accra Sports Stadium
         and 1 hour drive from Accra mall.
     </string>
@@ -300,5 +296,7 @@
     <!--Developer-->
     <string name="watermark" translatable="false">Created by <b>iCODE labs</b> © 2018</string>
     <string name="todo" translatable="false">TODO</string>
+
+    <string name="welcome_text" translatable="false">Welcome Admin</string>
 
 </resources>

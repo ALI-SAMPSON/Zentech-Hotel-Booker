@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,12 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
 import io.zentechhotelbooker.R;
-import io.zentechhotelbooker.activities.ViewRoomDetailsActivity;
+import io.zentechhotelbooker.activities.ViewRoomDetailsAdminActivity;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
@@ -87,9 +87,16 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
                 if(dataSnapshot.exists()){
                     // disables the cardView if room is booked
-                    //holder.room_cardView.setEnabled(false);
-                    holder.cardView.setClickable(false);
+                    //holder.cardView.setEnabled(false);
+                    /*holder.cardView.setClickable(false);
                     holder.cardView.setFocusable(false);
+
+                    // disables the View Details button if room is booked
+                    holder.viewDetails.setEnabled(false);
+                    holder.viewDetails.setClickable(false);
+                    holder.viewDetails.setFocusable(false);
+                    */
+
                     // displays a text with caption "Booked" to user
                     holder.tv_room_booked.setVisibility(View.VISIBLE);
 
@@ -121,11 +128,6 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
                         //gets a snapshot of the data in the database
                         if (dataSnapshot.exists()) {
 
-                            // disables the cardView if room is booked
-                            holder.cardView.setEnabled(false);
-                            holder.cardView.setClickable(false);
-                            holder.cardView.setFocusable(false);
-
                             holder.tv_room_booked.setVisibility(View.VISIBLE);
 
                             // animation to cardView
@@ -149,6 +151,29 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
                     }
                 });
+            }
+        });
+
+        // OnClickListener for More Details Button
+        holder.viewDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Creates new Intent and passes the strings to the intent to be opened
+                Intent intentDetails = new Intent(mCtx, ViewRoomDetailsAdminActivity.class);
+                intentDetails.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                // passing data to the payment activity
+                intentDetails.putExtra("room_number", rooms.getRoomNumber());
+                intentDetails.putExtra("room_type", rooms.getRoomType());
+                intentDetails.putExtra("breakfast","Breakfast : " + rooms.getBreakfastServed());
+                intentDetails.putExtra("lunch","Lunch : " + rooms.getLunchServed());
+                intentDetails.putExtra("supper","Supper : " + rooms.getSupperServed());
+                intentDetails.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
+                intentDetails.putExtra("room_image_url",rooms.getRoomImage_url());
+                // starting the activity
+                mCtx.startActivity(intentDetails);
+                // Add a custom animation to the activity
+                CustomIntent.customType(mCtx, "fadein-to-fadeout");
 
             }
         });
@@ -173,6 +198,8 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
         TextView room_type;
         TextView room_price;
 
+        Button viewDetails;
+
         ProgressBar progressBar;
 
         //DatabaseReference  mRoomRef;
@@ -191,6 +218,7 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
             room_type = itemView.findViewById(R.id.tv_room_type);
             room_price = itemView.findViewById(R.id.tv_room_price);
             tv_room_booked = itemView.findViewById(R.id.tv_room_booked);
+            viewDetails = itemView.findViewById(R.id.btn_view);
 
             progressBar = itemView.findViewById(R.id.progressBar);
 

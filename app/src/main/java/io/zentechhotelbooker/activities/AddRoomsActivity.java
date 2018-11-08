@@ -358,6 +358,12 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_add_rooms,menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -373,6 +379,11 @@ public class AddRoomsActivity extends AppCompatActivity {
                 // finish activity
                 finish();
 
+                break;
+            case R.id.menu_welcome:
+                Toast.makeText(AddRoomsActivity.this,
+                        getString(R.string.welcome_text),
+                        Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

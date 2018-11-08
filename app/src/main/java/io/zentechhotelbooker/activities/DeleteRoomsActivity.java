@@ -76,6 +76,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_rooms);
 
+        // Creating an object of the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -199,7 +200,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // if searchView is not empty
+                // test if searchView is not empty
                 if(!query.isEmpty()){
                     searchForRoom(query);
                     searchView.clearFocus();
@@ -215,7 +216,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
             @Override
             public boolean onQueryTextChange(String query) {
-                // if searchView is not empty
+                // test if searchView is not empty
                 if(!query.isEmpty()){
                     searchForRoom(query);
                 }
@@ -289,6 +290,11 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                 // finishes the activity
                 finish();
 
+                break;
+            case R.id.menu_welcome:
+                Toast.makeText(DeleteRoomsActivity.this,
+                        getString(R.string.welcome_text),
+                        Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

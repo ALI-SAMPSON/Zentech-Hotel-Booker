@@ -8,14 +8,32 @@
     android:background="@color/colorSilver"
     tools:context=".activities.CheckPaymentActivity">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorBlue"
+            android:theme="@style/ToolbarTheme"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:titleTextAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+        </android.support.v7.widget.Toolbar>
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:elevation="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.miguelcatalan.materialsearchview.MaterialSearchView>
+
         <!-- RecyclerView to displays rooms available -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:layout_below="@+id/toolbar"
+            android:outlineProvider="bounds"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentTop="false">
         </android.support.v7.widget.RecyclerView>
 
         <ProgressBar

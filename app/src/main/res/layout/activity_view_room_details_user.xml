@@ -6,7 +6,7 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ViewRoomDetailsActivity">
+    tools:context=".activities.ViewRoomDetailsUserActivity">
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:layout_margin="0dp"
         android:layout_height="200dp"
         android:scaleType="centerInside"
-        android:background="@drawable/splash_image"
+        android:background="@mipmap/splash_bg"
         android:contentDescription="@string/todo" />
 
     <!--
@@ -143,7 +143,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/hotel_room"
+                android:background="@mipmap/bg_room"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/todo" />
 
@@ -216,6 +216,7 @@
                     app:fontFamily="@font/nunito_semibold"
                     android:text="@string/currency_symbol"/>
 
+                <!--
                 <Button
                     android:id="@+id/btn_book"
                     android:layout_width="match_parent"
@@ -234,6 +235,7 @@
                     android:padding="@dimen/card_elevation"
                     android:layout_margin="5dp"
                     android:onClick="bookRoomBtn"/>
+                    -->
 
             </LinearLayout>
 

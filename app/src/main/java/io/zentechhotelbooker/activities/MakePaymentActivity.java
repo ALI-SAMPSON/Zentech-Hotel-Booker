@@ -460,7 +460,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             //sends user to the Home Activity
             case android.R.id.home:
                 // starts the home activity
-                startActivity(new Intent(MakePaymentActivity.this,ViewRoomDetailsActivity.class));
+                startActivity(new Intent(MakePaymentActivity.this,HomeActivity.class));
                 // Add a custom animation to the activity
                 CustomIntent.customType(MakePaymentActivity.this,"fadein-to-fadeout");
                 // finishes the activity
@@ -499,7 +499,7 @@ public class MakePaymentActivity extends AppCompatActivity {
         super.onBackPressed();
 
         // starts the activity
-        startActivity(new Intent(MakePaymentActivity.this,ViewRoomDetailsActivity.class));
+        startActivity(new Intent(MakePaymentActivity.this,HomeActivity.class));
 
         // Add a custom animation to the activity
         CustomIntent.customType(MakePaymentActivity.this,"fadein-to-fadeout");

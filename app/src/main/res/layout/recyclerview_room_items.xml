@@ -32,8 +32,8 @@
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:textSize="25sp"
-            android:layout_centerInParent="true"
             android:padding="@dimen/card_elevation"
             app:fontFamily="@font/nunito_extrabold"
             android:textColor="@color/colorRed"
@@ -61,7 +61,6 @@
             android:text="@string/room_type"
             android:layout_gravity="center" />
 
-
         <TextView
             android:id="@+id/tv_room_price"
             android:layout_below="@+id/tv_room_type"
@@ -73,6 +72,26 @@
             app:fontFamily="@font/nunito_semibold"
             android:text="@string/price"
             android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/btn_view"
+                android:layout_below="@+id/tv_room_price"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/text_more_details"
+                android:textAllCaps="false"
+                android:layout_marginStart="10dp"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                android:textColor="@color/colorAccent"
+                app:fontFamily="@font/nunito_semibold"
+                android:background="@drawable/circular_button_pink_stroke"
+                android:padding="@dimen/card_elevation"
+                android:layout_margin="5dp"
+                android:onClick="bookRoomBtn"/>
 
     </RelativeLayout>
 

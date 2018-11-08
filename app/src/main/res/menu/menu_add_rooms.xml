@@ -4,17 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/menu_search"
-        android:title="@string/text_search"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom|collapseActionView">
-    </item>
-
-    <item
         android:id="@+id/menu_welcome"
         android:title="@string/text_search"
-        android:orderInCategory="200"
+        android:orderInCategory="100"
         android:icon="@drawable/good_day"
         app:showAsAction="ifRoom">
     </item>
