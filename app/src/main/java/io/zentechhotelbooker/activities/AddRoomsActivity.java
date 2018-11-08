@@ -14,7 +14,9 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -40,6 +42,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
@@ -117,6 +122,7 @@ public class AddRoomsActivity extends AppCompatActivity {
         //checks if there is a toolbar, if yes it set the Home Button on it
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("ADD ROOMS");
+            getSupportActionBar().setElevation(5.0f);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -238,9 +244,6 @@ public class AddRoomsActivity extends AppCompatActivity {
             YoYo.with(Techniques.FadeInDown).playOn(roomImage);
 
             // Adds an animation to shake the view
-            YoYo.with(Techniques.Shake).playOn(spinnerLayout);
-
-            // Adds an animation to shake the view
             YoYo.with(Techniques.Shake).playOn(editTextPrice);
 
             // Adds an animation to shake the view
@@ -354,6 +357,7 @@ public class AddRoomsActivity extends AppCompatActivity {
         }
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

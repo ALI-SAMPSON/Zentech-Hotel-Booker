@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -20,9 +23,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +59,29 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
     FirebaseStorage mStorage;
 
+    Toolbar toolbar;
+
+    // material searchView
+    MaterialSearchView searchView;
+
+    ArrayList<Rooms> searchList;
+
+    // Creating DataReference
+    DatabaseReference dBRef;
+
+    public static String Payment_Path = "Payments";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_rooms);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.delete_rooms));
+            //getSupportActionBar().setElevation(5.0f);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,12 +96,14 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // Setting RecyclerView layout as LinearLayout.
         recyclerView.setLayoutManager(new GridLayoutManager(DeleteRoomsActivity.this,2));
 
+        searchList = new ArrayList<>();
+
         roomsList = new ArrayList<>();
 
         // Creating an object of the RecyclerAdapter
         recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,roomsList);
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        //recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(recyclerViewAdapterAdmin);
 
@@ -162,6 +185,97 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search,menu);
+        MenuItem item = menu.findItem(R.id.menu_search);
+
+        // Material SearchView
+        searchView = findViewById(R.id.search_view);
+        searchView.setMenuItem(item);
+        //searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        searchView.setEllipsize(true);
+        searchView.setSubmitOnClick(true);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // if searchView is not empty
+                if(!query.isEmpty()){
+                    searchForRoom(query);
+                    searchView.clearFocus();
+                }
+
+                //else
+                else{
+                    searchForRoom("");
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // if searchView is not empty
+                if(!query.isEmpty()){
+                    searchForRoom(query);
+                }
+
+                //else
+                else{
+                    searchForRoom("");
+                }
+
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+    public void searchForRoom(String s){
+
+        dBRef = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
+
+        Query query = dBRef.orderByChild("roomType")
+                .startAt(s)
+                .endAt(s + "\uf8ff");
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.hasChildren()){
+
+                    searchList.clear();
+
+                    for(DataSnapshot roomSnapshot : dataSnapshot.getChildren()){
+
+                        final Rooms rooms = roomSnapshot.getValue(Rooms.class);
+
+                        //adds the rooms searched to the arrayList
+                        searchList.add(rooms);
+
+                    }
+
+                    RecyclerViewAdapterAdmin recyclerViewAdapterSearch =
+                            new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,searchList);
+                    recyclerView.setAdapter(recyclerViewAdapterSearch);
+                    recyclerViewAdapterSearch.notifyDataSetChanged();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // display message if error occurs
+                Toast.makeText(DeleteRoomsActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home:
@@ -185,14 +299,22 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //goes back to the AdminDashboard
-        startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
 
-        // Adds a bottom-to-up animations to the activity
-        CustomIntent.customType(DeleteRoomsActivity.this,"fadein-to-fadeout");
+        //checks if searchView is opened
+        if(searchView.isSearchOpen()){
+            searchView.closeSearch();
+        }
+        else{
+            //goes back to the AdminDashboard
+            startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
 
-        // finishes the activity
-        finish();
+            // Adds a bottom-to-up animations to the activity
+            CustomIntent.customType(DeleteRoomsActivity.this,"fadein-to-fadeout");
+
+            // finishes the activity
+            finish();
+        }
+
     }
 
     // Methods implemented in the recyclerView for this activity

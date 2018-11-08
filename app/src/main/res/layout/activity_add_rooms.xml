@@ -7,14 +7,17 @@
     android:layout_width="match_parent"
     android:layout_gravity="center"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".activities.AddRoomsActivity">
 
         <!-- Relative layout to place the progressBar at the center of the circular ImageView-->
         <RelativeLayout
             android:id="@+id/relativeLayout"
-            android:layout_margin="2dp"
+            android:layout_margin="1dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:background="@color/colorWhite">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -25,9 +28,10 @@
                 android:scaleType="centerCrop"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/tap_icon"
-                android:onClick="onSelectImage"/>
+                android:onClick="onSelectImage"
+                android:contentDescription="@string/todo" />
 
-                    <!-- TextInputLayout and AppCompatEdiText for Room Number -->
+            <!-- TextInputLayout and AppCompatEdiText for Room Number -->
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/container_roomNumber"
                 android:layout_below="@+id/imageView"

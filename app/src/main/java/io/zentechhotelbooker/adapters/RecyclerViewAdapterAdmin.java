@@ -108,6 +108,7 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
             }
         });
 
+
         // checks if rooms are booked or not when user clicks on the cardView
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +133,10 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
                             // displays a warning message
                             Toast.makeText(mCtx, "Room is already booked", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            // dismisses the textView
+                            holder.tv_room_booked.setVisibility(View.GONE);
                         }
 
 
@@ -161,7 +166,6 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
             View.OnClickListener,View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
 
         // Creating object of the classes
-        RecyclerView recyclerView;
         // Creating objects of the views
         TextView tv_room_booked;
         CardView cardView;
@@ -171,19 +175,15 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
         ProgressBar progressBar;
 
-        DatabaseReference  mDatabaseRef;
+        //DatabaseReference  mRoomRef;
 
         DatabaseReference paymentRef;
-
-        FirebaseStorage mStorage;
 
         // constructor
         public ViewHolder(View itemView){
             super(itemView);
 
             // settings ids to those in the recyclerview_list.xml file
-
-            recyclerView = itemView.findViewById(R.id.recyclerView);
 
             cardView = itemView.findViewById(R.id.room_cardView);
 
@@ -194,12 +194,9 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
             progressBar = itemView.findViewById(R.id.progressBar);
 
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference("Rooms");
+            //mRoomRef = FirebaseDatabase.getInstance().getReference("Rooms");
 
             paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
-
-            // creating an instance of a Firebase Storage
-            mStorage = FirebaseStorage.getInstance();
 
             // OnClickListeners for the ContextMenu
             itemView.setOnClickListener(this);
