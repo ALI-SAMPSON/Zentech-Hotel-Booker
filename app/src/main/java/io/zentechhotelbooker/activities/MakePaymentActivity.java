@@ -1,5 +1,7 @@
 package io.zentechhotelbooker.activities;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,11 +10,13 @@ import android.content.Intent;
 import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +29,7 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,6 +82,15 @@ public class MakePaymentActivity extends AppCompatActivity {
     NestedScrollView nestedScrollView;
 
     ProgressDialog progressDialog;
+
+    ExpandableLayout expandableLayout1;
+    ExpandableLayout expandableLayout2;
+
+    EditText cardNumber;
+    EditText holderName;
+    EditText cardMonth;
+    EditText cardYear;
+    EditText cardCvc;
 
 
     @Override
@@ -189,6 +203,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             editTextUsername.setText(user.getDisplayName());
         }
     }
+
 
     //method for handling make payments
     public void onMakePaymentButtonClick(View view){
@@ -309,7 +324,7 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 nm.notify(0, notification);
 
                                 // Method call to the class to send SMS
-                                // sendSMS();
+                                //sendSMS();
 
                             }
                             else {
@@ -359,7 +374,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             String password = "marketin";
             // Message content that is to be transmitted
 
-            String message = user_name + " has successfully made payment for a " + room_type + " room. ";
+            String message = user_name + " has successfully made payment for a " + room_type + ".";
 
             /*String message = user_name + " has successfully made payment for a " + room_type + " room "
                     + " at " + price + " using " + payment_method + ".";*/
@@ -508,4 +523,43 @@ public class MakePaymentActivity extends AppCompatActivity {
         finish();
 
     }
+
+    //OnClickListener for Visa Card
+    public void onVisaCardBtnClick(View view) {
+
+        expandableLayout1 =  findViewById(R.id.expandableLayout1);
+        expandableLayout1.toggle();
+
+        /*
+        cardNumber =  findViewById(R.id.editTextCardNumber);
+        holderName = findViewById(R.id.editTextHolderName);
+        cardMonth =  findViewById(R.id.editTextMonth);
+        cardYear =  findViewById(R.id.editTextYear);
+        cardCvc =  findViewById(R.id.editTextCvc);
+
+
+        String _cardNumber = cardNumber.getText().toString().trim();
+        String _holderName = holderName.getText().toString().trim();
+        String _cardMonth = cardMonth.getText().toString().trim();
+        String _cardYear = cardYear.getText().toString().trim();
+        String _cardCvc = cardCvc.getText().toString().trim();
+
+        if(TextUtils.isEmpty(_cardNumber)){
+            cardNumber.setError(getString(R.string.error_card_number));
+        }
+        if(TextUtils.isEmpty(_holderName)){
+            holderName.setError(getString(R.string.error_card_holder));
+        }
+    */
+
+
+    }
+
+    //OnClickListener for Master Card
+    public void onMasterCardBtnClick(View view) {
+        expandableLayout1 =  findViewById(R.id.expandableLayout1);
+        expandableLayout1.toggle();
+    }
+
+
 }

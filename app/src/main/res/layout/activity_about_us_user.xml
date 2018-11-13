@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/about_us_bg"/>
+        android:src="@mipmap/about_us_bg"/>
 
     <TextView
         android:id="@+id/title"

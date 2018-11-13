@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -55,6 +56,7 @@ import maes.tech.intentanim.CustomIntent;
 public class AddRoomsActivity extends AppCompatActivity {
 
     //class variables
+    private TextView tv_room_exist;
     private EditText editTextRoomNumber;
     private EditText editTextPrice;
 
@@ -103,6 +105,8 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     private DatabaseReference paymentRef;
 
+    private DatabaseReference roomsRef;
+
     private FirebaseAuth mAuth;
 
     private ProgressBar progressBar;
@@ -129,6 +133,7 @@ public class AddRoomsActivity extends AppCompatActivity {
         }
 
         roomImage = findViewById(R.id.imageView);
+        tv_room_exist = findViewById(R.id.tv_room_exist);
         editTextRoomNumber = findViewById(R.id.editTextRoomNumber);
         editTextPrice = findViewById(R.id.editTextPrice);
 
@@ -162,6 +167,8 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
 
+        roomsRef = FirebaseDatabase.getInstance().getReference("Rooms");
+
         rooms = new Rooms();
 
         payments = new Payments();
@@ -171,7 +178,7 @@ public class AddRoomsActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_LIGHT);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setTitle("Adding Room");
-        progressDialog.setMessage("please wait");
+        progressDialog.setMessage("please wait...");
 
         scrollView = findViewById(R.id.scrollView);
 
@@ -179,7 +186,10 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        //checkIfRoomNumberExist();
+
     }
+
 
     //method to handle the select image from gallery when user click the circularImageView
     public void onSelectImage(View view){
@@ -254,6 +264,8 @@ public class AddRoomsActivity extends AppCompatActivity {
             return;
         }
         else if(price.isEmpty()){
+            // Adds an animation to shake the view
+            YoYo.with(Techniques.Shake).playOn(editTextPrice);
             // sets error message on view
             editTextPrice.setError(getString(R.string.error_empty_price));
             editTextPrice.requestFocus();
@@ -261,12 +273,68 @@ public class AddRoomsActivity extends AppCompatActivity {
         }
         else{
             // Calling method to upload selected image onto Firebase storage.
-            addRoomDetailsToDatabase();
+            checkIfRoomNumberExist();
         }
     }
 
-    // Creating UploadImageFileToFirebaseStorage method to upload image on storage.
+    // Method to check if room exist if not it adds it to the system
+    public void checkIfRoomNumberExist(){
+
+        final String roomNumber = editTextRoomNumber.getText().toString().trim();
+
+        databaseReference.child(roomNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()){
+
+                    // animation to shake view if room already exist
+                    YoYo.with(Techniques.Shake).playOn(tv_room_exist);
+
+                    //makes this textView visible
+                    tv_room_exist.setVisibility(View.VISIBLE);
+
+                    // display a SnackBar with error message
+                    //Snackbar.make(scrollView,getString(R.string.room_number_exist),Snackbar.LENGTH_SHORT).show();
+
+                    /*Rooms roomSnapshot = dataSnapshot.getValue(Rooms.class);
+
+                    if(roomNumber.equals(roomSnapshot.getRoomNumber())){
+
+                        // animation to shake view if room already exist
+                        YoYo.with(Techniques.Shake).playOn(tv_room_exist);
+
+                        //makes this textView visible
+                        tv_room_exist.setVisibility(View.VISIBLE);
+
+                        // display a SnackBar with error message
+                        Snackbar.make(scrollView,getString(R.string.room_number_exist),Snackbar.LENGTH_SHORT).show();
+
+                    }
+                    */
+
+                }
+
+                else{
+                    // Method call to add Room to database
+                    addRoomDetailsToDatabase();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Snackbar.make(scrollView, databaseError.getMessage(),Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
     public void addRoomDetailsToDatabase(){
+
+        //makes this textView visible
+        tv_room_exist.setVisibility(View.GONE);
 
         // Checking whether FilePathUri Is empty or not.
         if(FilePathUri != null){
@@ -277,9 +345,6 @@ public class AddRoomsActivity extends AppCompatActivity {
             final StorageReference mStorageRef = FirebaseStorage.getInstance()
                     .getReference(Storage_Path + System.currentTimeMillis() +
                             "." + GetFileExtension(FilePathUri));
-                    /*.child(Storage_Path + System.currentTimeMillis() +
-                            "." + GetFileExtension(FilePathUri));
-                            */
 
             // Adding addOnSuccessListener to second StorageReference.
             mStorageRef.putFile(FilePathUri)
@@ -290,15 +355,6 @@ public class AddRoomsActivity extends AppCompatActivity {
                             imageUrl = taskSnapshot.getDownloadUrl().toString();
                             rooms.setRoomImage_url(imageUrl);
 
-                            /*mStorageRef.getDownloadUrl()
-                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri downloadUrl) {
-                                    imageUrl = downloadUrl.toString();
-                                    rooms.setRoomImage_url(downloadUrl.toString());
-                                }
-                            });
-                            */
 
                             //get input from the editText views and spinner views
                             String room_number = editTextRoomNumber.getText().toString().trim();
@@ -317,18 +373,20 @@ public class AddRoomsActivity extends AppCompatActivity {
                             rooms.setSupperServed(supper);
                             rooms.setRoomPrice(room_price);
 
-
                             // Getting image unique key of the node.
-                            String roomKey = databaseReference.push().getKey();
+                            final String roomKey = databaseReference.push().getKey();
 
                             // Adding image upload id s child element into databaseReference.
-                            databaseReference .child(roomKey).setValue(rooms);
+                            databaseReference .child(rooms.getRoomNumber()).setValue(rooms);
 
                             // displays the progressDialog
                             progressDialog.dismiss();
 
                             // Showing success message.
                             Snackbar.make(scrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
+
+                            //makes this textView visible
+                            tv_room_exist.setVisibility(View.GONE);
 
                             // Method Call
                             clearTextFields();
@@ -356,6 +414,41 @@ public class AddRoomsActivity extends AppCompatActivity {
             Snackbar.make(scrollView, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
         }
 
+    }
+
+    // Body of Code to check if Room already exist in database
+    public void checkIfRoomNumberExistOnLaunch(){
+
+        final String roomNumber = editTextRoomNumber.getText().toString().trim();
+
+        databaseReference.child(roomNumber).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    // animation to shake view if room already exist
+                    YoYo.with(Techniques.Shake).playOn(tv_room_exist);
+
+                    //makes this textView visible
+                    tv_room_exist.setVisibility(View.VISIBLE);
+
+                    // display a SnackBar with error message
+                    Snackbar.make(scrollView,getString(R.string.room_number_exist),Snackbar.LENGTH_SHORT).show();
+
+                }
+                else{
+
+                    //makes this textView visible
+                    tv_room_exist.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

@@ -7,6 +7,11 @@ public class Payments {
     String user_name;
     String room_number;
     String room_type;
+    String card_number;
+    String c_holder_name;
+    String card_month;
+    String card_year;
+    String card_cvc;
 
     String price;
     String payment_method;
@@ -126,5 +131,45 @@ public class Payments {
 
     public String getImageUrl(){
         return imageUrl;
+    }
+
+    public String getCard_number() {
+        return card_number;
+    }
+
+    public void setCard_number(String card_number) {
+        this.card_number = card_number;
+    }
+
+    public String getC_holder_name() {
+        return c_holder_name;
+    }
+
+    public void setC_holder_name(String c_holder_name) {
+        this.c_holder_name = c_holder_name;
+    }
+
+    public String getCard_month() {
+        return card_month;
+    }
+
+    public void setCard_month(String card_month) {
+        this.card_month = card_month;
+    }
+
+    public String getCard_year() {
+        return card_year;
+    }
+
+    public void setCard_year(String card_year) {
+        this.card_year = card_year;
+    }
+
+    public String getCard_cvc() {
+        return card_cvc;
+    }
+
+    public void setCard_cvc(String card_cvc) {
+        this.card_cvc = card_cvc;
     }
 }

@@ -87,15 +87,14 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
 
                 if(dataSnapshot.exists()){
                     // disables the cardView if room is booked
-                    //holder.cardView.setEnabled(false);
-                    /*holder.cardView.setClickable(false);
+                    holder.cardView.setEnabled(false);
+                    holder.cardView.setClickable(false);
                     holder.cardView.setFocusable(false);
 
                     // disables the View Details button if room is booked
                     holder.viewDetails.setEnabled(false);
                     holder.viewDetails.setClickable(false);
                     holder.viewDetails.setFocusable(false);
-                    */
 
                     // displays a text with caption "Booked" to user
                     holder.tv_room_booked.setVisibility(View.VISIBLE);

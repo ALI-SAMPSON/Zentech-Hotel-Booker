@@ -37,7 +37,7 @@
                 android:layout_below="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
@@ -60,10 +60,25 @@
                     tools:targetApi="o"/>
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:id="@+id/tv_room_exist"
+                android:layout_below="@+id/container_roomNumber"
+                android:layout_centerHorizontal="true"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:textSize="14sp"
+                android:padding="@dimen/card_elevation"
+                app:fontFamily="@font/nunito_semibold"
+                android:textColor="@color/colorRed"
+                android:text="@string/room_number_exist"
+                android:visibility="gone"
+                android:layout_gravity="center" />
+
             <!--TextInputLayout and LinearLayout and spinner View for Room -->
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/container_roomType"
-                android:layout_below="@+id/container_roomNumber"
+                android:layout_below="@+id/tv_room_exist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -278,7 +293,7 @@
             <Button
                 android:id="@+id/buttonAddRoom"
                 android:layout_marginTop="25dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="50dp"
                 android:layout_width="300dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
@@ -295,43 +310,6 @@
                 android:textAlignment="center"
                 android:background="@drawable/round_light_button"
                 android:onClick="onAddRoomButtonClick"/>
-
-            <!-- Continue Button  -->
-            <!--
-            <Button
-                android:id="@+id/buttonAddImages"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="300dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/buttonAddRoom"
-                android:text="@string/text_add_multiple_images"
-                android:textColor="@color/colorBlue"
-                android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                android:textAlignment="center"
-                android:background="@drawable/round_light_button"
-                android:onClick="onContinueButtonClick"/>
-                -->
-
-            <!--
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_below="@+id/buttonAddImages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="5dp"
-                android:visibility="gone"/>
-                -->
 
         </RelativeLayout>
 
