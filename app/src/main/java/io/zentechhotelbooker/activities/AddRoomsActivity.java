@@ -1,7 +1,9 @@
 package io.zentechhotelbooker.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,9 +34,14 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +57,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.models.Admin;
 import io.zentechhotelbooker.models.Payments;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
@@ -333,8 +342,10 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     public void addRoomDetailsToDatabase(){
 
+        showDialog();
+
         //makes this textView visible
-        tv_room_exist.setVisibility(View.GONE);
+        /*tv_room_exist.setVisibility(View.GONE);
 
         // Checking whether FilePathUri Is empty or not.
         if(FilePathUri != null){
@@ -413,6 +424,62 @@ public class AddRoomsActivity extends AppCompatActivity {
             // Showing Alert message.
             Snackbar.make(scrollView, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
         }
+        */
+
+    }
+
+    // A block of code to display and alert Dialog
+    // for admin to confirm his or her password
+    // before adding Room
+    public void showDialog(){
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView  = inflater.inflate(R.layout.custom_dialog,null);
+        dialogBuilder.setView(dialogView);
+
+        // reference to the EditText in the layout file (custom_dialog)
+        final EditText editTextPassword = dialogView.findViewById(R.id.editTextConfirmPassword);
+
+        dialogBuilder.setTitle("Confirm Password");
+        dialogBuilder.setMessage("");
+        dialogBuilder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // getting text from EditText
+                String password  = editTextPassword.getText().toString();
+                FirebaseUser user = mAuth.getCurrentUser();
+                String email = user.getEmail();
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(email,password);
+
+                user.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(getApplicationContext(),"nice Job",Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(),
+                                            task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+            }
+        });
+
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss the DialogInterface
+               dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog alert = dialogBuilder.create();
+        alert.show();
 
     }
 

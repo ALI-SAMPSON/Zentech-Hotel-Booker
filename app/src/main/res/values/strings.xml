@@ -6,7 +6,6 @@
     <string name="application_name_1" translatable="false">ACCRA CITY HOTEL BOOKER</string>
     <string name="hint_email" translatable="false">Email</string>
     <string name="hint_password" translatable="false">Password</string>
-    <string name="hint_confirm_password" translatable="false">Confirm Password</string>
     <string name="hint_location" translatable="false">Location/Address</string>
     <string name="hint_address" translatable="false">Address</string>
     <string name="hint_city" translatable="false">City</string>
@@ -338,6 +337,11 @@
         *Ooops! room already exist, try another room.
         But if error still persist, make reference to the database.
         Thank you
+    </string>
+
+    <string name="hint_confirm_password"
+        translatable="false">
+        Enter your password
     </string>
 
 </resources>
