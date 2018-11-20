@@ -344,4 +344,9 @@
         Enter your password
     </string>
 
+    <string name="room_reserved"
+        translatable="false">
+        Room reserved successfully
+    </string>
+
 </resources>

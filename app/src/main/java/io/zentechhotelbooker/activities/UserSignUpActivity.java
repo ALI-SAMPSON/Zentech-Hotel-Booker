@@ -226,15 +226,18 @@ public class UserSignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
 
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+
                             //getting the instances
                             final Users users = new Users(
+                                    currentUser.getUid(),
                                     email,
                                     username,
                                     gender,
                                     mobile_number);
 
                             FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(mAuth.getCurrentUser().getUid())
+                                    .child(currentUser.getUid())
                                     .setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

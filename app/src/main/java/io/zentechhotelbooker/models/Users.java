@@ -3,6 +3,7 @@ package io.zentechhotelbooker.models;
 public class Users {
 
     //class variables to be used as fields for the database
+    private String uid;
     private String email;
     private String username;
     private String gender;
@@ -14,12 +15,22 @@ public class Users {
     }
 
     //constructor with two or more parameters
-    public Users(String email, String username, String gender, String mobile_number){
+    public Users(String uid, String email, String username, String gender, String mobile_number){
+        this.uid = uid;
         this.email = email;
         this.username = username;
         this.gender = gender;
         this.mobile_number = mobile_number;
 
+    }
+
+    //Getter and Setter method for Uid
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     //Getter and Setter method for Username

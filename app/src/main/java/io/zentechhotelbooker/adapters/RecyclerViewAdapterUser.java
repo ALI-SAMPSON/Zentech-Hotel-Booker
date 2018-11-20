@@ -150,12 +150,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                              // Creates an Alert Dialog
                            AlertDialog.Builder builder = new AlertDialog.Builder(mCtx,
                                    android.R.style.Theme_Material_Dialog_Alert);
-                           builder.setTitle("Book this Room");
-                           builder.setMessage("Are you sure you want to book this room and make payment for it?");
+                           builder.setTitle("Continue...");
+                           builder.setMessage("Please select one of the operations to proceed or click cancel to quit");
                            builder.setCancelable(false);
 
                            // set the Positive button for alert dialog
-                           builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                           builder.setPositiveButton("BOOK NOW", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -180,14 +180,40 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                }
                            });
 
-                           // set the Positive button for alert dialog
-                           builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            // set the Positive button for alert dialog
+                            builder.setNegativeButton("RESERVE NOW", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // dismiss the dialogue interface
+                                    dialogInterface.dismiss();
+                                    Toast.makeText(mCtx,R.string.room_reserved,Toast.LENGTH_LONG).show();
+                                    // Creates new Intent
+                                    Intent intentBook = new Intent(mCtx, MakePaymentActivity.class);
+                                    intentBook.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    // passing data to the payment activity
+                                    intentBook.putExtra("user_name",holder.user.getDisplayName());
+                                    intentBook.putExtra("room_number", rooms.getRoomNumber());
+                                    intentBook.putExtra("room_type", rooms.getRoomType());
+                                    intentBook.putExtra("room_price",  rooms.getRoomPrice());
+                                    intentBook.putExtra("breakfast_food", rooms.getBreakfastServed());
+                                    intentBook.putExtra("lunch_food", rooms.getLunchServed());
+                                    intentBook.putExtra("supper_food",  rooms.getSupperServed());
+                                    intentBook.putExtra("room_image_url",rooms.getRoomImage_url());
+                                    intentBook.putExtra("user_image", user_image);
+                                    // starting the activity
+                                    mCtx.startActivity(intentBook);
+
+                                }
+                            });
+
+                           builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialogInterface, int i) {
                                    // dismiss the dialogue interface
                                    dialogInterface.dismiss();
                                }
                            });
+
 
                            //
                            AlertDialog alertDialog = builder.create();
