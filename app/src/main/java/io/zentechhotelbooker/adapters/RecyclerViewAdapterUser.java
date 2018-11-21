@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +33,9 @@ import java.util.List;
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.activities.MakePaymentActivity;
 import io.zentechhotelbooker.activities.ViewRoomDetailsUserActivity;
+import io.zentechhotelbooker.models.Reservations;
 import io.zentechhotelbooker.models.Rooms;
+import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
 
 public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAdapterUser.ViewHolder> {
@@ -75,7 +79,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         holder.tv_room_price.setText(" Price : GH¢ " + rooms.getRoomPrice());
         //holder.room_price.setText(" GH¢ " + rooms.getPrice());
 
-        final String user_image = holder.user.getPhotoUrl().toString();
+        final String user_image_url = holder.user.getPhotoUrl().toString();
 
         // using Glide Library to load images
         Glide.with(mCtx).load(rooms.getRoomImage_url()).into(holder.room_image);
@@ -171,7 +175,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                    intentBook.putExtra("lunch_food", rooms.getLunchServed());
                                    intentBook.putExtra("supper_food",  rooms.getSupperServed());
                                    intentBook.putExtra("room_image_url",rooms.getRoomImage_url());
-                                   intentBook.putExtra("user_image", user_image);
+                                   intentBook.putExtra("user_image", user_image_url);
                                    // starting the activity
                                    mCtx.startActivity(intentBook);
                                    // Add a custom animation to the activity
@@ -187,21 +191,74 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                     // dismiss the dialogue interface
                                     dialogInterface.dismiss();
                                     Toast.makeText(mCtx,R.string.room_reserved,Toast.LENGTH_LONG).show();
-                                    // Creates new Intent
-                                    Intent intentBook = new Intent(mCtx, MakePaymentActivity.class);
-                                    intentBook.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    // passing data to the payment activity
-                                    intentBook.putExtra("user_name",holder.user.getDisplayName());
-                                    intentBook.putExtra("room_number", rooms.getRoomNumber());
-                                    intentBook.putExtra("room_type", rooms.getRoomType());
-                                    intentBook.putExtra("room_price",  rooms.getRoomPrice());
-                                    intentBook.putExtra("breakfast_food", rooms.getBreakfastServed());
-                                    intentBook.putExtra("lunch_food", rooms.getLunchServed());
-                                    intentBook.putExtra("supper_food",  rooms.getSupperServed());
-                                    intentBook.putExtra("room_image_url",rooms.getRoomImage_url());
-                                    intentBook.putExtra("user_image", user_image);
-                                    // starting the activity
-                                    mCtx.startActivity(intentBook);
+
+                                    // getting uid of the user
+                                    final String uid  = holder.user.getUid();
+                                    final String user_name = holder.user.getDisplayName();
+                                    final String mobile_number = holder.users.getMobile_number();
+                                    final String room_image_url = rooms.getRoomImage_url();
+                                    final String room_number = rooms.getRoomNumber();
+                                    final String room_type = rooms.getRoomType();
+                                    final String room_price = rooms.getRoomPrice();
+
+                                    holder.reservations.setUid(uid);
+                                    holder.reservations.setUser_name(user_name);
+                                    holder.reservations.setUser_image_url(user_image_url);
+                                    holder.reservations.setMobile_number(mobile_number);
+                                    holder.reservations.setRoom_image_url(room_image_url);
+                                    holder.reservations.setRoom_number(room_number);
+                                    holder.reservations.setRoom_type(room_type);
+                                    holder.reservations.setRoom_price(room_price);
+
+
+                                    holder.reservationRef.child(uid)
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                                        Reservations reservations = snapshot.getValue(Reservations.class);
+
+                                                        // checks if room has been reserved by user already
+                                                        if(uid.equals(reservations.getUid()) &&
+                                                                room_number.equals(reservations.getRoom_number()) ){
+                                                            Toast.makeText(mCtx,"Oops! ," + user_name +
+                                                                    ", you have already reserved this room " ,Toast.LENGTH_LONG).show();
+
+                                                        }
+
+                                                        else{
+
+                                                            // adds reservation to the system
+                                                            holder.reservationRef.child(uid).
+                                                                    setValue(holder.reservations)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if(task.isSuccessful()){
+                                                                                Toast.makeText(mCtx,R.string.room_reserved,Toast.LENGTH_LONG).show();
+                                                                            }
+                                                                            else{
+                                                                                Toast.makeText(mCtx,task.getException().getMessage(),
+                                                                                        Toast.LENGTH_LONG).show();
+                                                                            }
+                                                                        }
+                                                                    });
+                                                            }
+
+                                                    }
+
+
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                    Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+
 
                                 }
                             });
@@ -254,7 +311,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                intentDetails.putExtra("supper","Supper : " + rooms.getSupperServed());
                intentDetails.putExtra("room_price", "GH¢ " + rooms.getRoomPrice());
                intentDetails.putExtra("room_image_url",rooms.getRoomImage_url());
-               intentDetails.putExtra("user_image", user_image);
+               intentDetails.putExtra("user_image", user_image_url);
                // starting the activity
                mCtx.startActivity(intentDetails);
                // Add a custom animation to the activity
@@ -287,6 +344,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
         FirebaseUser user;
 
+        Reservations reservations;
+
+        DatabaseReference reservationRef;
+
+        Users users;
+
         DatabaseReference paymentRef;
 
 
@@ -305,6 +368,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
             paymentRef = FirebaseDatabase.getInstance().getReference("Payments");
+
+            users = new Users();
+
+            reservations = new Reservations();
+
+            reservationRef = FirebaseDatabase.getInstance().getReference("Reservations");
 
         }
 

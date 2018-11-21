@@ -6,23 +6,27 @@ public class Reservations {
     String uid;
     String user_name;
     String mobile_number;
-    String imageUrl;
+    String user_image_url;
+    String room_image_url;
     String room_number;
     String room_type;
-    String price;
+    String room_price;
 
     public Reservations(){}
 
     public Reservations(String uid,String user_name,
-                        String mobile_number,String imageUrl, String room_number,String room_type,String price){
+                        String mobile_number,String user_image_url,
+                        String room_image_url, String room_number,
+                        String room_type,String room_price){
 
         this.uid = uid;
         this.user_name = user_name;
         this.mobile_number = mobile_number;
-        this.imageUrl = imageUrl;
+        this.user_image_url = user_image_url;
+        this.room_image_url = room_image_url;
         this.room_number = room_number;
         this.room_type = room_type;
-        this.price = price;
+        this.room_price = room_price;
 
     }
 
@@ -50,12 +54,20 @@ public class Reservations {
         this.mobile_number = mobile_number;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getUser_image_url() {
+        return user_image_url;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUser_image_url(String user_image_url) {
+        this.user_image_url = user_image_url;
+    }
+
+    public String getRoom_image_url() {
+        return room_image_url;
+    }
+
+    public void setRoom_image_url(String room_image_url) {
+        this.room_image_url = room_image_url;
     }
 
     public String getRoom_number() {
@@ -74,11 +86,11 @@ public class Reservations {
         this.room_type = room_type;
     }
 
-    public String getPrice() {
-        return price;
+    public String getRoom_price() {
+        return room_price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setRoom_price(String room_price) {
+        this.room_price = room_price;
     }
 }
