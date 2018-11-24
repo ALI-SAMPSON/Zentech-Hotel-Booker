@@ -349,4 +349,9 @@
         Room reserved successfully
     </string>
 
+    <string name="text_reserved"
+        translatable="false">
+        Reserved
+    </string>
+
 </resources>

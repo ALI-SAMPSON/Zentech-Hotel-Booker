@@ -12,6 +12,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,6 +87,11 @@ public class MakePaymentActivity extends AppCompatActivity {
 
     ExpandableLayout expandableLayout1;
     ExpandableLayout expandableLayout2;
+
+    // notification variables
+    private String CHANNEL_ID = "notification_channel_id";
+
+    private int notificationId = 0;
 
     EditText cardNumber;
     EditText holderName;
@@ -308,20 +315,26 @@ public class MakePaymentActivity extends AppCompatActivity {
                                 //Toast.makeText(MakePaymentActivity.this,"Payment made successfully",Toast.LENGTH_LONG).show();
                                 Snackbar.make(nestedScrollView, " Payment made successfully ", Snackbar.LENGTH_LONG).show();
 
-                                //sends a notification to the user of voting successfully
+                                //sends a notification to the user of making payments successfully
                                 Intent intent = new Intent(MakePaymentActivity.this, MakePaymentActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 PendingIntent pendingIntent = PendingIntent.getActivity(MakePaymentActivity.this, 0, intent, 0);
-                                Notification notification = new Notification.Builder(MakePaymentActivity.this)
+
+                                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MakePaymentActivity.this, CHANNEL_ID)
                                         .setSmallIcon(R.mipmap.app_icon_round)
                                         .setContentTitle(getString(R.string.app_name))
                                         .setContentText(user_name + ", you have successfully made payment for a " + room_type + " room ")
+                                        .setStyle(new NotificationCompat.BigTextStyle()
+                                                .bigText(user_name + ", you have successfully made payment for a " + room_type + " room "))
+                                        // Set the intent that will fire when the user taps the notification
+                                        .setWhen(System.currentTimeMillis())
+                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                                        .setContentIntent(pendingIntent).getNotification();
-                                notification.flags = Notification.FLAG_AUTO_CANCEL;
-                                NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
-                                nm.notify(0, notification);
+                                        .setContentIntent(pendingIntent)
+                                        .setAutoCancel(true);
+
+                                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MakePaymentActivity.this);
+                                notificationManager.notify(notificationId,mBuilder.build());
 
                                 // Method call to the class to send SMS
                                 //sendSMS();
@@ -405,7 +418,7 @@ public class MakePaymentActivity extends AppCompatActivity {
             String destination = "233245134112";
 
             // Sender Id to be used for submitting the message
-            String source = "Zentech";
+            String source = "ZENTECH GH";
 
             // To what server you need to connect to for submission
             final String server = "rslr.connectbind.com";
