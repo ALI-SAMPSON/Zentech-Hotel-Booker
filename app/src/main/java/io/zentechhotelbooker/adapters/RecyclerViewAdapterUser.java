@@ -237,9 +237,6 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                             builder.setNegativeButton("RESERVE NOW", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    // dismiss the dialogue interface
-                                    dialogInterface.dismiss();
-                                    Toast.makeText(mCtx,R.string.room_reserved,Toast.LENGTH_LONG).show();
 
                                     // getting uid of the user
                                     final String uid  = holder.user.getUid();
@@ -250,174 +247,62 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                     final String room_type = rooms.getRoomType();
                                     final String room_price = rooms.getRoomPrice();
 
-                                    holder.reservations.setUid(uid);
-                                    holder.reservations.setUser_name(user_name);
-                                    holder.reservations.setUser_image_url(user_image_url);
-                                    holder.reservations.setMobile_number(mobile_number);
-                                    holder.reservations.setRoom_image_url(room_image_url);
-                                    holder.reservations.setRoom_number(room_number);
-                                    holder.reservations.setRoom_type(room_type);
-                                    holder.reservations.setRoom_price(room_price);
-
-
-                                    holder.reservationRef.child(room_number)
+                                    holder.reservationRef
                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                                    Reservations reservations = dataSnapshot.getValue(Reservations.class);
 
-                                                    if(dataSnapshot.exists()){
+                                                         Reservations reservations = dataSnapshot.getValue(Reservations.class);
 
-                                                            //Reservations reservations = dataSnapshot.getValue(Reservations.class);
+                                                        /*
+                                                         if (reservations.getRoom_number().equals(room_number)
+                                                                && reservations.getUid().equals(uid)) {
 
-                                                            //if(uid.equals(reservations.getUid()) && room_number.equals(reservations.getRoom_number())){
+                                                            Toast.makeText(mCtx, "Oops! ," + user_name +
+                                                                            " you have already made reservation for this room "
+                                                                    , Toast.LENGTH_LONG).show();
+                                                            break;
 
-                                                                Toast.makeText(mCtx, "Oops! ," + user_name +
-                                                                                " you have already made reservation for this room "
-                                                                        , Toast.LENGTH_LONG).show();
-                                                            //}
-
-                                                            /*if (reservations.getRoom_number().equals(room_number)
-                                                                    && reservations.getUid().equals(uid)) {
-
-                                                                Toast.makeText(mCtx, "Oops! ," + user_name +
-                                                                                " you have already made reservation for this room "
-                                                                        , Toast.LENGTH_LONG).show();
-
-                                                            }*/
                                                         }
+                                                        */
+
+                                                        if (dataSnapshot.child(uid).exists() && dataSnapshot.child(room_number).exists()) {
+
+                                                            Toast.makeText(mCtx, "Oops! ," + user_name +
+                                                                            " you have already made reservation for this room "
+                                                                    , Toast.LENGTH_LONG).show();
+
+
+                                                        }
+
+
                                                         else {
-                                                            // adds reservation to the system
-                                                            holder.reservationRef.child(room_number).
-                                                                    setValue(holder.reservations)
+                                                            holder.reservations.setUid(uid);
+                                                            holder.reservations.setUser_name(user_name);
+                                                            holder.reservations.setUser_image_url(user_image_url);
+                                                            holder.reservations.setMobile_number(mobile_number);
+                                                            holder.reservations.setRoom_image_url(room_image_url);
+                                                            holder.reservations.setRoom_number(room_number);
+                                                            holder.reservations.setRoom_type(room_type);
+                                                            holder.reservations.setRoom_price(room_price);
+
+                                                            holder.reservationRef.child(uid)
+                                                                    .setValue(holder.reservations)
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()) {
+                                                                            if(task.isSuccessful()){
                                                                                 // display a success message
                                                                                 Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
-
-                                                                                /**
-                                                                                 * Block of code to send notification to user after reserving a room
-                                                                                 */
-                                                                                //sends a notification to the user of reserving a room successfully
-                                                                                Intent intent = new Intent(mCtx, HomeActivity.class);
-                                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                                                                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                                                                PendingIntent pendingIntent = PendingIntent.getActivity(mCtx, 0, intent, 0);
-
-                                                                                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx, CHANNEL_ID)
-                                                                                        .setSmallIcon(R.mipmap.app_icon_round)
-                                                                                        .setContentTitle(mCtx.getString(R.string.app_name))
-                                                                                        .setContentText(user_name + " you have successfully made reservation for a " + room_type
-                                                                                                + " with room number " + room_number + ".")
-                                                                                        .setStyle(new NotificationCompat.BigTextStyle()
-                                                                                                .bigText(user_name + " you have successfully made reservation for a " + room_type
-                                                                                                        + " with room number " + room_number + "."))
-                                                                                        // Set the intent that will fire when the user taps the notification
-                                                                                        .setWhen(System.currentTimeMillis())
-                                                                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                                                                        .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                                                                                        .setContentIntent(pendingIntent)
-                                                                                        .setAutoCancel(true);
-
-                                                                                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mCtx);
-                                                                                notificationManager.notify(notificationId, mBuilder.build());
-
-
-                                                                                /**
-                                                                                 * Beginning of block of code to send sms to user about reservation made.
-                                                                                 */
-
-                                                                                /*
-                                                                                 * Block of Code to send sms to user about reservation made
-
-                                                                                String username = "zent-marketing";
-                                                                                // password that is to be used along with username
-
-                                                                                String password = "marketin";
-                                                                                // Message content that is to be transmitted
-
-                                                                                String message = user_name + " has successfully made reservation for room " + room_number
-                                                                                        + " of type " + room_type + ".";
-
-
-                                                                                String type = "0";
-
-                                                                                String dlr = "1";
-
-                                                                                String destination = "233245134112";
-
-                                                                                // Sender Id to be used for submitting the message
-                                                                                String source = "ZENTECH GH";
-
-                                                                                // To what server you need to connect to for submission
-                                                                                final String server = "rslr.connectbind.com";
-
-                                                                                // Port that is to be used like 8080 or 8000
-                                                                                int port = 2345;
-
-                                                                                try {
-                                                                                    // Url that will be called to submit the message
-                                                                                    URL sendUrl = new URL("http://" + server + ":" + "/bulksms/bulksms?");
-                                                                                    HttpURLConnection httpConnection = (HttpURLConnection) sendUrl
-                                                                                            .openConnection();
-                                                                                    // This method sets the method type to POST so that
-                                                                                    // will be send as a POST request
-                                                                                    httpConnection.setRequestMethod("POST");
-                                                                                    // This method is set as true wince we intend to send
-                                                                                    // input to the server
-                                                                                    httpConnection.setDoInput(true);
-                                                                                    // This method implies that we intend to receive data from server.
-                                                                                    httpConnection.setDoOutput(true);
-                                                                                    // Implies do not use cached data
-                                                                                    httpConnection.setUseCaches(false);
-                                                                                    // Data that will be sent over the stream to the server.
-                                                                                    DataOutputStream dataStreamToServer = new DataOutputStream( httpConnection.getOutputStream());
-                                                                                    dataStreamToServer.writeBytes("username="
-                                                                                            + URLEncoder.encode(username, "UTF-8") + "&password="
-                                                                                            + URLEncoder.encode(password, "UTF-8") + "&type="
-                                                                                            + URLEncoder.encode(type, "UTF-8") + "&dlr="
-                                                                                            + URLEncoder.encode(dlr, "UTF-8") + "&destination="
-                                                                                            + URLEncoder.encode(destination, "UTF-8") + "&source="
-                                                                                            + URLEncoder.encode(source, "UTF-8") + "&message="
-                                                                                            + URLEncoder.encode(message, "UTF-8"));
-                                                                                    dataStreamToServer.flush();
-                                                                                    dataStreamToServer.close();
-                                                                                    // Here take the output value of the server.
-                                                                                    BufferedReader dataStreamFromUrl = new BufferedReader( new InputStreamReader(httpConnection.getInputStream()));
-                                                                                    String dataFromUrl = "", dataBuffer = "";
-                                                                                    // Writing information from the stream to the buffer
-                                                                                    while ((dataBuffer = dataStreamFromUrl.readLine()) != null) {
-                                                                                        dataFromUrl += dataBuffer;
-                                                                                    }
-
-                                                                                    dataStreamFromUrl.close();
-                                                                                    System.out.println("Response: " + dataFromUrl);
-                                                                                }
-                                                                                catch (Exception ex) {
-                                                                                    // catches any error that occurs and outputs to the user
-                                                                                    Toast.makeText(mCtx,ex.getMessage(),Toast.LENGTH_LONG).show();
-                                                                                }
-
-                                                                                */
-
-                                                                                /**
-                                                                                 * End of block of code to send sms to user about reservation made.
-                                                                                 */
-
-                                                                                holder.tv_room_booked_reserved.setText(R.string.text_reserved);
-                                                                                holder.tv_room_booked_reserved.setVisibility(View.VISIBLE);
-
-                                                                            } else {
-                                                                                Toast.makeText(mCtx, task.getException().getMessage(),
-                                                                                        Toast.LENGTH_LONG).show();
+                                                                            }
+                                                                            else{
+                                                                                    Toast.makeText(mCtx, task.getException().getMessage(),
+                                                                                            Toast.LENGTH_LONG).show();
                                                                             }
                                                                         }
                                                                     });
-
-                                                           }
+                                                            }
 
 
                                                 }
@@ -427,6 +312,10 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                                     Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
                                                 }
                                             });
+
+
+                                    // dismiss the dialogue interface
+                                    dialogInterface.dismiss();
 
                                 }
                             });
