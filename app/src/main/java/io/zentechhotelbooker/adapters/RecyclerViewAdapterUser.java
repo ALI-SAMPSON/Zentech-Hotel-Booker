@@ -247,36 +247,93 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                     final String room_type = rooms.getRoomType();
                                     final String room_price = rooms.getRoomPrice();
 
-                                    holder.reservationRef
-                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    holder.reservations.setUid(uid);
+                                    holder.reservations.setUser_name(user_name);
+                                    holder.reservations.setUser_image_url(user_image_url);
+                                    holder.reservations.setMobile_number(mobile_number);
+                                    holder.reservations.setRoom_image_url(room_image_url);
+                                    holder.reservations.setRoom_number(room_number);
+                                    holder.reservations.setRoom_type(room_type);
+                                    holder.reservations.setRoom_price(room_price);
+
+                                    holder.reservationRef.child(user_name)
+                                            .addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                                        if(dataSnapshot.exists()){
 
-                                                         Reservations reservations = dataSnapshot.getValue(Reservations.class);
 
-                                                        /*
-                                                         if (reservations.getRoom_number().equals(room_number)
-                                                                && reservations.getUid().equals(uid)) {
+                                                            if(dataSnapshot.hasChild(room_number)){
 
-                                                            Toast.makeText(mCtx, "Oops! ," + user_name +
-                                                                            " you have already made reservation for this room "
-                                                                    , Toast.LENGTH_LONG).show();
-                                                            break;
+                                                                Toast.makeText(mCtx, "Oops! , " + user_name +
+                                                                                " you have already made reservation for this room "
+                                                                        , Toast.LENGTH_LONG).show();
+
+                                                            }
+
+                                                            else{
+
+                                                                holder.reservationRef.child(user_name).child(room_number)
+                                                                        .setValue(holder.reservations)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if(task.isSuccessful()){
+                                                                                    // display a success message
+                                                                                    Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
+                                                                                }
+                                                                                else{
+                                                                                    Toast.makeText(mCtx, task.getException().getMessage(),
+                                                                                            Toast.LENGTH_LONG).show();
+                                                                                }
+                                                                            }
+                                                                        });
+
+                                                            }
+
+                                                            //Reservations reservations = dataSnapshot.getValue(Reservations.class);
+
+                                                             /*if (room_number.equals(reservations.getRoom_number())
+                                                                    && uid.equals(reservations.getUid())) {
+
+                                                                Toast.makeText(mCtx, "Oops! , " + user_name +
+                                                                                " you have already made reservation for this room "
+                                                                        , Toast.LENGTH_LONG).show();
+
+
+                                                            }
+                                                            */
+
+                                                            /*else if(reservations.getRoom_number().equals(room_number)
+                                                                     && !reservations.getUid().equals(uid)){
+
+
+
+                                                                 holder.reservationRef.child(room_number)
+                                                                         .setValue(holder.reservations)
+                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                             @Override
+                                                                             public void onComplete(@NonNull Task<Void> task) {
+                                                                                 if(task.isSuccessful()){
+                                                                                     // display a success message
+                                                                                     Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
+                                                                                 }
+                                                                                 else{
+                                                                                     Toast.makeText(mCtx, task.getException().getMessage(),
+                                                                                             Toast.LENGTH_LONG).show();
+                                                                                 }
+                                                                             }
+                                                                         });
+                                                            }
+                                                            else {
+                                                                 Toast.makeText(mCtx, "An error occurred please try again!",
+                                                                         Toast.LENGTH_LONG).show();
+                                                             }
+                                                             */
+
 
                                                         }
-                                                        */
-
-                                                        if (dataSnapshot.child(uid).exists() && dataSnapshot.child(room_number).exists()) {
-
-                                                            Toast.makeText(mCtx, "Oops! ," + user_name +
-                                                                            " you have already made reservation for this room "
-                                                                    , Toast.LENGTH_LONG).show();
-
-
-                                                        }
-
-
                                                         else {
                                                             holder.reservations.setUid(uid);
                                                             holder.reservations.setUser_name(user_name);
@@ -287,7 +344,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                                             holder.reservations.setRoom_type(room_type);
                                                             holder.reservations.setRoom_price(room_price);
 
-                                                            holder.reservationRef.child(uid)
+                                                            holder.reservationRef.child(user_name).child(room_number)
                                                                     .setValue(holder.reservations)
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
