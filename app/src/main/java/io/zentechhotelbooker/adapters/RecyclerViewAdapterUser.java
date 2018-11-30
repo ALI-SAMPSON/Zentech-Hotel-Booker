@@ -122,12 +122,14 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                     holder.viewDetails.setFocusable(false);
 
                     // displays a text with caption "Booked" to user
-                    holder.tv_room_booked_reserved.setVisibility(View.VISIBLE);
+                    holder.tv_room_booked.setVisibility(View.VISIBLE);
+                    holder.tv_room_reserved.setVisibility(View.GONE);
 
                 }
                 else{
                     // dismisses the textView
-                    holder.tv_room_booked_reserved.setVisibility(View.GONE);
+                    holder.tv_room_booked.setVisibility(View.GONE);
+                    holder.tv_room_reserved.setVisibility(View.GONE);
                 }
 
             }
@@ -190,7 +192,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                             holder.viewDetails.setClickable(false);
                             holder.viewDetails.setFocusable(false);
 
-                            holder.tv_room_booked_reserved.setVisibility(View.VISIBLE);
+                            holder.tv_room_booked.setVisibility(View.VISIBLE);
 
                             // animation to cardView
                             YoYo.with(Techniques.Shake).playOn(holder.room_cardView);
@@ -201,9 +203,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                         else{
 
                              // Creates an Alert Dialog
-                           AlertDialog.Builder builder = new AlertDialog.Builder(mCtx,
+                           final AlertDialog.Builder builder = new AlertDialog.Builder(mCtx,
                                    android.R.style.Theme_Material_Dialog_Alert);
-                           builder.setTitle("Continue...");
+                           builder.setTitle("...Welcome...");
                            builder.setMessage("Please select one of the operations to proceed or click cancel to quit");
                            builder.setCancelable(false);
 
@@ -261,18 +263,51 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                                    /*
+                                                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                                        Reservations reservations = snapshot.getValue(Reservations.class);
+
+                                                        // checks if uid and room Number already exist in database
+                                                        if(reservations.getUid().equals(uid) && reservations.getRoom_number().equals(room_number)){
+                                                            Toast.makeText(mCtx, "Oops! , " + user_name +
+                                                                            " you have already made reservation for this room "
+                                                                    , Toast.LENGTH_LONG).show();
+                                                        }
+                                                        else{
+                                                            holder.reservationRef.child(uid)
+                                                                    .setValue(holder.reservations)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if(task.isSuccessful()){
+                                                                                // display a success message
+                                                                                Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
+                                                                            }
+                                                                            else{
+                                                                                Toast.makeText(mCtx, task.getException().getMessage(),
+                                                                                        Toast.LENGTH_LONG).show();
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+
+
+                                                    }
+                                                    */
+
                                                         if(dataSnapshot.exists()){
 
 
-                                                            if(dataSnapshot.hasChild(room_number)){
+                                                            if(dataSnapshot.exists() && dataSnapshot.hasChild(room_number)){
 
-                                                                Toast.makeText(mCtx, "Oops! , " + user_name +
+                                                                Toast.makeText(mCtx, "Oops!, " + user_name +
                                                                                 " you have already made reservation for this room "
                                                                         , Toast.LENGTH_LONG).show();
 
                                                             }
 
-                                                            else{
+                                                            if(dataSnapshot.exists() && !dataSnapshot.hasChild(room_number)){
 
                                                                 holder.reservationRef.child(user_name).child(room_number)
                                                                         .setValue(holder.reservations)
@@ -282,6 +317,11 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                                                                 if(task.isSuccessful()){
                                                                                     // display a success message
                                                                                     Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
+                                                                                    //builder.setNegativeButton("Reserve Now",)
+                                                                                    // sets visibility to true if room is reserved successfully
+                                                                                    holder.tv_room_reserved.setVisibility(View.VISIBLE);
+                                                                                    holder.tv_room_booked.setVisibility(View.GONE);
+
                                                                                 }
                                                                                 else{
                                                                                     Toast.makeText(mCtx, task.getException().getMessage(),
@@ -292,57 +332,8 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
                                                             }
 
-                                                            //Reservations reservations = dataSnapshot.getValue(Reservations.class);
-
-                                                             /*if (room_number.equals(reservations.getRoom_number())
-                                                                    && uid.equals(reservations.getUid())) {
-
-                                                                Toast.makeText(mCtx, "Oops! , " + user_name +
-                                                                                " you have already made reservation for this room "
-                                                                        , Toast.LENGTH_LONG).show();
-
-
-                                                            }
-                                                            */
-
-                                                            /*else if(reservations.getRoom_number().equals(room_number)
-                                                                     && !reservations.getUid().equals(uid)){
-
-
-
-                                                                 holder.reservationRef.child(room_number)
-                                                                         .setValue(holder.reservations)
-                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                             @Override
-                                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                                 if(task.isSuccessful()){
-                                                                                     // display a success message
-                                                                                     Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
-                                                                                 }
-                                                                                 else{
-                                                                                     Toast.makeText(mCtx, task.getException().getMessage(),
-                                                                                             Toast.LENGTH_LONG).show();
-                                                                                 }
-                                                                             }
-                                                                         });
-                                                            }
-                                                            else {
-                                                                 Toast.makeText(mCtx, "An error occurred please try again!",
-                                                                         Toast.LENGTH_LONG).show();
-                                                             }
-                                                             */
-
-
                                                         }
                                                         else {
-                                                            holder.reservations.setUid(uid);
-                                                            holder.reservations.setUser_name(user_name);
-                                                            holder.reservations.setUser_image_url(user_image_url);
-                                                            holder.reservations.setMobile_number(mobile_number);
-                                                            holder.reservations.setRoom_image_url(room_image_url);
-                                                            holder.reservations.setRoom_number(room_number);
-                                                            holder.reservations.setRoom_type(room_type);
-                                                            holder.reservations.setRoom_price(room_price);
 
                                                             holder.reservationRef.child(user_name).child(room_number)
                                                                     .setValue(holder.reservations)
@@ -352,6 +343,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                                                             if(task.isSuccessful()){
                                                                                 // display a success message
                                                                                 Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
+                                                                                // sets visibility to true if room is reserved successfully
+                                                                                holder.tv_room_reserved.setVisibility(View.VISIBLE);
+                                                                                holder.tv_room_booked.setVisibility(View.GONE);
                                                                             }
                                                                             else{
                                                                                     Toast.makeText(mCtx, task.getException().getMessage(),
@@ -448,7 +442,9 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
         CardView room_cardView;
 
         ImageView room_image;
-        TextView tv_room_booked_reserved;
+        // Booked or reserved room indicators
+        TextView tv_room_booked;
+        TextView tv_room_reserved;
         TextView tv_room_type;
         TextView tv_room_price;
 
@@ -472,7 +468,8 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             // Assigning ids to the objects
             room_cardView = itemView.findViewById(R.id.room_cardView);
             room_image = itemView.findViewById(R.id.room_image);
-            tv_room_booked_reserved = itemView.findViewById(R.id.tv_room_booked);
+            tv_room_booked = itemView.findViewById(R.id.tv_room_booked);
+            tv_room_reserved = itemView.findViewById(R.id.tv_room_reserved);
             tv_room_type = itemView.findViewById(R.id.tv_room_type);
             tv_room_price = itemView.findViewById(R.id.tv_room_price);
 

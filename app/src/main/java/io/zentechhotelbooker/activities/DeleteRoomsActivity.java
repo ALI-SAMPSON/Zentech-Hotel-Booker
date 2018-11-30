@@ -202,7 +202,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             public boolean onQueryTextSubmit(String query) {
                 // test if searchView is not empty
                 if(!query.isEmpty()){
-                    searchForRoom(query);
+                    searchForRoom(query.toLowerCase());
                     searchView.clearFocus();
                 }
 
@@ -218,7 +218,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             public boolean onQueryTextChange(String query) {
                 // test if searchView is not empty
                 if(!query.isEmpty()){
-                    searchForRoom(query);
+                    searchForRoom(query.toLowerCase());
                 }
 
                 //else
@@ -237,7 +237,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
         dBRef = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
-        Query query = dBRef.orderByChild("roomType")
+        Query query = dBRef.orderByChild("search")
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 

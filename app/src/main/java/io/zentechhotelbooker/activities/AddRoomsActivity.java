@@ -383,6 +383,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                             rooms.setLunchServed(lunch);
                             rooms.setSupperServed(supper);
                             rooms.setRoomPrice(room_price);
+                            rooms.setSearch(room_type.toLowerCase());
 
                             // Getting image unique key of the node.
                             final String roomKey = databaseReference.push().getKey();

@@ -229,12 +229,17 @@ public class UserSignUpActivity extends AppCompatActivity {
                             FirebaseUser currentUser = mAuth.getCurrentUser();
 
                             //getting the instances
-                            final Users users = new Users(
-                                    currentUser.getUid(),
-                                    email,
-                                    username,
-                                    gender,
-                                    mobile_number);
+                            assert currentUser != null;
+
+                            final Users users = new Users();
+
+                            users.setUid(currentUser.getUid());
+                            users.setEmail(email);
+                            users.setUsername(username);
+                            users.setGender(gender);
+                            users.setImageUrl(profileImageUrl);
+                            users.setMobile_number(mobile_number);
+                            users.setSearch(username.toLowerCase());
 
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(currentUser.getUid())
@@ -242,8 +247,6 @@ public class UserSignUpActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-
-                                        users.setImageUrl(profileImageUrl);
 
                                         // method call to save Username and profile Image
                                         saveUserInfo();
@@ -415,7 +418,7 @@ public class UserSignUpActivity extends AppCompatActivity {
                                     Uri downloadUrl = uri;
                                     profileImageUrl = downloadUrl.toString();
                                     // sets the Url of the Image to field in the database
-                                    users.setImageUrl(profileImageUrl);
+                                    //users.setImageUrl(profileImageUrl);
                                 }
                             });
                         }

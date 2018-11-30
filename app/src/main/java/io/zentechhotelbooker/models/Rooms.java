@@ -16,13 +16,15 @@ public class Rooms {
     // key to store the key reference of the data to delete
     private String key;
     private String user_ImageUrl;
+    // field to search username in both caps and lowercase
+    private String search;
 
     //default constructor
     public Rooms(){}
 
     //constructor with two or more parameters
     public Rooms(String roomImage_url,String roomNumber,String roomType,String roomPrice,
-                 String breakfastServed, String lunchServed, String supperServed){
+                 String breakfastServed, String lunchServed, String supperServed, String search){
         this.roomImage_url = roomImage_url;
         this.roomNumber = roomNumber;
         this.roomType = roomType;
@@ -30,6 +32,7 @@ public class Rooms {
         this.breakfastServed = breakfastServed;
         this.lunchServed = lunchServed;
         this.supperServed = supperServed;
+        this.search = search;
     }
 
     //Getter and Setter method for Room Image
@@ -103,5 +106,13 @@ public class Rooms {
 
     public String getUser_ImageUrl(){
         return user_ImageUrl;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

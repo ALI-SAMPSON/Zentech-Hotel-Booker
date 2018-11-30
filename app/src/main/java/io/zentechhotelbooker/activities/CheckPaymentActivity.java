@@ -267,7 +267,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 // test if searchView is not empty
                 if(!query.isEmpty()){
-                    searchForRoom(query);
+                    searchForRoom(query.toLowerCase());
                     searchView.clearFocus();
                 }
 
@@ -283,7 +283,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String query) {
                 // test if searchView is not empty
                 if(!query.isEmpty()){
-                    searchForRoom(query);
+                    searchForRoom(query.toLowerCase());
                 }
                 else{
                     searchForRoom("");
@@ -299,7 +299,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
         dBRef = FirebaseDatabase.getInstance().getReference(Payment_path);
 
-        Query query = dBRef.orderByChild("user_name")
+        Query query = dBRef.orderByChild("search")
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 

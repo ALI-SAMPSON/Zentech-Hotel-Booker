@@ -41,6 +41,20 @@
             android:visibility="gone"
             android:layout_gravity="center" />
 
+        <TextView
+            android:id="@+id/tv_room_reserved"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:textSize="22sp"
+            android:padding="@dimen/card_elevation"
+            app:fontFamily="@font/nunito_extrabold"
+            android:textColor="@color/colorRed"
+            android:text="@string/text_reserved"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="35dp"

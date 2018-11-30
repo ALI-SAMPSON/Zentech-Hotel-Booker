@@ -9,18 +9,23 @@ public class Users {
     private String gender;
     private String mobile_number;
     private String imageUrl;
+    private String search;
 
     //default constructor
     public Users(){
     }
 
     //constructor with two or more parameters
-    public Users(String uid, String email, String username, String gender, String mobile_number){
+    public Users(String uid, String email, String username,
+                 String gender, String mobile_number,
+                 String imageUrl, String search){
         this.uid = uid;
         this.email = email;
         this.username = username;
         this.gender = gender;
         this.mobile_number = mobile_number;
+        this.imageUrl = imageUrl;
+        this.search = search;
 
     }
 
@@ -75,4 +80,11 @@ public class Users {
         return imageUrl;
     }
 
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
 }

@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name" translatable="false">ACH BOOKER</string>
-    <string name="app_name1" translatable="false">ACCRA CITY HOTEL BOOKER</string>
+    <string name="app_name" translatable="false">ZHMS</string>
+    <string name="app_name1" translatable="false">ZENTECH HOTEL MANAGEMENT SYSTEM</string>
 
-    <string name="application_name" translatable="false">ACH BOOKER</string>
-    <string name="application_name_1" translatable="false">ACCRA CITY HOTEL BOOKER</string>
+    <string name="application_name" translatable="false">ZHMS</string>
+    <string name="application_name_1" translatable="false">ZENTECH HOTEL MANAGEMENT SYSTEM</string>
     <string name="hint_email" translatable="false">Email</string>
     <string name="hint_password" translatable="false">Password</string>
     <string name="hint_location" translatable="false">Location/Address</string>
@@ -32,11 +32,11 @@
     <string name="about_us_title" translatable="false">About Us</string>
     <string name="title_who_we_are" translatable="false">WHO WE ARE</string>
     <string name="about_us_sub_title" translatable="false">
-        ACH Booker is a mobile application specification android,
+        ZENTECH HMS is a mobile application specification android,
         developed by iCODE Labs to help this guest house keep with its management.
-        iCODE Labs was established in the year 2017 to undertake the development
-        of mobile application for institutions or societies in need. It consists of
-        professional android developers from campuses across the country. Below is our contact information:
+        ZENTECH I.T SOLUTIONS was established in the year 2012  but undertook the development
+        of mobile application for Hotels or Guest houses in need. It consists of
+        professional android developers from campuses across the country.Below is our contact information:
         Mob. : +233.302.26.86.50, +233.302.98.50.13, +233.50.130.4161.
         Email: info@zentechgh.com
         Location: located at Accra, 2nd floor Tesano Commercial Plaza.
@@ -81,7 +81,7 @@
 
 
     <string name="text_about_us" translatable="false">
-        ACH Booker is a unique mobile application
+        ZENTECH HMS is a unique mobile application
         developed to help clients or users to easily book hotel
         rooms and make payments instantly through any mobile
         money payment platform and Credit or Debit Card.
@@ -121,7 +121,7 @@
     <string name="hint_vision" translatable="false">Vision</string>
 
     <string name="text_overview" translatable="false">
-        ACH Booker seeks to avoid inconveniences,
+        ZHMS seeks to avoid inconveniences,
         caused as a result of one going to Hotel or guest
         house for a room and all to realized that the
         rooms are all occupied. With  this system in place
@@ -141,7 +141,7 @@
     </string>
 
     <string name="welcome_message" translatable="false">
-        ACH Booker has a lot to offer you.
+        Zentech HMS has a lot to offer you.
         Open the drawer on the left of the screen
         to update your profile, checks payments and
         contact us if needed and freely book a room.
@@ -266,7 +266,7 @@
 
     <string name="title_share" translatable="false">Share</string>
 
-    <string name="text_no_payments" translatable="false">Ooops! No payments have been made yet</string>
+    <string name="text_no_payments" translatable="false">Oops! No payments have been made yet</string>
 
     <string name="body_more_details" translatable="false">
         Accra City Hotel is 30 minutes from Accra Sports Stadium
@@ -293,7 +293,7 @@
     <string name="text_comfort" translatable="false">...your home of comfort</string>
 
     <!--Developer-->
-    <string name="watermark" translatable="false">Created by <b>iCODE labs</b> © 2018</string>
+    <string name="watermark" translatable="false">Designed and developed by <b>ZENTECH I.T SOLUTIONS</b> © 2018</string>
     <string name="todo" translatable="false">TODO</string>
 
     <string name="welcome_text" translatable="false">Welcome Admin</string>
@@ -334,9 +334,9 @@
 
     <string name="room_number_exist"
         translatable="false">
-        *Ooops! room already exist, try another room.
-        But if error still persist, make reference to the database.
-        Thank you
+        *Oops! room already exist, try another room.
+         But if error still persist, make reference
+         to the database.Thank you
     </string>
 
     <string name="hint_confirm_password"

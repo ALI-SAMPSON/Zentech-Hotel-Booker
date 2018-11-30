@@ -428,7 +428,7 @@ public class HomeActivity extends AppCompatActivity implements
             public boolean onQueryTextSubmit(String query) {
                 // if searchView is not empty
                 if(!query.isEmpty()){
-                    searchForRoom(query);
+                    searchForRoom(query.toLowerCase());
                     searchView.clearFocus();
                 }
 
@@ -444,7 +444,7 @@ public class HomeActivity extends AppCompatActivity implements
             public boolean onQueryTextChange(String query) {
                 // if searchView is not empty
                 if(!query.isEmpty()){
-                    searchForRoom(query);
+                    searchForRoom(query.toLowerCase());
                 }
 
                 //else
@@ -466,7 +466,7 @@ public class HomeActivity extends AppCompatActivity implements
         databaseReference = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
         // creates a query to initiate the search
-        Query query =  databaseReference.orderByChild("roomType")
+        Query query =  databaseReference.orderByChild("search")
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 

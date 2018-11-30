@@ -275,6 +275,7 @@ public class MakePaymentActivity extends AppCompatActivity {
         payments.setBreakfastServed(breakfast);
         payments.setLunchServed(lunch);
         payments.setSupperServed(supper);
+        payments.setSearch(user_name.toLowerCase());
 
         //code to the check if room has been booked already
         paymentRef.child(room_number).addListenerForSingleValueEvent(new ValueEventListener() {
