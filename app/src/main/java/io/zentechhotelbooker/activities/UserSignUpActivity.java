@@ -351,12 +351,13 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     //link to the User login page
     public void onLoginLinkButtonClick(View view){
-        // finishes the activity
-        finish();
+
         //starts the LoginActivity when user clicks the button
         startActivity(new Intent(UserSignUpActivity.this, UserLoginActivity.class));
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserSignUpActivity.this,"fadein-to-fadeout");
+        // finishes the activity
+        finish();
 
     }
 

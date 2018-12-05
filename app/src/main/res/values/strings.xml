@@ -171,8 +171,8 @@
     <string name="booked_rooms" translatable="false">Booked Rooms</string>
     <string name="room_type" translatable="false">Room Type</string>
     <string name="settings" translatable="false">Settings</string>
-    <string name="hint_enter_current_username" translatable="false">enter your username</string>
-    <string name="hint_enter_current_password" translatable="false">enter your password</string>
+    <string name="hint_enter_current_username" translatable="false">Enter your username</string>
+    <string name="hint_enter_current_password" translatable="false">Enter your password</string>
     <string name="slide_description" translatable="false">Slider Description</string>
     <string name="make_payment" translatable="false">Make Payment</string>
     <string name="text_payment_method" translatable="false">Payment Method</string>
@@ -299,59 +299,48 @@
     <string name="welcome_text" translatable="false">Welcome Admin</string>
 
     <!-- Visa and Master Card details -->
-    <string name="card_number"
-        translatable="false">Card Number</string>
+    <string name="card_number" translatable="false">Card Number</string>
 
-    <string name="card_holder_name"
-        translatable="false">Card Holder Name</string>
+    <string name="card_holder_name" translatable="false">Card Holder Name</string>
 
-    <string name="card_month"
-        translatable="false">MM</string>
+    <string name="card_month" translatable="false">MM</string>
 
-    <string name="card_year"
-        translatable="false">YY</string>
+    <string name="card_year" translatable="false">YY</string>
 
-    <string name="card_cvc"
-        translatable="false">CVC</string>
+    <string name="card_cvc" translatable="false">CVC</string>
 
-    <string name="error_card_number"
-        translatable="false">Card number is required</string>
+    <string name="error_card_number" translatable="false">Card number is required</string>
 
-    <string name="error_card_holder"
-        translatable="false">Cardholder name is required</string>
+    <string name="error_card_holder" translatable="false">Cardholder name is required</string>
 
-    <string name="error_card_month"
-        translatable="false">Month is required</string>
+    <string name="error_card_month" translatable="false">Month is required</string>
 
-    <string name="error_card_year"
-        translatable="false">Year is required</string>
+    <string name="error_card_year" translatable="false">Year is required</string>
 
-    <string name="error_card_cvc"
-        translatable="false">CVC is required</string>
+    <string name="error_card_cvc" translatable="false">CVC is required</string>
 
-    <string name="room_number_exist_1"
-        translatable="false">*Ooops! room already exist</string>
+    <string name="room_number_exist_1" translatable="false">*Ooops! room already exist</string>
 
-    <string name="room_number_exist"
-        translatable="false">
+    <string name="room_number_exist" translatable="false">
         *Oops! room already exist, try another room.
          But if error still persist, make reference
          to the database.Thank you
     </string>
 
-    <string name="hint_confirm_password"
-        translatable="false">
+    <string name="hint_confirm_password" translatable="false">
         Enter your password
     </string>
 
-    <string name="room_reserved"
-        translatable="false">
+    <string name="room_reserved" translatable="false">
         Room reserved successfully
     </string>
 
-    <string name="text_reserved"
-        translatable="false">
+    <string name="text_reserved" translatable="false">
         Reserved
+    </string>
+
+    <string name="incorrect_username" translatable="false">
+        Incorrect username. Please Try Again!
     </string>
 
 </resources>

@@ -51,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:drawableStart="@drawable/ic_email_white"
-                android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"

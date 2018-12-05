@@ -234,14 +234,14 @@ public class UserLoginActivity extends AppCompatActivity {
 
             clearBothTextFields();
 
-            // finishes this activity
-            finish();
-
             // and starts a new activity
             startActivity(new Intent(UserLoginActivity.this,HomeActivity.class));
 
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
+
+            // finishes this activity
+            finish();
 
 
         }
@@ -253,43 +253,43 @@ public class UserLoginActivity extends AppCompatActivity {
             // sign out currently logged in user
             mAuth.signOut();
 
-            // finishes the activity
-            finish();
-
             // restart the activity
             startActivity(new Intent(UserLoginActivity.this,UserLoginActivity.class));
 
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
+            // finishes the activity
+            finish();
+
         }
     }
 
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onSignUpLinkClick(View View){
-
-        // finishes the current activity and open the Sign Up Activity
-        finish();
-
         //starts the Sign Up Activity
         startActivity(new Intent(UserLoginActivity.this,UserSignUpActivity.class));
 
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
 
+        // finishes the current activity and open the Sign Up Activity
+        finish();
+
+
     }
 
     //method called when the link to the SignUp Activity is clicked or tapped
     public void onAdminLoginButtonLinkClick(View view){
-
-        // finishes the current activity
-        finish();
 
         //starts the AdminLoginActivity
         startActivity(new Intent(UserLoginActivity.this,AdminLoginActivity.class));
 
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
+
+        // finishes the current activity
+        finish();
     }
 
     // clears the Username and Password EditText
@@ -305,14 +305,15 @@ public class UserLoginActivity extends AppCompatActivity {
     // method to reset user password
     public void onButtonResetPassword(View view) {
 
-        // finishes the current activity
-        finish();
-
         //open the resetPassword Activity
         startActivity(new Intent(UserLoginActivity.this, ResetUserPasswordActivity.class));
 
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(UserLoginActivity.this, "fadein-to-fadeout");
+
+        // finishes the current activity
+        finish();
+
     }
 
     @Override

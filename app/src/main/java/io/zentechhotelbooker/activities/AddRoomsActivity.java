@@ -342,12 +342,10 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     public void addRoomDetailsToDatabase(){
 
-        showDialog();
-
         //makes this textView visible
-        /*tv_room_exist.setVisibility(View.GONE);
+        tv_room_exist.setVisibility(View.GONE);
 
-        // Checking whether FilePathUri Is empty or not.
+       // Checking whether FilePathUri Is empty or not.
         if(FilePathUri != null){
 
             // display progressBar to show that image is uploading
@@ -425,7 +423,7 @@ public class AddRoomsActivity extends AppCompatActivity {
             // Showing Alert message.
             Snackbar.make(scrollView, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
         }
-        */
+
 
     }
 
@@ -434,13 +432,13 @@ public class AddRoomsActivity extends AppCompatActivity {
     // before adding Room
     public void showDialog(){
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView  = inflater.inflate(R.layout.custom_dialog,null);
         dialogBuilder.setView(dialogView);
 
         // reference to the EditText in the layout file (custom_dialog)
-        final EditText editTextPassword = dialogView.findViewById(R.id.editTextConfirmPassword);
+        final EditText editTextPassword = dialogView.findViewById(R.id.editTextUsername);
 
         dialogBuilder.setTitle("Confirm Password");
         dialogBuilder.setMessage("");
@@ -449,24 +447,9 @@ public class AddRoomsActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 // getting text from EditText
                 String password  = editTextPassword.getText().toString();
-                FirebaseUser user = mAuth.getCurrentUser();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String email = user.getEmail();
-                AuthCredential credential = EmailAuthProvider
-                        .getCredential(email,password);
 
-                user.reauthenticate(credential)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),"nice Job",Toast.LENGTH_LONG).show();
-                                }
-                                else{
-                                    Toast.makeText(getApplicationContext(),
-                                            task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
 
             }
         });
@@ -475,11 +458,11 @@ public class AddRoomsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // dismiss the DialogInterface
-               dialogInterface.dismiss();
+                dialogInterface.dismiss();
             }
         });
 
-        AlertDialog alert = dialogBuilder.create();
+        android.app.AlertDialog alert = dialogBuilder.create();
         alert.show();
 
     }

@@ -3,14 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
-    tools:context=".activities.AdminLoginActivity">
+    android:background="@drawable/my_login_ui"
+    android:id="@+id/nestedScrollView"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context=".activities.AdminSignUpActivity">
 
-    <!-- material design LinearLayout -->
+    <!-- Linear Layout for the UI elements -->
     <android.support.v7.widget.LinearLayoutCompat
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -25,18 +30,30 @@
             android:src="@drawable/admin_icon">
         </de.hdodenhof.circleimageview.CircleImageView>
 
-        <TextView
-            android:layout_margin="15dp"
-            android:layout_width="250dp"
+        <!-- TextInputLayout and AppCompatEdiText for Username -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutUsername"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
             android:gravity="center"
-            android:text="@string/welcome_admin"
-            android:fontFamily="@font/nunito_extrabold"
-            android:textSize="22sp"
-            android:textStyle="normal"
-            android:typeface="normal"
-            android:textColor="@color/colorWhite"/>
+            android:textColorHint="@color/colorWhite">
+            <EditText
+                android:id="@+id/editTextUsername"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:fontFamily="@font/nunito_semibold"
+                android:hint="@string/hint_username"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textColorHint="@color/colorWhite"
+                android:inputType="text|textAutoComplete"
+                android:maxLines="1" tools:targetApi="jelly_bean"
+                android:drawableStart="@drawable/ic_person_white"/>
+        </android.support.design.widget.TextInputLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Email -->
         <android.support.design.widget.TextInputLayout
@@ -44,23 +61,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_gravity="center"
-            android:orientation="vertical"
             android:textAlignment="center"
-            android:textColorHint="@color/colorWhite">
+            android:gravity="center"
+            android:textColorHint="@color/colorWhite"
+            android:layout_marginStart="0dp">
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawableStart="@drawable/ic_email_white"
                 android:drawablePadding="@dimen/spacing_normal"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
                 android:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_email"
-                android:inputType="textEmailAddress|textAutoComplete|textAutoCorrect"
-                android:maxLines="1"/>
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textColorHint="@color/colorWhite"
+                android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
+                android:maxLines="1"
+                android:drawableStart="@drawable/ic_email_white"
+                tools:targetApi="jelly_bean"
+                android:layout_marginStart="0dp" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Password -->
@@ -69,9 +89,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:orientation="vertical"
             android:textAlignment="center"
+            android:gravity="center"
             android:textColorHint="@color/colorWhite"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorWhite">
@@ -80,62 +99,45 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_password"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
                 android:inputType="textPassword"
-                android:maxLines="1"/>
-
+                android:maxLines="1" tools:targetApi="jelly_bean"
+                android:layout_marginStart="0dp" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Login Button  -->
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/appCompatButtonLogin"
-            android:layout_marginTop="40dp"
+
+        <!-- Sign Up Button -->
+        <Button
+            android:id="@+id/buttonSignUp"
+            android:layout_marginTop="20dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_below="@+id/login_cardView"
-            android:text="@string/sign_in"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/textInputLayoutMobileNumber"
+            android:text="@string/signUp"
             android:textColor="@color/colorWhite"
             app:fontFamily="@font/nunito_semibold"
             android:textAllCaps="false"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="normal"
             android:textAlignment="center"
             android:background="@drawable/nice_design_button_pink"
-            android:onClick="onSignInButtonClick"/>
-
-
-        <!-- Link to the user login page -->
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/appCompatButtonAdminLoginLink"
-            android:layout_marginTop="5dp"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_below="@+id/appCompatButtonLogin"
-            app:fontFamily="@font/nunito_semibold"
-            android:text="@string/login_link"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:textStyle="normal"
-            android:textAlignment="center"
-            android:background="@null"
-            android:onClick="onLoginButtonLinkClick"/>
+            android:onClick="onSignUpButtonClick"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:visibility="gone"/>
 
     </android.support.v7.widget.LinearLayoutCompat>

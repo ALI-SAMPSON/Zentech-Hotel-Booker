@@ -317,6 +317,9 @@ public class HomeActivity extends AppCompatActivity implements
                         .load(_photoUrl)
                         .into(circleImageView);
             }
+            if(user.getPhotoUrl() == null){
+                circleImageView.setImageResource(R.drawable.avatar_placeholder);
+            }
             // checks if the username of the current user is not null
             if(user.getDisplayName() != null){
                 username.setText(" Username : " + _username);
@@ -376,39 +379,6 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
-    //material searchView code
-    public void searchView(){
-
-        searchView = findViewById(R.id.search_view);
-        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-        searchView.setEllipsize(true);
-        searchView.setSubmitOnClick(true);
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getApplicationContext(),query,Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-
-            }
-        });
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
