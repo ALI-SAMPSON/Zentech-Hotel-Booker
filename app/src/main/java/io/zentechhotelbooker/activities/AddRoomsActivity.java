@@ -46,6 +46,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -116,7 +117,14 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     private DatabaseReference roomsRef;
 
+    // Creating DataReference
+    DatabaseReference reference;
+
+    Admin admin;
+
     private FirebaseAuth mAuth;
+
+    private FirebaseUser currentAdmin;
 
     private ProgressBar progressBar;
 
@@ -140,6 +148,12 @@ public class AddRoomsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+
+        admin = new Admin();
+
+        mAuth = FirebaseAuth.getInstance();
+
+        currentAdmin = mAuth.getCurrentUser();
 
         roomImage = findViewById(R.id.imageView);
         tv_room_exist = findViewById(R.id.tv_room_exist);
@@ -192,8 +206,6 @@ public class AddRoomsActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
 
         spinnerLayout = findViewById(R.id.spinnerLayout);
-
-        mAuth = FirebaseAuth.getInstance();
 
         //checkIfRoomNumberExist();
 
@@ -303,30 +315,11 @@ public class AddRoomsActivity extends AppCompatActivity {
                     //makes this textView visible
                     tv_room_exist.setVisibility(View.VISIBLE);
 
-                    // display a SnackBar with error message
-                    //Snackbar.make(scrollView,getString(R.string.room_number_exist),Snackbar.LENGTH_SHORT).show();
-
-                    /*Rooms roomSnapshot = dataSnapshot.getValue(Rooms.class);
-
-                    if(roomNumber.equals(roomSnapshot.getRoomNumber())){
-
-                        // animation to shake view if room already exist
-                        YoYo.with(Techniques.Shake).playOn(tv_room_exist);
-
-                        //makes this textView visible
-                        tv_room_exist.setVisibility(View.VISIBLE);
-
-                        // display a SnackBar with error message
-                        Snackbar.make(scrollView,getString(R.string.room_number_exist),Snackbar.LENGTH_SHORT).show();
-
-                    }
-                    */
-
                 }
 
                 else{
-                    // Method call to add Room to database
-                    addRoomDetailsToDatabase();
+                    // method call
+                    confirmUsername();
 
                 }
 
@@ -337,6 +330,73 @@ public class AddRoomsActivity extends AppCompatActivity {
                 Snackbar.make(scrollView, databaseError.getMessage(),Snackbar.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    /**A block of code to display and alert Dialog
+     ** for admin to confirm his or her password/username
+     ** before adding Room
+     */
+    public void confirmUsername(){
+
+        final android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView  = inflater.inflate(R.layout.custom_dialog,null);
+        dialogBuilder.setView(dialogView);
+
+        // reference to the EditText in the layout file (custom_dialog)
+        final EditText editTextUsername = dialogView.findViewById(R.id.editTextUsername);
+
+        dialogBuilder.setTitle("Add Room?");
+        dialogBuilder.setMessage("Please enter your unique username");
+        dialogBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                // getting text from EditText
+                final String username = editTextUsername.getText().toString();
+
+                // getting reference to the Admin Table/Node
+                reference = FirebaseDatabase.getInstance().getReference("Admin");
+                Query query = reference.orderByChild("username").equalTo(username);
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        // checks if username is correct
+                        if(dataSnapshot.exists() && currentAdmin.getDisplayName().equals(username)){
+
+                            // Method call to add Room to database
+                            addRoomDetailsToDatabase();
+
+                        }
+                        else{
+                            Toast.makeText(AddRoomsActivity.this,
+                                    getString(R.string.incorrect_username),Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(AddRoomsActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+
+        });
+
+
+        dialogBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss the DialogInterface
+                dialogInterface.dismiss();
+            }
+        });
+
+        android.app.AlertDialog alert = dialogBuilder.create();
+        alert.show();
 
     }
 
@@ -363,7 +423,6 @@ public class AddRoomsActivity extends AppCompatActivity {
 
                             imageUrl = taskSnapshot.getDownloadUrl().toString();
                             rooms.setRoomImage_url(imageUrl);
-
 
                             //get input from the editText views and spinner views
                             String room_number = editTextRoomNumber.getText().toString().trim();
@@ -424,48 +483,8 @@ public class AddRoomsActivity extends AppCompatActivity {
             Snackbar.make(scrollView, getString(R.string.error_adding_room),Snackbar.LENGTH_LONG).show();
         }
 
-
     }
 
-    // A block of code to display and alert Dialog
-    // for admin to confirm his or her password
-    // before adding Room
-    public void showDialog(){
-
-        android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView  = inflater.inflate(R.layout.custom_dialog,null);
-        dialogBuilder.setView(dialogView);
-
-        // reference to the EditText in the layout file (custom_dialog)
-        final EditText editTextPassword = dialogView.findViewById(R.id.editTextUsername);
-
-        dialogBuilder.setTitle("Confirm Password");
-        dialogBuilder.setMessage("");
-        dialogBuilder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // getting text from EditText
-                String password  = editTextPassword.getText().toString();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String email = user.getEmail();
-
-
-            }
-        });
-
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // dismiss the DialogInterface
-                dialogInterface.dismiss();
-            }
-        });
-
-        android.app.AlertDialog alert = dialogBuilder.create();
-        alert.show();
-
-    }
 
     // Body of Code to check if Room already exist in database
     public void checkIfRoomNumberExistOnLaunch(){
@@ -497,7 +516,8 @@ public class AddRoomsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // display a SnackBar with error message
+                Snackbar.make(scrollView,databaseError.getMessage(),Snackbar.LENGTH_SHORT).show();
             }
         });
     }

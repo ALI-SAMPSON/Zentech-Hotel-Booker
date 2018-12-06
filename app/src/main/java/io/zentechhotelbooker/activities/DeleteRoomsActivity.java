@@ -373,14 +373,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // getting the position of each room and its details
         final Rooms rooms = roomsList.get(position);
 
-        // Create an an alert builder
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Sets a Title and a Message on it
-        builder.setTitle("Delete Room");
-        builder.setMessage("Are you sure you want to delete this room");
-        builder.setCancelable(false);
-        */
-
         final android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView  = inflater.inflate(R.layout.custom_dialog,null);
@@ -390,8 +382,8 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         final EditText editTextUsername = dialogView.findViewById(R.id.editTextUsername);
 
         dialogBuilder.setTitle("Delete Room?");
-        dialogBuilder.setMessage("");
-        dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        dialogBuilder.setMessage("Please enter your unique username");
+        dialogBuilder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -501,7 +493,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                 });
 
 
-                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // dismiss the DialogInterface
@@ -511,64 +503,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
                 android.app.AlertDialog alert = dialogBuilder.create();
                 alert.show();
-
-
-
-
-        /*builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                // method call
-                //showDialog();
-
-                progressBar.setVisibility(View.VISIBLE);
-
-                final Rooms selectedRoom = roomsList.get(position);
-                final String selectedKey = selectedRoom.getKey();
-
-                // getting the reference of the room
-                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoomImage_url());
-                roomImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        //remove value from FirebaseDatabase
-                        mDatabaseRef.child(selectedKey).removeValue();
-
-                        // dismiss the progress bar
-                        progressBar.setVisibility(View.GONE);
-
-                        // File deleted successfully message
-                        Toast.makeText(DeleteRoomsActivity.this," Room deleted Successfully ",Toast.LENGTH_LONG).show();
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // dismiss the progress bar
-                        progressBar.setVisibility(View.GONE);
-
-                        // File deleted successfully message
-                        Toast.makeText(DeleteRoomsActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-            }
-        });
-
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // dismiss the alert Dialog
-                dialogInterface.dismiss();
-            }
-        });
-
-        // Creates a new AlertDialog and displays it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        */
 
             }
 

@@ -25,11 +25,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
@@ -61,6 +64,8 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
 
     // Creating FirebaseAuth
     FirebaseAuth mAuth;
+
+    DatabaseReference userRef;
 
     private static final int  REQUEST_CODE = 1;
 
@@ -183,7 +188,7 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
     // method to save username and profile image
     private void saveUserInfo(){
 
-        String _username = username.getText().toString().trim();
+        final String _username = username.getText().toString().trim();
 
         if(_username.isEmpty()) {
             username.setError(getString(R.string.error_empty_username));
@@ -194,7 +199,7 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
         // progressBar for update Button
         progressBar1.setVisibility(View.VISIBLE);
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
 
         if(user != null && profileImageUrl != null){
             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
@@ -208,6 +213,14 @@ public class UpdateUserProfileActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
+
+                                userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                // updating these fields if task is successful
+                                HashMap<String, Object> updateInfo = new HashMap<>();
+                                updateInfo.put("imageUrl",profileImageUrl);
+                                updateInfo.put("username", _username);
+                                userRef.updateChildren(updateInfo);
+
                                 // dismiss progress bar
                                 progressBar1.setVisibility(View.GONE);
                                 // display a success message

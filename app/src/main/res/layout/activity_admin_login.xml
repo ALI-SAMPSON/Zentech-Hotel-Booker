@@ -6,7 +6,7 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
+    android:background="@drawable/login_ui"
     tools:context=".activities.AdminLoginActivity">
 
     <!-- material design LinearLayout -->
@@ -107,7 +107,7 @@
             android:textSize="16sp"
             android:textStyle="normal"
             android:textAlignment="center"
-            android:background="@drawable/nice_design_button_pink"
+            android:background="@drawable/round_corner_button_login_admin"
             android:onClick="onSignInButtonClick"/>
 
 

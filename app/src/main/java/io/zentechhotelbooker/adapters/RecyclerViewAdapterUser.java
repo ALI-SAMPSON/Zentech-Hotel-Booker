@@ -102,6 +102,8 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
         final String user_image_url = holder.user.getPhotoUrl().toString();
 
+        //final String user_image_url = holder.users.getImageUrl();
+
         // using Glide Library to load images
         Glide.with(mCtx).load(rooms.getRoomImage_url()).into(holder.room_image);
 

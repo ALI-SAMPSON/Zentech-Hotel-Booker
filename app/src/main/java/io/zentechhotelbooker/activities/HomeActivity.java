@@ -69,6 +69,8 @@ public class HomeActivity extends AppCompatActivity implements
 
     DatabaseReference roomRef;
 
+    DatabaseReference userInfoRef;
+
     // Creating RecyclerView
     RecyclerView recyclerView;
 
@@ -196,8 +198,11 @@ public class HomeActivity extends AppCompatActivity implements
         // Calling method to display a welcome message
         displayWelcomeMessage();
 
-        // method call
-        //searchView();
+        // call to the method to load user details into their respective views
+        loadUserInfo();
+
+        // call to the method to load rooms from Firbase Database
+        loadUploadedRoomDetails();
 
     }
 
@@ -215,18 +220,7 @@ public class HomeActivity extends AppCompatActivity implements
             // finishes activity
             finish();
         }
-        else if(mAuth.getCurrentUser() != null){
 
-            // starts the home activity if user is already logged in
-            progressBar.setVisibility(View.GONE);
-
-            // call to the method to load user details into their respective views
-            loadUserInfo();
-
-            // call to the method to load rooms from Firbase Database
-            loadUploadedRoomDetails();
-
-        }
 
     }
 
@@ -302,34 +296,53 @@ public class HomeActivity extends AppCompatActivity implements
     private void loadUserInfo(){
 
         // get current logged in user
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
 
         // getting the username and image of current logged in user
-        String _photoUrl = user.getPhotoUrl().toString();
-        String _username = user.getDisplayName();
-        String _email = user.getEmail();
+        assert user != null;
+        //final String _photoUrl = user.getPhotoUrl().toString();
+        final String _username = user.getDisplayName();
+        final String _email = user.getEmail();
 
-        // checks if current user is not null
-        if(user != null){
-            // checks if the photo of the current user is not null
-            if(user.getPhotoUrl() != null ){
-                Glide.with(HomeActivity.this)
-                        .load(_photoUrl)
-                        .into(circleImageView);
-            }
-            if(user.getPhotoUrl() == null){
-                circleImageView.setImageResource(R.drawable.avatar_placeholder);
-            }
-            // checks if the username of the current user is not null
-            if(user.getDisplayName() != null){
-                username.setText(" Username : " + _username);
-            }
-            // checks if the email of the current user is not null
-            if(user.getEmail() != null){
-                email.setText(" Email : " + _email);
+        userInfoRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+
+        userInfoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Users users = dataSnapshot.getValue(Users.class);
+
+                // checks if current user is not null
+                if(user != null){
+
+                    username.setText(" Username : " + _username);
+                    email.setText(" Email : " + _email);
+
+                    // checks if the photo of the current user is not null
+                    assert users != null;
+                    if(users.getImageUrl() == null){
+                        circleImageView.setImageResource(R.drawable.avatar_placeholder);
+                    }
+                    else{
+                        Glide.with(getApplicationContext()).load(users.getImageUrl()).into(circleImageView);
+                    }
+
+                }
+                else{
+                    username.setText(" Username : " + _username);
+                    email.setText(" Email : " + _email);
+                    circleImageView.setImageResource(R.drawable.avatar_placeholder);
+                }
             }
 
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // displays an error message from the database
+                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+
 
     }
 

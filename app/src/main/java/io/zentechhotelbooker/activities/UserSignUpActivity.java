@@ -33,10 +33,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
@@ -86,6 +89,8 @@ public class UserSignUpActivity extends AppCompatActivity {
     private String CHANNEL_ID = "notification_channel_id";
 
     private int notificationId = 0;
+
+    DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -418,8 +423,6 @@ public class UserSignUpActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     Uri downloadUrl = uri;
                                     profileImageUrl = downloadUrl.toString();
-                                    // sets the Url of the Image to field in the database
-                                    //users.setImageUrl(profileImageUrl);
                                 }
                             });
                         }
@@ -437,9 +440,9 @@ public class UserSignUpActivity extends AppCompatActivity {
     // method to save username and profile image
     private void saveUserInfo(){
 
-        String username = editTextUsername.getText().toString().trim();
+        final String username = editTextUsername.getText().toString().trim();
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
 
         if(user != null && profileImageUrl != null){
             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
@@ -453,6 +456,14 @@ public class UserSignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
+
+                                userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                // updating these fields if task is successful
+                                HashMap<String, Object> updateInfo = new HashMap<>();
+                                updateInfo.put("imageUrl",profileImageUrl);
+                                updateInfo.put("username", username);
+                                userRef.updateChildren(updateInfo);
+
                                 // hides the progressBar
                                 progressBar.setVisibility(View.GONE);
                             }

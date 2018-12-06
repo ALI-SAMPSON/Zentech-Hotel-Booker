@@ -208,6 +208,8 @@ public class UserLoginActivity extends AppCompatActivity {
                         else{
                             // display a successful login message
                             Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
+                            // sign out currently logged in user
+                            mAuth.signOut();
                         }
 
                         // dismiss the dialog
