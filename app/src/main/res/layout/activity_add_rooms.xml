@@ -27,7 +27,7 @@
                 android:layout_margin="30dp"
                 android:scaleType="centerCrop"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/tap_icon"
+                android:background="@drawable/tap_icon"
                 android:onClick="onSelectImage"
                 android:contentDescription="@string/todo" />
 

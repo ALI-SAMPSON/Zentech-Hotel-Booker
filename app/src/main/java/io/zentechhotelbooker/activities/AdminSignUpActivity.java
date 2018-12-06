@@ -178,6 +178,9 @@ public class AdminSignUpActivity extends AppCompatActivity {
                                 }
                             });
 
+                            // signs user out of the system
+                            mAuth.signOut();
+
                         }
                         else {
 
@@ -186,6 +189,9 @@ public class AdminSignUpActivity extends AppCompatActivity {
 
                             // displays an error message
                             Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
+
+                            // signs user out of the system
+                            mAuth.signOut();
                         }
                     }
                 });

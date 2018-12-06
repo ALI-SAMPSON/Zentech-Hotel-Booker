@@ -122,9 +122,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     Admin admin;
 
-    private FirebaseAuth mAuth;
-
-    private FirebaseUser currentAdmin;
+    FirebaseAuth mAuth;
 
     private ProgressBar progressBar;
 
@@ -152,8 +150,6 @@ public class AddRoomsActivity extends AppCompatActivity {
         admin = new Admin();
 
         mAuth = FirebaseAuth.getInstance();
-
-        currentAdmin = mAuth.getCurrentUser();
 
         roomImage = findViewById(R.id.imageView);
         tv_room_exist = findViewById(R.id.tv_room_exist);
@@ -272,12 +268,6 @@ public class AddRoomsActivity extends AppCompatActivity {
         if(room_number.isEmpty()){
 
             // Adds an animation to shake the view
-            YoYo.with(Techniques.FadeInDown).playOn(roomImage);
-
-            // Adds an animation to shake the view
-            YoYo.with(Techniques.Shake).playOn(editTextPrice);
-
-            // Adds an animation to shake the view
             YoYo.with(Techniques.Shake).playOn(editTextRoomNumber);
 
             editTextRoomNumber.setError(getString(R.string.error_text_room_number));
@@ -291,6 +281,11 @@ public class AddRoomsActivity extends AppCompatActivity {
             editTextPrice.setError(getString(R.string.error_empty_price));
             editTextPrice.requestFocus();
             return;
+        }
+        else if(roomImage.getDrawable() == null){
+            // Adds an animation to shake the view
+            YoYo.with(Techniques.FadeInDown).playOn(roomImage);
+            Toast.makeText(AddRoomsActivity.this, "please click on the Image Icon above to add an image of the room",Toast.LENGTH_LONG).show();
         }
         else{
             // Calling method to upload selected image onto Firebase storage.
@@ -339,6 +334,8 @@ public class AddRoomsActivity extends AppCompatActivity {
      */
     public void confirmUsername(){
 
+        final FirebaseUser currentAdmin = mAuth.getCurrentUser();
+
         final android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView  = inflater.inflate(R.layout.custom_dialog,null);
@@ -364,7 +361,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         // checks if username is correct
-                        if(dataSnapshot.exists() && currentAdmin.getDisplayName().equals(username)){
+                        if(dataSnapshot.exists()){
 
                             // Method call to add Room to database
                             addRoomDetailsToDatabase();

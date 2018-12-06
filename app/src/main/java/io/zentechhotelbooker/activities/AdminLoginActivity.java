@@ -39,7 +39,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     //an instance of the ProgressBar Class
     private ProgressBar progressBar;
 
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
 
     private Admin admin;
 
@@ -160,6 +160,9 @@ public class AdminLoginActivity extends AppCompatActivity {
                             // displays an error message
                             Snackbar.make(nestedScrollView,task.getException().getMessage(),Snackbar.LENGTH_LONG).show();
 
+                            // sign out user
+                            mAuth.signOut();
+
                         }
                         // dismiss progressBar
                         progressBar.setVisibility(View.GONE);
@@ -171,7 +174,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         // sign user out if this method is called
-        mAuth.signOut();
+        //mAuth.signOut();
     }
 
     // clears all text from the Username and Password EditText

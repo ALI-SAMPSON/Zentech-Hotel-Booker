@@ -261,80 +261,46 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                     holder.reservations.setRoom_price(room_price);
 
                                     holder.reservationRef.child(user_name)
-                                            .addValueEventListener(new ValueEventListener() {
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                                    /*
-                                                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                                                        Reservations reservations = snapshot.getValue(Reservations.class);
-
-                                                        // checks if uid and room Number already exist in database
-                                                        if(reservations.getUid().equals(uid) && reservations.getRoom_number().equals(room_number)){
-                                                            Toast.makeText(mCtx, "Oops! , " + user_name +
-                                                                            " you have already made reservation for this room "
-                                                                    , Toast.LENGTH_LONG).show();
-                                                        }
-                                                        else{
-                                                            holder.reservationRef.child(uid)
-                                                                    .setValue(holder.reservations)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if(task.isSuccessful()){
-                                                                                // display a success message
-                                                                                Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
-                                                                            }
-                                                                            else{
-                                                                                Toast.makeText(mCtx, task.getException().getMessage(),
-                                                                                        Toast.LENGTH_LONG).show();
-                                                                            }
-                                                                        }
-                                                                    });
-                                                        }
-
-
-                                                    }
-                                                    */
-
-                                                        if(dataSnapshot.exists()){
-
-
-                                                            if(dataSnapshot.exists() && dataSnapshot.hasChild(room_number)){
+                                                        if(dataSnapshot.exists() && dataSnapshot.hasChild(room_number)){
 
                                                                 Toast.makeText(mCtx, "Oops!, " + user_name +
                                                                                 " you have already made reservation for this room "
                                                                         , Toast.LENGTH_LONG).show();
 
-                                                            }
-
-                                                            if(dataSnapshot.exists() && !dataSnapshot.hasChild(room_number)){
-
-                                                                holder.reservationRef.child(user_name).child(room_number)
-                                                                        .setValue(holder.reservations)
-                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                if(task.isSuccessful()){
-                                                                                    // display a success message
-                                                                                    Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
-                                                                                    //builder.setNegativeButton("Reserve Now",)
-                                                                                    // sets visibility to true if room is reserved successfully
-                                                                                    holder.tv_room_reserved.setVisibility(View.VISIBLE);
-                                                                                    holder.tv_room_booked.setVisibility(View.GONE);
-
-                                                                                }
-                                                                                else{
-                                                                                    Toast.makeText(mCtx, task.getException().getMessage(),
-                                                                                            Toast.LENGTH_LONG).show();
-                                                                                }
-                                                                            }
-                                                                        });
-
-                                                            }
+                                                                return;
 
                                                         }
+                                                        else if(dataSnapshot.exists() && !dataSnapshot.hasChild(room_number)){
+
+                                                        holder.reservationRef.child(user_name).child(room_number)
+                                                                .setValue(holder.reservations)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            // display a success message
+                                                                            Toast.makeText(mCtx, R.string.room_reserved, Toast.LENGTH_LONG).show();
+                                                                            //builder.setNegativeButton("Reserve Now",)
+                                                                            // sets visibility to true if room is reserved successfully
+                                                                            holder.tv_room_reserved.setVisibility(View.VISIBLE);
+                                                                            holder.tv_room_booked.setVisibility(View.GONE);
+
+                                                                        }
+                                                                        else{
+                                                                            Toast.makeText(mCtx, task.getException().getMessage(),
+                                                                                    Toast.LENGTH_LONG).show();
+                                                                            // set visibility to off on both
+                                                                            holder.tv_room_reserved.setVisibility(View.GONE);
+                                                                            holder.tv_room_booked.setVisibility(View.GONE);
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                         }
                                                         else {
 
                                                             holder.reservationRef.child(user_name).child(room_number)
@@ -352,11 +318,13 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                                                                             else{
                                                                                     Toast.makeText(mCtx, task.getException().getMessage(),
                                                                                             Toast.LENGTH_LONG).show();
+                                                                                // set visibility to off on both
+                                                                                holder.tv_room_reserved.setVisibility(View.GONE);
+                                                                                holder.tv_room_booked.setVisibility(View.GONE);
                                                                             }
                                                                         }
                                                                     });
                                                             }
-
 
                                                 }
 

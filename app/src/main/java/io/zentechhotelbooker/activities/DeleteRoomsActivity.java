@@ -39,6 +39,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.zentechhotelbooker.R;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
@@ -398,7 +399,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         // checks if username is correct
-                        if(dataSnapshot.exists() && currentAdmin.getDisplayName().equals(username)){
+                        if(dataSnapshot.exists() || currentAdmin.getDisplayName().equals(username)){
                             /**
                              * Code to delete selected room from database
                              */
