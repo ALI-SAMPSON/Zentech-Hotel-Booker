@@ -128,6 +128,47 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                     holder.tv_room_reserved.setVisibility(View.GONE);
 
                 }
+
+                // if room is not booked check in reservation table
+                else if(!dataSnapshot.exists()){
+
+                    // getting uid of the user
+                    final String user_name = holder.user.getDisplayName();
+                    final String room_number = rooms.getRoomNumber();
+
+                    holder.reservations.setUser_name(user_name);
+                    holder.reservations.setRoom_number(room_number);
+
+                    // checks for reserved and non-reserved rooms
+                    holder.reservationRef.child(user_name)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    if(dataSnapshot.exists() && dataSnapshot.hasChild(room_number)){
+
+                                        // sets visibility to true if room is reserved successfully
+                                        holder.tv_room_reserved.setVisibility(View.VISIBLE);
+                                        holder.tv_room_booked.setVisibility(View.GONE);
+
+                                    }
+                                    else{
+                                        // sets visibility to gone
+                                        holder.tv_room_reserved.setVisibility(View.GONE);
+                                        holder.tv_room_booked.setVisibility(View.GONE);
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // display an error message
+                                    Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+
+                }
                 else{
                     // dismisses the textView
                     holder.tv_room_booked.setVisibility(View.GONE);
@@ -142,34 +183,6 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
-
-
-        // checks for reserved and non-reserved rooms
-        /*holder.reservationRef.child(rooms.getRoomNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.exists()){
-
-                    // displays a text with caption "Booked" to user
-                    holder.tv_room_booked_reserved.setText(R.string.text_reserved);
-                    holder.tv_room_booked_reserved.setVisibility(View.VISIBLE);
-
-                }
-                else{
-                    // dismisses the textView
-                    holder.tv_room_booked_reserved.setVisibility(View.GONE);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // display an error message
-                Toast.makeText(mCtx,databaseError.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
-        */
 
 
         // checks if rooms are booked or not when user clicks on the cardView

@@ -35,7 +35,7 @@
                 android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/profile_icon_blue"
+                android:background="@mipmap/profile_icon_blue_round"
                 android:onClick="onCircularImageViewClick"
                 app:civ_border_width="1.5dp"
                 app:civ_border_color="@color/colorViolet">
@@ -58,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="0dp"
             android:textAlignment="center"
             android:textColorHint="@color/colorWhite"
             android:layout_marginStart="0dp">
@@ -67,8 +66,6 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="0dp"
-                android:drawableLeft="@drawable/ic_email_white"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_email"
@@ -217,7 +214,8 @@
                 android:maxLength="15"
                 android:maxLines="1"
                 android:layout_marginStart="0dp"
-                android:drawableStart="@drawable/ic_phone" tools:targetApi="jelly_bean" />
+                android:drawableStart="@drawable/ic_phone"
+                tools:targetApi="jelly_bean" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Sign Up Button -->

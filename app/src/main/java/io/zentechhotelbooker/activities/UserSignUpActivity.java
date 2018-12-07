@@ -24,7 +24,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -153,7 +156,7 @@ public class UserSignUpActivity extends AppCompatActivity {
         String mobile_number = editTextMobileNumber.getText().toString().trim();
 
         /*checks the field to make sure they are not
-         ** empty before user logs in and of accurate number of characters
+         ** empty before user signs up and of accurate number of characters
          */
         if(email.isEmpty()){
             editTextEmail.clearAnimation();
@@ -203,6 +206,10 @@ public class UserSignUpActivity extends AppCompatActivity {
             editTextMobileNumber.setError(getString(R.string.phone_invalid));
             editTextMobileNumber.requestFocus();
             return;
+        }
+        else if(circleImageView.getDrawable() == null){
+            YoYo.with(Techniques.RotateIn).playOn(circleImageView);
+            Toast.makeText(getApplicationContext(),"Please upload your profile photo by clicking on the icon above",Toast.LENGTH_LONG).show();
         }
         else{ signUpUser(); }
 
@@ -444,7 +451,7 @@ public class UserSignUpActivity extends AppCompatActivity {
 
         final FirebaseUser user = mAuth.getCurrentUser();
 
-        if(user != null && profileImageUrl != null){
+        if(user != null || profileImageUrl != null){
             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
                     .setDisplayName(username)
                     .setPhotoUri(Uri.parse(profileImageUrl))

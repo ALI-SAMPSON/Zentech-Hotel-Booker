@@ -164,14 +164,6 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
                     paymentsList.add(payments);
 
-                    // checks if there is no payment made
-                    /*if(!dataSnapshot.exists() || paymentSnapshot.getValue(Payments.class) == null){
-                        // set the visibility of the views to visible
-                        errorImage.setVisibility(View.VISIBLE);
-                        errorText.setVisibility(View.VISIBLE);
-                    }
-                    */
-
                 }
 
                 recyclerViewAdapterPayment.notifyDataSetChanged();
