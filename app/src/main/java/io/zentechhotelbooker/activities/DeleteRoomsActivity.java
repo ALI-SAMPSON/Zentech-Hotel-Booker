@@ -66,6 +66,8 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     // Creating RecyclerViewAdapterAdmin
     RecyclerViewAdapterAdmin recyclerViewAdapterAdmin;
 
+    RecyclerViewAdapterAdmin recyclerViewAdapterSearch;
+
     // Creating List of Rooms class.
     List<Rooms> roomsList;
 
@@ -138,9 +140,12 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // Creating an object of the RecyclerAdapter
         recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,roomsList);
 
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(recyclerViewAdapterAdmin);
+
+        // initialization of recyclerViewAdapter for search functionality
+        recyclerViewAdapterSearch = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,searchList);
+
+        recyclerView.setAdapter(recyclerViewAdapterSearch);
 
         recyclerViewAdapterAdmin.setOnItemClickListener(DeleteRoomsActivity.this);
 
@@ -292,9 +297,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
                     }
 
-                    RecyclerViewAdapterAdmin recyclerViewAdapterSearch =
-                            new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,searchList);
-                    recyclerView.setAdapter(recyclerViewAdapterSearch);
                     recyclerViewAdapterSearch.notifyDataSetChanged();
 
                 }
