@@ -16,6 +16,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
 
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.SavedSharePreference;
 import maes.tech.intentanim.CustomIntent;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -45,10 +46,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onStart();
         if(mAuth.getCurrentUser() != null){
             // starts the HomeActivity
-            finish();
             startActivity(new Intent(SplashScreenActivity.this,HomeActivity.class));
             // Adds a fadein-fadeout animations to the activity
             CustomIntent.customType(SplashScreenActivity.this,"fadein-to-fadeout");
+            // finish current activity
+            finish();
+        }
+        else if(SavedSharePreference.getEmail(SplashScreenActivity.this).length() != 0){
+            // starts the HomeActivity
+            startActivity(new Intent(SplashScreenActivity.this,AdminDashBoardActivity.class));
+            // Adds a fadein-fadeout animations to the activity
+            CustomIntent.customType(SplashScreenActivity.this,"fadein-to-fadeout");
+            // finish current activity
+            finish();
         }
         else{
             // open splash screen first

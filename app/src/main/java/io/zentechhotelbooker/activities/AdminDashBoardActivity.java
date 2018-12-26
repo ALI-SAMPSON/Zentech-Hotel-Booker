@@ -1,8 +1,13 @@
 package io.zentechhotelbooker.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,8 +53,6 @@ public class AdminDashBoardActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-    private FirebaseAuth mAuth;
-
     // Animation class
     private Animation bounce_card;
 
@@ -83,9 +86,6 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         textView_logout =  findViewById(R.id.logout);
         textView_logout_sub_text = findViewById(R.id.logout_sub_text);
 
-
-        mAuth = FirebaseAuth.getInstance();
-
         // instantiation of the class
         bounce_card = AnimationUtils.loadAnimation(this,R.anim.anim_fade_in);
 
@@ -93,6 +93,9 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         animateTexView();
 
         cardViewMethods();//call to the method
+
+        // method call to change ProgressDialog theme base on OS version
+        changeProgressDialogBackground();
 
 
     }
@@ -233,17 +236,33 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // signs admin out  of the system
-                        mAuth.signOut();
 
-                        // finish activity
-                        finish();
+                        // show dialog
+                        progressDialog.show();
 
-                        //logs Admin out of the system and navigate him back to the Login Page
-                        startActivity(new Intent(AdminDashBoardActivity.this, AdminLoginActivity.class));
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // dismiss the ProgressDialog
+                                progressDialog.dismiss();
 
-                        // Add a fadein-to-fadeout animation to the activity
-                        CustomIntent.customType(AdminDashBoardActivity.this,"fadein-to-fadeout");
+                                // signs admin out  of the system
+                                clearEmail(AdminDashBoardActivity.this);
+
+                                //logs Admin out of the system and navigate him back to the Login Page
+                                startActivity(new Intent(AdminDashBoardActivity.this, AdminLoginActivity.class));
+
+                                // Add a fadein-to-fadeout animation to the activity
+                                CustomIntent.customType(AdminDashBoardActivity.this,"fadein-to-fadeout");
+
+                                // finish activity
+                                finish();
+
+                            }
+                        },3000);
+
+
                     }
                 });
 
@@ -263,10 +282,39 @@ public class AdminDashBoardActivity extends AppCompatActivity {
         });
     }
 
+    // method to clear sharePreference when admin log outs
+    private  void clearEmail(Context ctx){
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
+        editor.clear(); // clear all stored data (email)
+        editor.commit();
+    }
+
     @Override
     public void finish() {
         super.finish();
         // Adds a fadein-fadeout animations to the activity
         CustomIntent.customType(AdminDashBoardActivity.this, "fadein-to-fadeout");
+    }
+
+    // method to change ProgressDialog style based on the android version of user's phone
+    private void changeProgressDialogBackground(){
+
+        // if the build sdk version >= android 5.0
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            //sets the background color according to android version
+            progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_DARK);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("");
+            progressDialog.setMessage("signing out...");
+        }
+        //else do this
+        else{
+            //sets the background color according to android version
+            progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_LIGHT);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("");
+            progressDialog.setMessage("signing out...");
+        }
+
     }
 }

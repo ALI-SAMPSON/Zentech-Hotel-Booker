@@ -5,16 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/my_login_ui"
     android:id="@+id/nestedScrollView"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp"
-    android:paddingBottom="0dp"
+    android:background="@drawable/login_ui"
     tools:context=".activities.AdminSignUpActivity">
 
     <!-- Linear Layout for the UI elements -->
     <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,9 +38,10 @@
             android:textColorHint="@color/colorWhite">
             <EditText
                 android:id="@+id/editTextUsername"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_username"
@@ -67,9 +65,10 @@
             android:layout_marginStart="0dp">
             <EditText
                 android:id="@+id/editTextEmail"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:fontFamily="@font/nunito_semibold"
                 android:hint="@string/hint_email"
@@ -79,8 +78,7 @@
                 android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
                 android:maxLines="1"
                 android:drawableStart="@drawable/ic_email_white"
-                tools:targetApi="jelly_bean"
-                android:layout_marginStart="0dp" />
+                tools:targetApi="jelly_bean"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- TextInputLayout and AppCompatEdiText for Password -->
@@ -88,7 +86,7 @@
             android:id="@+id/textInputLayoutPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:textAlignment="center"
             android:gravity="center"
             android:textColorHint="@color/colorWhite"
@@ -96,9 +94,10 @@
             app:passwordToggleTint="@color/colorWhite">
             <EditText
                 android:id="@+id/editTextPassword"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="@dimen/spacing_normal"
                 android:fontFamily="@font/nunito_semibold"
@@ -107,8 +106,7 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:inputType="textPassword"
-                android:maxLines="1" tools:targetApi="jelly_bean"
-                android:layout_marginStart="0dp" />
+                android:maxLines="1" tools:targetApi="jelly_bean"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -116,10 +114,11 @@
         <Button
             android:id="@+id/buttonSignUp"
             android:layout_marginTop="20dp"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:gravity="center"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_gravity="center_horizontal"
             android:layout_below="@+id/textInputLayoutMobileNumber"
             android:text="@string/signUp"

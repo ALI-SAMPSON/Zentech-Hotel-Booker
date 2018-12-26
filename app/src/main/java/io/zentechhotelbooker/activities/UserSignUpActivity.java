@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -301,6 +302,22 @@ public class UserSignUpActivity extends AppCompatActivity {
 
                                         // clear TextFields
                                         clearTextFields();
+
+                                        // delays the redirection of user to login page for 3 secs
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                // redirects user to login page after sign up is successful
+                                                Intent intentLogin = new Intent(UserSignUpActivity.this, UserLoginActivity.class);
+                                                intentLogin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(intentLogin);
+
+                                            }
+                                        },3000);
+
+
+
                                     }
                                     else{
 

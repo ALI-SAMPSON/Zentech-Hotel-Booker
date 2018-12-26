@@ -5,9 +5,11 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
@@ -17,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,7 +57,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.zentechhotelbooker.R;
@@ -64,6 +71,12 @@ import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
 public class AddRoomsActivity extends AppCompatActivity {
+
+    // variable to store Decryption algorithm name
+    String AES = "AES";
+
+    // variable to store encrypted password
+    String decryptedPassword;
 
     //class variables
     private TextView tv_room_exist;
@@ -120,9 +133,9 @@ public class AddRoomsActivity extends AppCompatActivity {
     // Creating DataReference
     DatabaseReference reference;
 
-    Admin admin;
+    DatabaseReference adminRef;
 
-    FirebaseAuth mAuth;
+    Admin admin;
 
     private ProgressBar progressBar;
 
@@ -149,7 +162,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         admin = new Admin();
 
-        mAuth = FirebaseAuth.getInstance();
+        adminRef = FirebaseDatabase.getInstance().getReference("Admin");
 
         roomImage = findViewById(R.id.imageView);
         tv_room_exist = findViewById(R.id.tv_room_exist);
@@ -202,8 +215,6 @@ public class AddRoomsActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
 
         spinnerLayout = findViewById(R.id.spinnerLayout);
-
-        //checkIfRoomNumberExist();
 
     }
 
@@ -314,7 +325,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
                 else{
                     // method call
-                    confirmUsername();
+                    confirmPassword();
 
                 }
 
@@ -332,9 +343,7 @@ public class AddRoomsActivity extends AppCompatActivity {
      ** for admin to confirm his or her password/username
      ** before adding Room
      */
-    public void confirmUsername(){
-
-        final FirebaseUser currentAdmin = mAuth.getCurrentUser();
+    public void confirmPassword(){
 
         final android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -342,40 +351,65 @@ public class AddRoomsActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         // reference to the EditText in the layout file (custom_dialog)
-        final EditText editTextUsername = dialogView.findViewById(R.id.editTextUsername);
+        final EditText editTextPassword = dialogView.findViewById(R.id.editTextPassword);
 
         dialogBuilder.setTitle("Add Room?");
-        dialogBuilder.setMessage("Please enter your unique username");
+        dialogBuilder.setMessage("Please enter your password");
         dialogBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // getting text from EditText
-                final String username = editTextUsername.getText().toString();
+                final String password = editTextPassword.getText().toString();
 
-                // getting reference to the Admin Table/Node
-                reference = FirebaseDatabase.getInstance().getReference("Admin");
-                Query query = reference.orderByChild("username").equalTo(username);
-                query.addValueEventListener(new ValueEventListener() {
+                adminRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        // checks if username is correct
-                        if(dataSnapshot.exists()){
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
-                            // Method call to add Room to database
-                            addRoomDetailsToDatabase();
+                            Admin admin = snapshot.getValue(Admin.class);
+
+                            assert admin != null;
+                            String adminEmail = admin.getEmail();
+                            String encryptedPassword = admin.getPassword();
+
+                            // getting string email from sharePreference
+                            SharedPreferences preferences =
+                                    PreferenceManager.getDefaultSharedPreferences(AddRoomsActivity.this);
+                            String email = preferences.getString("email","");
+
+                            // decrypt password
+                            try {
+                                decryptedPassword = decryptPassword(encryptedPassword,email);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            if(password.equals(decryptedPassword) && email.equals(adminEmail)){
+
+                                /**
+                                 * method call to add room to database
+                                 */
+
+                               addRoomDetailsToDatabase();
+
+                            }
+                            else{
+                                // dismiss dialog
+                               progressDialog.dismiss();
+                                // display a message if there is an error
+                                Toast.makeText(AddRoomsActivity.this,"Incorrect password. Please Try Again!",Toast.LENGTH_LONG).show();
+                            }
 
                         }
-                        else{
-                            Toast.makeText(AddRoomsActivity.this,
-                                    getString(R.string.incorrect_username),Toast.LENGTH_LONG).show();
-                        }
+
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(AddRoomsActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                        // display error message
+                        Toast.makeText(AddRoomsActivity.this, databaseError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -395,6 +429,37 @@ public class AddRoomsActivity extends AppCompatActivity {
         android.app.AlertDialog alert = dialogBuilder.create();
         alert.show();
 
+    }
+
+    // method to encrypt password
+    private String encryptPassword(String password, String email) throws Exception{
+        SecretKeySpec key = generateKey(email);
+        Cipher c = Cipher.getInstance(AES);
+        c.init(Cipher.ENCRYPT_MODE,key);
+        byte[] encVal = c.doFinal(password.getBytes());
+        String encryptedValue = Base64.encodeToString(encVal,Base64.DEFAULT);
+        return encryptedValue;
+    }
+
+    // method to decrypt password
+    private String decryptPassword(String password, String email) throws Exception {
+        SecretKeySpec key  = generateKey(email);
+        Cipher c = Cipher.getInstance(AES);
+        c.init(Cipher.DECRYPT_MODE,key);
+        byte[] decodedValue = Base64.decode(password,Base64.DEFAULT);
+        byte[] decVal = c.doFinal(decodedValue);
+        String decryptedValue = new String(decVal);
+        return decryptedValue;
+
+    }
+
+    private SecretKeySpec generateKey(String password) throws Exception{
+        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = password.getBytes("UTF-8");
+        digest.update(bytes, 0 , bytes.length);
+        byte[] key = digest.digest();
+        SecretKeySpec keySpec = new SecretKeySpec(key,"AES");
+        return keySpec;
     }
 
     public void addRoomDetailsToDatabase(){
@@ -556,6 +621,7 @@ public class AddRoomsActivity extends AppCompatActivity {
     //Method for clearing all textfields after Login Button is Clicked
     public void clearTextFields() {
         //Clears all text from the EditText
+        editTextRoomNumber.setText(null);
         editTextPrice.setText(null);
 
     }

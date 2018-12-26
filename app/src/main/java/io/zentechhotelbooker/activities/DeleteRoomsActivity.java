@@ -2,7 +2,10 @@ package io.zentechhotelbooker.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,17 +41,28 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 import io.zentechhotelbooker.R;
+import io.zentechhotelbooker.SavedSharePreference;
 import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
 import io.zentechhotelbooker.models.Admin;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
 public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerViewAdapterAdmin.onItemClickListener {
+
+    // variable to store Decryption algorithm name
+    String AES = "AES";
+
+    // variable to store encrypted password
+    String decryptedPassword;
 
     // string to get intentExtras
     String admin_id;
@@ -86,14 +101,12 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     // Creating DataReference
     DatabaseReference dBRef;
 
+    DatabaseReference adminRef;
+
     // Creating DataReference
     DatabaseReference reference;
 
     Admin admin;
-
-    FirebaseAuth mAuth;
-
-    FirebaseUser currentAdmin;
 
     public static String Payment_Path = "Payments";
 
@@ -120,9 +133,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
         admin = new Admin();
 
-        mAuth = FirebaseAuth.getInstance();
-
-        currentAdmin = mAuth.getCurrentUser();
+        adminRef = FirebaseDatabase.getInstance().getReference("Admin");
 
         // Assign id to RecyclerView.
         recyclerView = findViewById(R.id.recyclerView);
@@ -160,14 +171,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // Calling the method to delete rooms in the firebase database
-        //deleteRoom();
-
-    }
 
     // Method to load rooms uploaded into database
     private void loadUploadedRoomDetails(){
@@ -233,7 +236,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // Material SearchView
         searchView = findViewById(R.id.search_view);
         searchView.setMenuItem(item);
-        //searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        // searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         searchView.setEllipsize(true);
         searchView.setSubmitOnClick(true);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -297,6 +300,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
                     }
 
+                    // refreshes the recyclerview after data change
                     recyclerViewAdapterSearch.notifyDataSetChanged();
 
                 }
@@ -382,7 +386,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         dialogBuilder.setView(dialogView);
 
         // reference to the EditText in the layout file (custom_dialog)
-        final EditText editTextUsername = dialogView.findViewById(R.id.editTextUsername);
+        final EditText editTextPassword = dialogView.findViewById(R.id.editTextPassword);
 
         dialogBuilder.setTitle("Delete Room?");
         dialogBuilder.setMessage("Please enter your unique username");
@@ -391,65 +395,77 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // getting text from EditText
-                final String username = editTextUsername.getText().toString();
+                final String password = editTextPassword.getText().toString();
 
-                // getting reference to the Admin Table/Node
-                reference = FirebaseDatabase.getInstance().getReference("Admin");
-                Query query = reference.orderByChild("username").equalTo(username);
-                query.addValueEventListener(new ValueEventListener() {
+                adminRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        // checks if username is correct
-                        if(dataSnapshot.exists() || currentAdmin.getDisplayName().equals(username)){
-                            /**
-                             * Code to delete selected room from database
-                             */
-                            progressBar.setVisibility(View.VISIBLE);
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
-                            final Rooms selectedRoom = roomsList.get(position);
-                            final String selectedKey = selectedRoom.getKey();
+                            Admin admin = snapshot.getValue(Admin.class);
 
-                            // removing/deleting the image of the room together with the
-                            // other details pertaining to a specific room
-                            StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoomImage_url());
-                            roomImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                            assert admin != null;
+                            String adminEmail = admin.getEmail();
+                            String encryptedPassword = admin.getPassword();
 
-                                    //remove value from FirebaseDatabase
-                                    mDatabaseRef.child(selectedKey).removeValue();
+                            // getting string email from sharePreference
+                            SharedPreferences preferences =
+                                    PreferenceManager.getDefaultSharedPreferences(DeleteRoomsActivity.this);
+                            String email = preferences.getString("email","");
 
-                                    // dismiss the progress bar
-                                    progressBar.setVisibility(View.GONE);
+                            // decrypt password
+                            try {
+                                decryptedPassword = decryptPassword(encryptedPassword,email);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
-                                    // File deleted successfully message
-                                    Toast.makeText(DeleteRoomsActivity.this, " Room deleted Successfully ", Toast.LENGTH_LONG).show();
+                            if(password.equals(decryptedPassword) && email.equals(adminEmail)){
 
-                                }
-                                //if operation fails
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // dismiss the progress bar
-                                    progressBar.setVisibility(View.GONE);
+                                /**
+                                 * Code to delete selected room from database
+                                 */
 
-                                    // File deleted successfully message
-                                    Toast.makeText(DeleteRoomsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            });
+                                progressBar.setVisibility(View.VISIBLE);
 
+                                final Rooms selectedRoom = roomsList.get(position);
+                                final String selectedKey = selectedRoom.getKey();
+
+                                // removing/deleting the image of the room together with the
+                                // other details pertaining to a specific room
+                                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoomImage_url());
+
+                                roomImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        //remove value from FirebaseDatabase
+                                        mDatabaseRef.child(selectedKey).removeValue();
+
+                                        // dismiss the progress bar
+                                        progressBar.setVisibility(View.GONE);
+
+                                        // File deleted successfully message
+                                        Toast.makeText(DeleteRoomsActivity.this, " Room deleted Successfully ", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+
+                            }
+                            else{
+                                progressBar.setVisibility(View.GONE);
+                                // display a message if there is an error
+                                //Snackbar.make(relativeLayout,"Incorrect Email or password. Please Try Again",Snackbar.LENGTH_LONG).show();
+                                Toast.makeText(DeleteRoomsActivity.this,"Incorrect password. Please Try Again!",Toast.LENGTH_LONG).show();
+                            }
 
                         }
-                        else{
-                            Toast.makeText(DeleteRoomsActivity.this,
-                                    getString(R.string.incorrect_username),Toast.LENGTH_LONG).show();
-                        }
+
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(DeleteRoomsActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                        // display error message
+                        Toast.makeText(DeleteRoomsActivity.this, databaseError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -509,6 +525,37 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
             }
 
+
+    // method to encrypt password
+    private String encryptPassword(String password, String email) throws Exception{
+        SecretKeySpec key = generateKey(email);
+        Cipher c = Cipher.getInstance(AES);
+        c.init(Cipher.ENCRYPT_MODE,key);
+        byte[] encVal = c.doFinal(password.getBytes());
+        String encryptedValue = Base64.encodeToString(encVal,Base64.DEFAULT);
+        return encryptedValue;
+    }
+
+    // method to decrypt password
+    private String decryptPassword(String password, String email) throws Exception {
+        SecretKeySpec key  = generateKey(email);
+        Cipher c = Cipher.getInstance(AES);
+        c.init(Cipher.DECRYPT_MODE,key);
+        byte[] decodedValue = Base64.decode(password,Base64.DEFAULT);
+        byte[] decVal = c.doFinal(decodedValue);
+        String decryptedValue = new String(decVal);
+        return decryptedValue;
+
+    }
+
+    private SecretKeySpec generateKey(String password) throws Exception{
+        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = password.getBytes("UTF-8");
+        digest.update(bytes, 0 , bytes.length);
+        byte[] key = digest.digest();
+        SecretKeySpec keySpec = new SecretKeySpec(key,"AES");
+        return keySpec;
+    }
 
 
     @Override

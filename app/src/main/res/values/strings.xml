@@ -187,7 +187,7 @@
     <string name="price" translatable="false">Price</string>
     <string name="room_image" translatable="false">Upload Image of Room here</string>
     <string name="hint_upload" translatable="false">Click on the image below to upload the image of a room</string>
-    <string name="welcome" translatable="false">WELCOME TO ACH BOOKER!</string>
+    <string name="welcome" translatable="false">WELCOME TO ZHMS!</string>
     <string name="welcome_admin" translatable="false">WELCOME ADMIN</string>
     <string name="welcome_msg" translatable="false">Hope you enjoy the stay</string>
     <string name="sign_up_link" translatable="false">Not yet a user? Sign Up</string>
