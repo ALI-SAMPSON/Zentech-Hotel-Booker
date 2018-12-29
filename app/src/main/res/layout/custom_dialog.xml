@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -19,13 +20,13 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:textColorHint="@color/colorBlue"
-        app:passwordToggleEnabled="false"
+        app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/materialGreen">
         <EditText
             android:id="@+id/editTextPassword"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|center_horizontal"
+            android:layout_margin="20dp"
             android:textColor="@color/materialGreen"
             android:drawablePadding="@dimen/spacing_small"
             android:textColorHint="@color/buttonLight"

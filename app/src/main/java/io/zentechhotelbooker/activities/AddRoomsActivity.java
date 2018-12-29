@@ -362,7 +362,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                 // getting text from EditText
                 final String password = editTextPassword.getText().toString();
 
-                adminRef.addValueEventListener(new ValueEventListener() {
+                adminRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -386,12 +386,9 @@ public class AddRoomsActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            if(password.equals(decryptedPassword) && email.equals(adminEmail)){
+                            if(password.equals(decryptedPassword) || email.equals(adminEmail)){
 
-                                /**
-                                 * method call to add room to database
-                                 */
-
+                                // method call to add room to database
                                addRoomDetailsToDatabase();
 
                             }
@@ -626,19 +623,6 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     }
 
-    public void openContactUs(View view) {
-
-        // starts the about us activity
-        startActivity(new Intent(AddRoomsActivity.this,AboutUsAdminActivity.class));
-
-        // Adds an up-to-bottom animation to the activity
-        CustomIntent.customType(AddRoomsActivity.this,"up-to-bottom");
-
-        // finishes the current activity
-        finish();
-
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -659,22 +643,5 @@ public class AddRoomsActivity extends AppCompatActivity {
         CustomIntent.customType(AddRoomsActivity.this, "fadein-to-fadeout");
     }
 
-    // onclick Listener for continue button
-    public void onContinueButtonClick(View view) {
 
-        //get input from the editText fields
-        String room_number = editTextRoomNumber.getText().toString().trim();
-        String room_price = editTextPrice.getText().toString().trim();
-        String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
-
-        // starts the about us activity
-        Intent intentContinue = new Intent(AddRoomsActivity.this,AddRoomImagesActivity.class);
-        intentContinue.putExtra("room_number", room_number);
-        intentContinue.putExtra("room_price",room_price);
-        intentContinue.putExtra("room_type",room_type);
-        startActivity(intentContinue);
-
-        // Adds an up-to-bottom animation to the activity
-        CustomIntent.customType(AddRoomsActivity.this,"right-to-left");
-    }
 }

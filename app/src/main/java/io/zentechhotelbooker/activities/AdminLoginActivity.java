@@ -53,6 +53,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     String decryptedPassword;
 
     private EditText editTextEmail;
+
     private EditText editTextPassword;
 
     private NestedScrollView nestedScrollView;
@@ -80,6 +81,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         //get reference to the EditText fields defined in the xml file
         editTextEmail = findViewById(R.id.editTextEmail);
+
         editTextPassword = findViewById(R.id.editTextPassword);
 
         progressBar = findViewById(R.id.progressBar);

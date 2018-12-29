@@ -74,12 +74,12 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(SPLASH_SCREEN_DISPLAY_TIME);
-                    // this prevents the app from going back to the splash screen
-                    finish();
                     // Creates and start the intent of the next activity
                     startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
                     // Adds a fadein-fadeout animations to the activity
                     CustomIntent.customType(SplashScreenActivity.this,"fadein-to-fadeout");
+                    // this prevents the app from going back to the splash screen
+                    finish();
 
                     super.run();
                 } catch (InterruptedException e) {

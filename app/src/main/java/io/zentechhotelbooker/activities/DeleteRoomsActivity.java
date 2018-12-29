@@ -69,7 +69,12 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
     Intent intent;
 
-    // Creating DatabaseReference.
+    Admin admin;
+
+    //db reference ot the Admin model
+    DatabaseReference adminRef;
+
+    //db reference to rooms model
     DatabaseReference mDatabaseRef;
 
     // Creating RecyclerView.
@@ -80,8 +85,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
     // Creating RecyclerViewAdapterAdmin
     RecyclerViewAdapterAdmin recyclerViewAdapterAdmin;
-
-    RecyclerViewAdapterAdmin recyclerViewAdapterSearch;
 
     // Creating List of Rooms class.
     List<Rooms> roomsList;
@@ -96,17 +99,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     // material searchView
     MaterialSearchView searchView;
 
-    ArrayList<Rooms> searchList;
-
-    // Creating DataReference
-    DatabaseReference dBRef;
-
-    DatabaseReference adminRef;
-
-    // Creating DataReference
-    DatabaseReference reference;
-
-    Admin admin;
 
     public static String Payment_Path = "Payments";
 
@@ -116,7 +108,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         setContentView(R.layout.activity_delete_rooms);
 
         // Creating an object of the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if(getSupportActionBar() != null){
@@ -127,13 +119,13 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        //intent = getIntent();
-
-        //admin_id = intent.getStringExtra("uid");
-
         admin = new Admin();
 
         adminRef = FirebaseDatabase.getInstance().getReference("Admin");
+
+        // Setting up Firebase image upload folder path in databaseReference.
+        // The path is already defined in MainActivity.
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
 
         // Assign id to RecyclerView.
         recyclerView = findViewById(R.id.recyclerView);
@@ -144,19 +136,12 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // Setting RecyclerView layout as LinearLayout.
         recyclerView.setLayoutManager(new GridLayoutManager(DeleteRoomsActivity.this,2));
 
-        searchList = new ArrayList<>();
-
         roomsList = new ArrayList<>();
 
-        // Creating an object of the RecyclerAdapter
+        // Creating an object of the RecyclerAdapter to populate the rooms
         recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,roomsList);
 
         recyclerView.setAdapter(recyclerViewAdapterAdmin);
-
-        // initialization of recyclerViewAdapter for search functionality
-        recyclerViewAdapterSearch = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,searchList);
-
-        recyclerView.setAdapter(recyclerViewAdapterSearch);
 
         recyclerViewAdapterAdmin.setOnItemClickListener(DeleteRoomsActivity.this);
 
@@ -178,32 +163,29 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // displays the progress bar
         progressBar.setVisibility(View.VISIBLE);
 
-        // Setting up Firebase image upload folder path in databaseReference.
-        // The path is already defined in MainActivity.
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
-
         // Adding Add Value Event Listener to databaseReference.
         mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                // clears the list on data change
-                roomsList.clear();
+                    // clears the list on data change
+                    roomsList.clear();
 
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    // gets a snapshot of the rooms in the Rooms class
-                    Rooms rooms = postSnapshot.getValue(Rooms.class);
-                    // get the unique key stored int the Rooms class
-                    rooms.setKey(postSnapshot.getKey());
-                    // adds the rooms to list of rooms(RoomList)
-                    roomsList.add(rooms);
-                }
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        // gets a snapshot of the rooms in the Rooms class
+                        Rooms rooms = postSnapshot.getValue(Rooms.class);
+                        // get the unique key stored int the Rooms class
+                        rooms.setKey(postSnapshot.getKey());
+                        // adds the rooms to list of rooms(RoomList)
+                        roomsList.add(rooms);
+                    }
 
-                // refreshes the recyclerview after data change
-                recyclerViewAdapterAdmin.notifyDataSetChanged();
+                    // refreshes the recyclerview after data change
+                    recyclerViewAdapterAdmin.notifyDataSetChanged();
 
-                // Hiding the progress bar.
-                progressBar.setVisibility(View.GONE);
+                    // Hiding the progress bar.
+                    progressBar.setVisibility(View.GONE);
+
 
             }
 
@@ -218,13 +200,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // removes the ValueEventListener anytime the activity is destroyed
-        mDatabaseRef.removeEventListener(mDBListener);
     }
 
     @Override
@@ -275,11 +250,10 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         return true;
     }
 
-    public void searchForRoom(String s){
+    // method to search for a room in the database
+    private void searchForRoom(String s){
 
-        dBRef = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
-
-        Query query = dBRef.orderByChild("search")
+        Query query = mDatabaseRef.orderByChild("search")
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 
@@ -287,23 +261,20 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.hasChildren()){
-
-                    searchList.clear();
+                    roomsList.clear();
 
                     for(DataSnapshot roomSnapshot : dataSnapshot.getChildren()){
 
                         final Rooms rooms = roomSnapshot.getValue(Rooms.class);
 
                         //adds the rooms searched to the arrayList
-                        searchList.add(rooms);
+                        roomsList.add(rooms);
 
                     }
 
                     // refreshes the recyclerview after data change
-                    recyclerViewAdapterSearch.notifyDataSetChanged();
+                 recyclerViewAdapterAdmin.notifyDataSetChanged();
 
-                }
 
             }
 
@@ -355,7 +326,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
 
             // Adds a bottom-to-up animations to the activity
-            CustomIntent.customType(DeleteRoomsActivity.this,"fadein-to-fadeout");
+            CustomIntent.customType(DeleteRoomsActivity.this,"up-to-bottom");
 
             // finishes the activity
             finish();
@@ -363,10 +334,18 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // removes the database Ref for displaying rooms anytime the activity is destroyed
+        mDatabaseRef.removeEventListener(mDBListener);
+
+    }
+
     // Methods implemented in the recyclerView for this activity
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this," long click on a room to view options ",Toast.LENGTH_LONG).show();
+        Toast.makeText(DeleteRoomsActivity.this," long click on a room to view options ",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -377,10 +356,8 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     // Method to delete Rooms from the system
     @Override
     public void onDeleteClick(final int position) {
-        // getting the position of each room and its details
-        final Rooms rooms = roomsList.get(position);
 
-        final android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView  = inflater.inflate(R.layout.custom_dialog,null);
         dialogBuilder.setView(dialogView);
@@ -389,7 +366,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         final EditText editTextPassword = dialogView.findViewById(R.id.editTextPassword);
 
         dialogBuilder.setTitle("Delete Room?");
-        dialogBuilder.setMessage("Please enter your unique username");
+        dialogBuilder.setMessage("Please enter your password");
         dialogBuilder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -397,7 +374,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                 // getting text from EditText
                 final String password = editTextPassword.getText().toString();
 
-                adminRef.addValueEventListener(new ValueEventListener() {
+                adminRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -421,7 +398,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                                 e.printStackTrace();
                             }
 
-                            if(password.equals(decryptedPassword) && email.equals(adminEmail)){
+                            if(password.equals(decryptedPassword) || email.equals(adminEmail)){
 
                                 /**
                                  * Code to delete selected room from database
@@ -470,6 +447,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                 });
 
 
+
                 /*
                 progressBar.setVisibility(View.VISIBLE);
 
@@ -506,7 +484,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                 */
 
 
-
                     }
 
                 });
@@ -520,7 +497,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                     }
                 });
 
-                android.app.AlertDialog alert = dialogBuilder.create();
+                AlertDialog alert = dialogBuilder.create();
                 alert.show();
 
             }
@@ -562,6 +539,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     public void finish() {
         super.finish();
         // Adds a bottom-to-up animations to the activity
-        CustomIntent.customType(DeleteRoomsActivity.this,"bottom-to-up");
+        CustomIntent.customType(DeleteRoomsActivity.this,"up-to-bottom");
     }
 }

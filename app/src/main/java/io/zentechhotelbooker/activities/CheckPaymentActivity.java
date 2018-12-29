@@ -43,17 +43,9 @@ import maes.tech.intentanim.CustomIntent;
 
 public class CheckPaymentActivity extends AppCompatActivity {
 
-    FirebaseListAdapter firebaseListAdapter;
-
-    ListView listView;
-
     Payments payments;
 
     Users users;
-
-    FirebaseAuth mAuth;
-
-    FirebaseUser user;
 
     // Recycler View Objects
     DatabaseReference mDatabaseRef;
@@ -61,6 +53,8 @@ public class CheckPaymentActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     RecyclerViewAdapterPayment recyclerViewAdapterPayment;
+
+    RecyclerViewAdapterPayment mAdapterSearchPayment;
 
     List<Payments> paymentsList;
 
@@ -73,8 +67,6 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
     // material searchView
     MaterialSearchView searchView;
-
-    ArrayList<Payments> searchList;
 
     // Creating DataReference
     DatabaseReference dBRef;
@@ -101,7 +93,15 @@ public class CheckPaymentActivity extends AppCompatActivity {
         }
 
         errorImage = findViewById(R.id.error_icon);
+
         errorText = findViewById(R.id.tv_error);
+
+        // Assign activity this to progress bar.
+        progressBar = findViewById(R.id.progressBar);
+
+        payments = new Payments();
+
+        users = new Users();
 
         // Assign id to RecyclerView.
         recyclerView = findViewById(R.id.recyclerView);
@@ -114,35 +114,25 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
         paymentsList = new ArrayList<>();
 
-        searchList = new ArrayList<>();
-
+        // creating object of the RecyclerView Adapter class and setting it to the adapter of the recyclerView
         recyclerViewAdapterPayment = new RecyclerViewAdapterPayment(CheckPaymentActivity.this,paymentsList);
 
         recyclerView.setAdapter(recyclerViewAdapterPayment);
 
-        // Assign activity this to progress bar.
-        progressBar = findViewById(R.id.progressBar);
+        // creating object of the RecyclerView Adapter class for search and setting it to the adapter of the recyclerView
+        mAdapterSearchPayment = new RecyclerViewAdapterPayment(CheckPaymentActivity.this, paymentsList);
 
-        payments = new Payments();
-
-        users = new Users();
-
-        //listView = findViewById(R.id.payment_listView);
-
-        // getting an instance of FirebaseAuth
-        mAuth = FirebaseAuth.getInstance();
-
-        user = mAuth.getCurrentUser();
+        recyclerView.setAdapter(mAdapterSearchPayment);
 
         // Method call
-        showPayment();
+        displayPaymentMade();
 
         //displayPayments(); ///call to the method
 
     }
 
     // method to populate payments into RecyclerView
-    public void showPayment(){
+    private void  displayPaymentMade(){
 
         // displays the progress bar
         progressBar.setVisibility(View.VISIBLE);
@@ -184,58 +174,6 @@ public class CheckPaymentActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    //method to populate payments into listView
-    public void displayPayments(){
-
-        //final FirebaseUser user = mAuth.getCurrentUser();
-
-        Query query = FirebaseDatabase.getInstance().getReference().child("Payments");
-
-        FirebaseListOptions<Payments> options = new FirebaseListOptions.Builder<Payments>()
-                .setLayout(R.layout.recyclerview_payment_items)
-                .setQuery(query,Payments.class)
-                .build();
-
-        firebaseListAdapter = new FirebaseListAdapter(options) {
-            @Override
-            protected void populateView(View v, Object model, int position) {
-
-                //TextView and imageView to populate the data from the database
-                TextView username = v.findViewById(R.id.user_name);
-                TextView room_number = v.findViewById(R.id.room_number);
-                TextView price = v.findViewById(R.id.room_price);
-                TextView mobile_number = v.findViewById(R.id.mobile_number);
-                CircleImageView circleImageView = v.findViewById(R.id.user_image);
-
-                //typecasting the payments to the Object model
-                Payments payments = (Payments) model;
-
-                //setting the Text of the various textViews to the payment info in the database;
-                username.setText(" Username : " + payments.getUser_name());
-                room_number.setText(" Room Type : " + payments.getRoom_type());
-                price.setText(" Price : GHC " + payments.getPrice());
-                mobile_number.setText(" Mobile Money Number : " + payments.getMobile_number());
-                Glide.with(CheckPaymentActivity.this).load(payments.getImageUrl()).into(circleImageView);
-
-            }
-        };
-
-        listView.setAdapter(firebaseListAdapter);
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //firebaseListAdapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //firebaseListAdapter.stopListening();
     }
 
     @Override
@@ -298,26 +236,21 @@ public class CheckPaymentActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChildren()){
 
                     // clears the searchList
-                    searchList.clear();
+                    paymentsList.clear();
 
                     for(DataSnapshot paymentSnapshot : dataSnapshot.getChildren()){
 
-                        final Payments payments = paymentSnapshot.getValue(Payments.class);
+                        Payments payments = paymentSnapshot.getValue(Payments.class);
 
                         //adds the rooms searched to the arrayList
-                        searchList.add(payments);
+                        paymentsList.add(payments);
 
                     }
 
-                    RecyclerViewAdapterPayment mAdapterSearchPayment =
-                            new RecyclerViewAdapterPayment(CheckPaymentActivity.this, searchList);
-                    recyclerView.setAdapter(mAdapterSearchPayment);
                     mAdapterSearchPayment.notifyDataSetChanged();
 
-                }
             }
 
             @Override
@@ -359,7 +292,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
         //navigates to the AdminDashboard activity
         startActivity(new Intent(CheckPaymentActivity.this,AdminDashBoardActivity.class));
         // Add a up-to-bottom animation to the activity
-        CustomIntent.customType(CheckPaymentActivity.this,"fadein-to-fadeout");
+        CustomIntent.customType(CheckPaymentActivity.this,"up-to-bottom");
         // finishes the activity
         finish();
     }

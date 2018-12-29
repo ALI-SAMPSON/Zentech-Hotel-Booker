@@ -48,7 +48,7 @@ public class RecyclerViewAdapterPayment extends RecyclerView.Adapter<RecyclerVie
         // animation to cardView
         YoYo.with(Techniques.ZoomIn).playOn(holder.cardView);
 
-        holder.user_name.setText("Username : " + payments.getUser_name());
+        holder.user_name.setText("User : " + payments.getUser_name());
         holder.mobile_number.setText("Phone : " + payments.getMobile_number());
         holder.room_price.setText("Price : " + payments.getPrice());
         holder.room_number.setText(payments.getRoom_type());
