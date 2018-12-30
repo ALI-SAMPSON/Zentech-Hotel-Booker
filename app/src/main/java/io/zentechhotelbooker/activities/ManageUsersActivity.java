@@ -3,14 +3,13 @@ package io.zentechhotelbooker.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -21,16 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,19 +37,21 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 import io.zentechhotelbooker.R;
-import io.zentechhotelbooker.SavedSharePreference;
-import io.zentechhotelbooker.adapters.RecyclerViewAdapterAdmin;
+import io.zentechhotelbooker.adapters.RecyclerViewAdapterManageUsers;
 import io.zentechhotelbooker.models.Admin;
-import io.zentechhotelbooker.models.Rooms;
+import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
 
-public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerViewAdapterAdmin.onItemClickListener {
+public class ManageUsersActivity extends AppCompatActivity implements RecyclerViewAdapterManageUsers.onItemClickListener {
+
+    Toolbar toolbar;
+
+    TextView tv_no_users;
 
     // variable to store Decryption algorithm name
     String AES = "AES";
@@ -83,18 +78,18 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     // Creating a ValueEvent Listener.
     private ValueEventListener mDBListener;
 
-    // Creating RecyclerViewAdapterAdmin
-    RecyclerViewAdapterAdmin recyclerViewAdapterAdmin;
+    // Creating RecyclerViewAdapterManageRooms
+    RecyclerViewAdapterManageUsers recyclerViewAdapterManageUsers;
 
     // Creating List of Rooms class.
-    List<Rooms> roomsList;
+    List<Users> usersList;
 
     // Creating a progressBar
     ProgressBar progressBar;
 
-    FirebaseStorage mStorage;
+    ProgressBar progressBar1;
 
-    Toolbar toolbar;
+    FirebaseStorage mStorage;
 
     // material searchView
     MaterialSearchView searchView;
@@ -105,19 +100,22 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete_rooms);
+        setContentView(R.layout.activity_manage_users);
 
         // Creating an object of the toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(getString(R.string.delete_rooms));
+            getSupportActionBar().setTitle(getString(R.string.manage_users));
             //getSupportActionBar().setElevation(5.0f);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        // textView to indicate there are no users added yet
+        tv_no_users = findViewById(R.id.tv_no_users);
 
         admin = new Admin();
 
@@ -125,7 +123,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
 
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(AddRoomsActivity.Database_Path);
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
 
         // Assign id to RecyclerView.
         recyclerView = findViewById(R.id.recyclerView);
@@ -134,31 +132,38 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         recyclerView.setHasFixedSize(true);
 
         // Setting RecyclerView layout as LinearLayout.
-        recyclerView.setLayoutManager(new GridLayoutManager(DeleteRoomsActivity.this,2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        roomsList = new ArrayList<>();
+        usersList = new ArrayList<>();
 
         // Creating an object of the RecyclerAdapter to populate the rooms
-        recyclerViewAdapterAdmin = new RecyclerViewAdapterAdmin(DeleteRoomsActivity.this,roomsList);
+        recyclerViewAdapterManageUsers = new RecyclerViewAdapterManageUsers(ManageUsersActivity.this,usersList);
 
-        recyclerView.setAdapter(recyclerViewAdapterAdmin);
+        recyclerView.setAdapter(recyclerViewAdapterManageUsers);
 
-        recyclerViewAdapterAdmin.setOnItemClickListener(DeleteRoomsActivity.this);
+        recyclerViewAdapterManageUsers.setOnItemClickListener(ManageUsersActivity.this);
 
-        // Assign activity this to progress bar.
+        // getting reference to progress bar.
         progressBar = findViewById(R.id.progressBar);
+        // change the color of the progressBar
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.MULTIPLY);
+
+        // getting reference to progress bar1.
+        progressBar1 =  findViewById(R.id.progressBar1);
+        // change the color of the progressBar
+        progressBar1.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
         // creating an instance of a Firebase Storage
         mStorage = FirebaseStorage.getInstance();
 
         // Calling the method to display rooms in the firebase database
-        loadUploadedRoomDetails();
+        loadUsers();
 
     }
 
 
     // Method to load rooms uploaded into database
-    private void loadUploadedRoomDetails(){
+    private void loadUsers(){
 
         // displays the progress bar
         progressBar.setVisibility(View.VISIBLE);
@@ -168,23 +173,38 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    // clears the list on data change
-                    roomsList.clear();
+                // clears the list on data change
+                usersList.clear();
 
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        // gets a snapshot of the rooms in the Rooms class
-                        Rooms rooms = postSnapshot.getValue(Rooms.class);
-                        // get the unique key stored int the Rooms class
-                        rooms.setKey(postSnapshot.getKey());
-                        // adds the rooms to list of rooms(RoomList)
-                        roomsList.add(rooms);
-                    }
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                    // refreshes the recyclerview after data change
-                    recyclerViewAdapterAdmin.notifyDataSetChanged();
+                    // gets a snapshot of the rooms in the Rooms class
+                    Users users = postSnapshot.getValue(Users.class);
+                    // set visibility to gone
+                    tv_no_users.setVisibility(View.GONE);
+                    // sets visibility to Visible if rooms are added to DB
+                    recyclerView.setVisibility(View.VISIBLE);
+                    // get the unique key stored int the Rooms class
+                    users.setKey(postSnapshot.getKey());
+                    // adds the rooms to list of rooms(RoomList)
+                    usersList.add(users);
 
-                    // Hiding the progress bar.
-                    progressBar.setVisibility(View.GONE);
+                }
+
+
+                // checks if no room is added yet
+                if(!dataSnapshot.exists()){
+                    // hides recyclerView and makes textView visible
+                    recyclerView.setVisibility(View.GONE);
+                    tv_no_users.setVisibility(View.VISIBLE);
+
+                }
+
+                // refreshes the recyclerview after data change
+                recyclerViewAdapterManageUsers.notifyDataSetChanged();
+
+                // Hiding the progress bar.
+                progressBar.setVisibility(View.GONE);
 
 
             }
@@ -261,19 +281,19 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    roomsList.clear();
+                usersList.clear();
 
-                    for(DataSnapshot roomSnapshot : dataSnapshot.getChildren()){
+                for(DataSnapshot roomSnapshot : dataSnapshot.getChildren()){
 
-                        final Rooms rooms = roomSnapshot.getValue(Rooms.class);
+                    final Users users = roomSnapshot.getValue(Users.class);
 
-                        //adds the rooms searched to the arrayList
-                        roomsList.add(rooms);
+                    //adds the rooms searched to the arrayList
+                    usersList.add(users);
 
-                    }
+                }
 
-                    // refreshes the recyclerview after data change
-                 recyclerViewAdapterAdmin.notifyDataSetChanged();
+                // refreshes the recyclerview after data change
+                recyclerViewAdapterManageUsers.notifyDataSetChanged();
 
 
             }
@@ -281,7 +301,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // display message if error occurs
-                Toast.makeText(DeleteRoomsActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(ManageUsersActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -293,17 +313,17 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
             case android.R.id.home:
 
                 //goes back to the AdminDashboard
-                startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
+                startActivity(new Intent(ManageUsersActivity.this,AdminDashBoardActivity.class));
 
                 // Adds a bottom-to-up animations to the activity
-                CustomIntent.customType(DeleteRoomsActivity.this,"fadein-to-fadeout");
+                CustomIntent.customType(ManageUsersActivity.this,"fadein-to-fadeout");
 
                 // finishes the activity
                 finish();
 
                 break;
             case R.id.menu_welcome:
-                Toast.makeText(DeleteRoomsActivity.this,
+                Toast.makeText(ManageUsersActivity.this,
                         getString(R.string.welcome_text),
                         Toast.LENGTH_LONG).show();
                 break;
@@ -323,10 +343,10 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         }
         else{
             //goes back to the AdminDashboard
-            startActivity(new Intent(DeleteRoomsActivity.this,AdminDashBoardActivity.class));
+            startActivity(new Intent(ManageUsersActivity.this,AdminDashBoardActivity.class));
 
             // Adds a bottom-to-up animations to the activity
-            CustomIntent.customType(DeleteRoomsActivity.this,"up-to-bottom");
+            CustomIntent.customType(ManageUsersActivity.this,"up-to-bottom");
 
             // finishes the activity
             finish();
@@ -345,7 +365,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     // Methods implemented in the recyclerView for this activity
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(DeleteRoomsActivity.this," long click on a room to view options ",Toast.LENGTH_LONG).show();
+        Toast.makeText(ManageUsersActivity.this," long click on a room to view options ",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -365,7 +385,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
         // reference to the EditText in the layout file (custom_dialog)
         final EditText editTextPassword = dialogView.findViewById(R.id.editTextPassword);
 
-        dialogBuilder.setTitle("Delete Room?");
+        dialogBuilder.setTitle("Delete User?");
         dialogBuilder.setMessage("Please enter your password");
         dialogBuilder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
             @Override
@@ -374,7 +394,7 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                 // getting text from EditText
                 final String password = editTextPassword.getText().toString();
 
-                adminRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                adminRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -383,12 +403,13 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                             Admin admin = snapshot.getValue(Admin.class);
 
                             assert admin != null;
+                            // getting admin email and password and storing them in variables
                             String adminEmail = admin.getEmail();
                             String encryptedPassword = admin.getPassword();
 
                             // getting string email from sharePreference
                             SharedPreferences preferences =
-                                    PreferenceManager.getDefaultSharedPreferences(DeleteRoomsActivity.this);
+                                    PreferenceManager.getDefaultSharedPreferences(ManageUsersActivity.this);
                             String email = preferences.getString("email","");
 
                             // decrypt password
@@ -398,20 +419,20 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                                 e.printStackTrace();
                             }
 
-                            if(password.equals(decryptedPassword) || email.equals(adminEmail)){
+                            if(password.equals(decryptedPassword) && adminEmail.equals(email)){
 
                                 /**
                                  * Code to delete selected room from database
                                  */
 
-                                progressBar.setVisibility(View.VISIBLE);
+                                progressBar1.setVisibility(View.VISIBLE);
 
-                                final Rooms selectedRoom = roomsList.get(position);
-                                final String selectedKey = selectedRoom.getKey();
+                                final Users selectedUser = usersList.get(position);
+                                final String selectedKey = selectedUser.getKey();
 
                                 // removing/deleting the image of the room together with the
                                 // other details pertaining to a specific room
-                                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoomImage_url());
+                                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedUser.getImageUrl());
 
                                 roomImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -420,19 +441,19 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                                         mDatabaseRef.child(selectedKey).removeValue();
 
                                         // dismiss the progress bar
-                                        progressBar.setVisibility(View.GONE);
+                                        progressBar1.setVisibility(View.GONE);
 
                                         // File deleted successfully message
-                                        Toast.makeText(DeleteRoomsActivity.this, " Room deleted Successfully ", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(ManageUsersActivity.this, " User deleted Successfully ", Toast.LENGTH_LONG).show();
                                     }
                                 });
 
                             }
                             else{
-                                progressBar.setVisibility(View.GONE);
+                                progressBar1.setVisibility(View.GONE);
                                 // display a message if there is an error
                                 //Snackbar.make(relativeLayout,"Incorrect Email or password. Please Try Again",Snackbar.LENGTH_LONG).show();
-                                Toast.makeText(DeleteRoomsActivity.this,"Incorrect password. Please Try Again!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(ManageUsersActivity.this,"Incorrect password. Please Try Again!",Toast.LENGTH_LONG).show();
                             }
 
                         }
@@ -442,65 +463,28 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         // display error message
-                        Toast.makeText(DeleteRoomsActivity.this, databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(ManageUsersActivity.this, databaseError.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
 
-
-
-                /*
-                progressBar.setVisibility(View.VISIBLE);
-
-                final Rooms selectedRoom = roomsList.get(position);
-                final String selectedKey = selectedRoom.getKey();
-
-                // getting the reference of the room
-                StorageReference roomImageRef = mStorage.getReferenceFromUrl(selectedRoom.getRoomImage_url());
-                roomImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        //remove value from FirebaseDatabase
-                        mDatabaseRef.child(selectedKey).removeValue();
-
-                        // dismiss the progress bar
-                        progressBar.setVisibility(View.GONE);
-
-                        // File deleted successfully message
-                        Toast.makeText(DeleteRoomsActivity.this, " Room deleted Successfully ", Toast.LENGTH_LONG).show();
-
-                       }
-
-                    }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // dismiss the progress bar
-                        progressBar.setVisibility(View.GONE);
-
-                        // File deleted successfully message
-                        Toast.makeText(DeleteRoomsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                */
-
-
-                    }
-
-                });
-
-
-                dialogBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // dismiss the DialogInterface
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                AlertDialog alert = dialogBuilder.create();
-                alert.show();
 
             }
+
+        });
+
+
+        dialogBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss the DialogInterface
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog alert = dialogBuilder.create();
+        alert.show();
+
+    }
 
 
     // method to encrypt password
@@ -539,6 +523,6 @@ public class DeleteRoomsActivity extends AppCompatActivity implements RecyclerVi
     public void finish() {
         super.finish();
         // Adds a bottom-to-up animations to the activity
-        CustomIntent.customType(DeleteRoomsActivity.this,"up-to-bottom");
+        CustomIntent.customType(ManageUsersActivity.this,"fadein-to-fadeout");
     }
 }

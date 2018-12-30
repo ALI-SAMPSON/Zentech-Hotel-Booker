@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     app:fontFamily="@font/nunito_semibold"
-                    android:text="@string/delete_rooms"
+                    android:text="@string/manage_rooms"
                     android:textAllCaps="true"
                     android:textStyle="bold"
                     android:textColor="@color/colorGray"/>
@@ -135,7 +135,7 @@
                     android:gravity="center"
                     android:padding="5dp"
                     app:fontFamily="@font/nunito_semibold"
-                    android:text="@string/delete_rooms_sub_text"
+                    android:text="@string/manage_rooms_sub_text"
                     android:textAlignment="center"/>
 
             </LinearLayout>
@@ -169,7 +169,7 @@
                     android:layout_margin="5dp"
                     android:background="@drawable/circular_background_color_primary_dark"
                     android:padding="10dp"
-                    android:src="@drawable/ic_lock_black_24dp" />
+                    android:src="@drawable/ic_users" />
 
                 <TextView
                     android:id="@+id/reset_password"
@@ -178,7 +178,7 @@
                     android:layout_marginTop="10dp"
                     app:fontFamily="@font/nunito_semibold"
                     android:textAllCaps="true"
-                    android:text="@string/reset_password"
+                    android:text="@string/manage_users"
                     android:textStyle="bold"
                     android:textColor="@color/colorGray"/>
 
@@ -196,7 +196,7 @@
                     android:gravity="center"
                     app:fontFamily="@font/nunito_semibold"
                     android:padding="5dp"
-                    android:text="@string/reset_password_sub_text"
+                    android:text="@string/manage_users_sub_text"
                     android:textAlignment="center"/>
 
             </LinearLayout>

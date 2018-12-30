@@ -33,7 +33,7 @@ import io.zentechhotelbooker.activities.ViewRoomDetailsAdminActivity;
 import io.zentechhotelbooker.models.Rooms;
 import maes.tech.intentanim.CustomIntent;
 
-public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewAdapterAdmin.ViewHolder> {
+public class RecyclerViewAdapterManageRooms extends RecyclerView.Adapter<RecyclerViewAdapterManageRooms.ViewHolder> {
 
     // context variable and a list of the Rooms
      Context mCtx;
@@ -42,7 +42,7 @@ public class RecyclerViewAdapterAdmin extends RecyclerView.Adapter<RecyclerViewA
      // private member variable
      private onItemClickListener mListener;
 
-    public RecyclerViewAdapterAdmin(Context mCtx, List<Rooms> roomsList ){
+    public RecyclerViewAdapterManageRooms(Context mCtx, List<Rooms> roomsList ){
         this.mCtx = mCtx;
         this.roomsList = roomsList;
 

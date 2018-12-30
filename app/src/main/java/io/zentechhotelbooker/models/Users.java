@@ -1,5 +1,7 @@
 package io.zentechhotelbooker.models;
 
+import com.google.firebase.database.Exclude;
+
 public class Users {
 
     //class variables to be used as fields for the database
@@ -10,6 +12,8 @@ public class Users {
     private String mobile_number;
     private String imageUrl;
     private String search;
+    // key to store the key reference of the data to delete
+    private String key;
 
     //default constructor
     public Users(){
@@ -86,5 +90,15 @@ public class Users {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    @Exclude
+    public void setKey(String key){
+        this.key = key;
+    }
+
+    @Exclude
+    public String getKey() {
+        return key;
     }
 }

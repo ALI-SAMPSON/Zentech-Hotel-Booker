@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity implements
     // Creating RecyclerView
     RecyclerView recyclerView;
 
-    // Creating RecyclerViewAdapterAdmin
+    // Creating RecyclerViewAdapterManageRooms
     RecyclerViewAdapterUser recyclerViewAdapterUser;
 
     // Creating a ValueEvent Listener.

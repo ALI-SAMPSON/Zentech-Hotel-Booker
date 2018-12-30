@@ -126,7 +126,7 @@ public class ViewRoomDetailsAdminActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         // navigates to the HomeActivity
-        startActivity(new Intent(ViewRoomDetailsAdminActivity.this,DeleteRoomsActivity.class));
+        startActivity(new Intent(ViewRoomDetailsAdminActivity.this,ManageRoomsActivity.class));
         // add a custom animation to the intent
         CustomIntent.customType(ViewRoomDetailsAdminActivity.this,"right-to-left");
         // finish the activity
@@ -145,7 +145,7 @@ public class ViewRoomDetailsAdminActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 // navigates to the HomeActivity
-                startActivity(new Intent(ViewRoomDetailsAdminActivity.this,DeleteRoomsActivity.class));
+                startActivity(new Intent(ViewRoomDetailsAdminActivity.this,ManageRoomsActivity.class));
                 // add a custom animation to the intent
                 CustomIntent.customType(ViewRoomDetailsAdminActivity.this,"right-to-left");
                 // finish the activity

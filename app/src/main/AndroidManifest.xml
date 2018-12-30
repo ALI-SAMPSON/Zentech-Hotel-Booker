@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.zentechhotelbooker"
     android:installLocation="auto">
 
@@ -24,7 +25,8 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <!-- Admin side Activities -->
         <activity
@@ -42,22 +44,25 @@
             android:name=".activities.AddRoomsActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents"></activity>
+            android:theme="@style/AppTheme.AdminComponents">
+        </activity>
         <activity
-            android:name=".activities.DeleteRoomsActivity"
+            android:name=".activities.ManageRoomsActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponentsNoActionBar"></activity>
+            android:theme="@style/AppTheme.AdminComponentsNoActionBar">
+        </activity>
         <activity
             android:name=".activities.ViewRoomDetailsAdminActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.AdminComponents"></activity>
+            android:theme="@style/AppTheme.AdminComponents">
+        </activity>
         <activity
-            android:name=".activities.ResetAdminPasswordActivity"
+            android:name=".activities.ManageUsersActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.AdminComponentsNoActionBar" />
         <activity
             android:name=".activities.CheckPaymentActivity"
             android:configChanges="screenLayout|screenSize|keyboardHidden|orientation"

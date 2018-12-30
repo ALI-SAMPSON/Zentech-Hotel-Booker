@@ -1,6 +1,7 @@
 package io.zentechhotelbooker.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -43,6 +44,10 @@ import maes.tech.intentanim.CustomIntent;
 
 public class CheckPaymentActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
+
+    TextView tv_no_rooms;
+
     Payments payments;
 
     Users users;
@@ -53,8 +58,6 @@ public class CheckPaymentActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     RecyclerViewAdapterPayment recyclerViewAdapterPayment;
-
-    RecyclerViewAdapterPayment mAdapterSearchPayment;
 
     List<Payments> paymentsList;
 
@@ -71,17 +74,13 @@ public class CheckPaymentActivity extends AppCompatActivity {
     // Creating DataReference
     DatabaseReference dBRef;
 
-    // ImageView and TextView for error checking
-    ImageView errorImage;
-    TextView errorText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_payment);
 
         // Creating an object of the toolbar
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //checks if the support actionbar is not null
@@ -92,16 +91,21 @@ public class CheckPaymentActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        errorImage = findViewById(R.id.error_icon);
+        // textView to indicate there are no rooms added yet
+        tv_no_rooms = findViewById(R.id.tv_no_rooms);
 
-        errorText = findViewById(R.id.tv_error);
-
-        // Assign activity this to progress bar.
+        // getting reference to progress bar.
         progressBar = findViewById(R.id.progressBar);
+        // change the color of the progressBar
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.MULTIPLY);
 
         payments = new Payments();
 
         users = new Users();
+
+        // Setting up Firebase image upload folder path in databaseReference.
+        // The path is already defined in MainActivity.
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(Payment_path);
 
         // Assign id to RecyclerView.
         recyclerView = findViewById(R.id.recyclerView);
@@ -119,15 +123,8 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(recyclerViewAdapterPayment);
 
-        // creating object of the RecyclerView Adapter class for search and setting it to the adapter of the recyclerView
-        mAdapterSearchPayment = new RecyclerViewAdapterPayment(CheckPaymentActivity.this, paymentsList);
-
-        recyclerView.setAdapter(mAdapterSearchPayment);
-
         // Method call
         displayPaymentMade();
-
-        //displayPayments(); ///call to the method
 
     }
 
@@ -136,10 +133,6 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
         // displays the progress bar
         progressBar.setVisibility(View.VISIBLE);
-
-        // Setting up Firebase image upload folder path in databaseReference.
-        // The path is already defined in MainActivity.
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Payments");
 
         mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -152,8 +145,21 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
                     Payments payments = paymentSnapshot.getValue(Payments.class);
 
+                    // set visibility to gone
+                    tv_no_rooms.setVisibility(View.GONE);
+                    // sets visibility to Visible if rooms are added to DB
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                    // adding payments to list
                     paymentsList.add(payments);
 
+                }
+
+                // checks if no payment is made yet
+                if(!dataSnapshot.exists()){
+                    // hides recyclerView and makes textView visible
+                    recyclerView.setVisibility(View.GONE);
+                    tv_no_rooms.setVisibility(View.VISIBLE);
                 }
 
                 recyclerViewAdapterPayment.notifyDataSetChanged();
@@ -179,6 +185,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // removes the dBListener
         mDatabaseRef.removeEventListener(mDBListener);
     }
 
@@ -227,9 +234,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
     private void searchForRoom(String s){
 
-        dBRef = FirebaseDatabase.getInstance().getReference(Payment_path);
-
-        Query query = dBRef.orderByChild("search")
+        Query query = mDatabaseRef.orderByChild("search")
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 
@@ -249,7 +254,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
 
                     }
 
-                    mAdapterSearchPayment.notifyDataSetChanged();
+                    recyclerViewAdapterPayment.notifyDataSetChanged();
 
             }
 
@@ -303,4 +308,5 @@ public class CheckPaymentActivity extends AppCompatActivity {
         // Add a up-to-bottom animation to the activity
         CustomIntent.customType(CheckPaymentActivity.this,"up-to-bottom");
     }
+
 }

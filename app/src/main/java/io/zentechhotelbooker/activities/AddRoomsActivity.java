@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -120,6 +121,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     // Creating StorageReference and DatabaseReference object.
     StorageReference storageReference;
+
     DatabaseReference databaseReference;
 
     private Rooms rooms;
@@ -153,7 +155,7 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         //checks if there is a toolbar, if yes it set the Home Button on it
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("ADD ROOMS");
+            getSupportActionBar().setTitle(getString(R.string.title_add_rooms));
             getSupportActionBar().setElevation(5.0f);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -193,6 +195,10 @@ public class AddRoomsActivity extends AppCompatActivity {
         arrayAdapterSupper.setDropDownViewResource(R.layout.spinner_dropdown_item_add_room);
         spinnerSupper.setAdapter(arrayAdapterSupper);
 
+        rooms = new Rooms();
+
+        payments = new Payments();
+
         storageReference = FirebaseStorage.getInstance().getReference();
 
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
@@ -201,21 +207,65 @@ public class AddRoomsActivity extends AppCompatActivity {
 
         roomsRef = FirebaseDatabase.getInstance().getReference("Rooms");
 
-        rooms = new Rooms();
-
-        payments = new Payments();
 
         progressBar = findViewById(R.id.progressBar);
-
-        progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_LIGHT);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setTitle("Adding Room");
-        progressDialog.setMessage("please wait...");
 
         scrollView = findViewById(R.id.scrollView);
 
         spinnerLayout = findViewById(R.id.spinnerLayout);
 
+        // method call
+        changeProgressDialog();
+
+    }
+
+    private void changeProgressDialog(){
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_DARK);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("Adding Room");
+            progressDialog.setMessage("please wait...");
+        }
+
+        else{
+            progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_LIGHT);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("Adding Room");
+            progressDialog.setMessage("please wait...");
+        }
+
+    }
+
+    // method to encrypt password
+    private String encryptPassword(String password, String email) throws Exception{
+        SecretKeySpec key = generateKey(email);
+        Cipher c = Cipher.getInstance(AES);
+        c.init(Cipher.ENCRYPT_MODE,key);
+        byte[] encVal = c.doFinal(password.getBytes());
+        String encryptedValue = Base64.encodeToString(encVal,Base64.DEFAULT);
+        return encryptedValue;
+    }
+
+    // method to decrypt password
+    private String decryptPassword(String password, String email) throws Exception {
+        SecretKeySpec key  = generateKey(email);
+        Cipher c = Cipher.getInstance(AES);
+        c.init(Cipher.DECRYPT_MODE,key);
+        byte[] decodedValue = Base64.decode(password,Base64.DEFAULT);
+        byte[] decVal = c.doFinal(decodedValue);
+        String decryptedValue = new String(decVal);
+        return decryptedValue;
+
+    }
+
+    private SecretKeySpec generateKey(String password) throws Exception{
+        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = password.getBytes("UTF-8");
+        digest.update(bytes, 0 , bytes.length);
+        byte[] key = digest.digest();
+        SecretKeySpec keySpec = new SecretKeySpec(key,"AES");
+        return keySpec;
     }
 
 
@@ -362,7 +412,7 @@ public class AddRoomsActivity extends AppCompatActivity {
                 // getting text from EditText
                 final String password = editTextPassword.getText().toString();
 
-                adminRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                adminRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -386,10 +436,10 @@ public class AddRoomsActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            if(password.equals(decryptedPassword) || email.equals(adminEmail)){
-
+                            // checks if credentials are valid
+                            if(password.equals(decryptedPassword) && adminEmail.equals(email)){
                                 // method call to add room to database
-                               addRoomDetailsToDatabase();
+                               addRoomImage();
 
                             }
                             else{
@@ -428,38 +478,8 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     }
 
-    // method to encrypt password
-    private String encryptPassword(String password, String email) throws Exception{
-        SecretKeySpec key = generateKey(email);
-        Cipher c = Cipher.getInstance(AES);
-        c.init(Cipher.ENCRYPT_MODE,key);
-        byte[] encVal = c.doFinal(password.getBytes());
-        String encryptedValue = Base64.encodeToString(encVal,Base64.DEFAULT);
-        return encryptedValue;
-    }
-
-    // method to decrypt password
-    private String decryptPassword(String password, String email) throws Exception {
-        SecretKeySpec key  = generateKey(email);
-        Cipher c = Cipher.getInstance(AES);
-        c.init(Cipher.DECRYPT_MODE,key);
-        byte[] decodedValue = Base64.decode(password,Base64.DEFAULT);
-        byte[] decVal = c.doFinal(decodedValue);
-        String decryptedValue = new String(decVal);
-        return decryptedValue;
-
-    }
-
-    private SecretKeySpec generateKey(String password) throws Exception{
-        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] bytes = password.getBytes("UTF-8");
-        digest.update(bytes, 0 , bytes.length);
-        byte[] key = digest.digest();
-        SecretKeySpec keySpec = new SecretKeySpec(key,"AES");
-        return keySpec;
-    }
-
-    public void addRoomDetailsToDatabase(){
+    // method to add image of room to storage
+    public void addRoomImage(){
 
         //makes this textView visible
         tv_room_exist.setVisibility(View.GONE);
@@ -483,43 +503,11 @@ public class AddRoomsActivity extends AppCompatActivity {
                             imageUrl = taskSnapshot.getDownloadUrl().toString();
                             rooms.setRoomImage_url(imageUrl);
 
-                            //get input from the editText views and spinner views
-                            String room_number = editTextRoomNumber.getText().toString().trim();
-                            String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
-                            String breakfast = spinnerBreakfast.getSelectedItem().toString().trim();
-                            String lunch = spinnerLunch.getSelectedItem().toString().trim();
-                            String supper = spinnerSupper.getSelectedItem().toString().trim();
-                            String room_price = editTextPrice.getText().toString().trim();
-
-                            // setting fields to the object og the class Rooms
-                            //rooms.setRoomImage_url(imageUrl);
-                            rooms.setRoomNumber(room_number);
-                            rooms.setRoomType(room_type);
-                            rooms.setBreakfastServed(breakfast);
-                            rooms.setLunchServed(lunch);
-                            rooms.setSupperServed(supper);
-                            rooms.setRoomPrice(room_price);
-                            rooms.setSearch(room_type.toLowerCase());
-
-                            // Getting image unique key of the node.
-                            final String roomKey = databaseReference.push().getKey();
-
-                            // Adding image upload id s child element into databaseReference.
-                            databaseReference .child(rooms.getRoomNumber()).setValue(rooms);
-
-                            // displays the progressDialog
-                            progressDialog.dismiss();
-
-                            // Showing success message.
-                            Snackbar.make(scrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
-
-                            //makes this textView visible
-                            tv_room_exist.setVisibility(View.GONE);
-
-                            // Method Call
-                            clearTextFields();
+                            // method call to add Room Details to DB
+                            addRoomDetailsToDatabase();
 
                         }
+
                     })
                     // If something goes wrong
                     .addOnFailureListener(new OnFailureListener() {
@@ -544,41 +532,43 @@ public class AddRoomsActivity extends AppCompatActivity {
 
     }
 
+    // method to add room details to DB
+    private void addRoomDetailsToDatabase(){
 
-    // Body of Code to check if Room already exist in database
-    public void checkIfRoomNumberExistOnLaunch(){
+        //get input from the editText views and spinner views
+        String room_number = editTextRoomNumber.getText().toString().trim();
+        String room_type   = spinnerRoomType.getSelectedItem().toString().trim();
+        String breakfast = spinnerBreakfast.getSelectedItem().toString().trim();
+        String lunch = spinnerLunch.getSelectedItem().toString().trim();
+        String supper = spinnerSupper.getSelectedItem().toString().trim();
+        String room_price = editTextPrice.getText().toString().trim();
 
-        final String roomNumber = editTextRoomNumber.getText().toString().trim();
+        // setting fields to the object og the class Rooms
+        //rooms.setRoomImage_url(imageUrl);
+        rooms.setRoomNumber(room_number);
+        rooms.setRoomType(room_type);
+        rooms.setBreakfastServed(breakfast);
+        rooms.setLunchServed(lunch);
+        rooms.setSupperServed(supper);
+        rooms.setRoomPrice(room_price);
+        rooms.setSearch(room_type.toLowerCase());
 
-        databaseReference.child(roomNumber).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+        // Getting image unique key of the node.
+        final String roomKey = databaseReference.push().getKey();
 
-                    // animation to shake view if room already exist
-                    YoYo.with(Techniques.Shake).playOn(tv_room_exist);
+        // Adding image upload id s child element into databaseReference.
+        databaseReference.child(rooms.getRoomNumber()).setValue(rooms);
 
-                    //makes this textView visible
-                    tv_room_exist.setVisibility(View.VISIBLE);
+        // displays the progressDialog
+        progressDialog.dismiss();
 
-                    // display a SnackBar with error message
-                    Snackbar.make(scrollView,getString(R.string.room_number_exist),Snackbar.LENGTH_SHORT).show();
+        // Showing success message.
+        Snackbar.make(scrollView,getString(R.string.room_added_successful),Snackbar.LENGTH_LONG).show();
 
-                }
-                else{
+        // Method Call
+        clearTextFields();
 
-                    //makes this textView visible
-                    tv_room_exist.setVisibility(View.GONE);
 
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // display a SnackBar with error message
-                Snackbar.make(scrollView,databaseError.getMessage(),Snackbar.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

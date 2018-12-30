@@ -21,11 +21,6 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.zentechhotelbooker.R;
 import maes.tech.intentanim.CustomIntent;
@@ -181,7 +176,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                 YoYo.with(Techniques.FlipOutX).playOn(cardView2);
 
                 //starts the delete rooms activity
-                startActivity(new Intent(AdminDashBoardActivity.this,DeleteRoomsActivity.class));
+                startActivity(new Intent(AdminDashBoardActivity.this,ManageRoomsActivity.class));
 
                 // Adds a bottom-to-up animations to the activity
                 CustomIntent.customType(AdminDashBoardActivity.this,"bottom-to-up");
@@ -197,7 +192,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                 YoYo.with(Techniques.FlipInX).playOn(cardView3);
 
                 //starts the reset password activity
-                startActivity(new Intent(AdminDashBoardActivity.this,ResetAdminPasswordActivity.class));
+                startActivity(new Intent(AdminDashBoardActivity.this,ManageUsersActivity.class));
 
                 // Add a fadein-to-fadeout animation to the activity
                 CustomIntent.customType(AdminDashBoardActivity.this,"fadein-to-fadeout");

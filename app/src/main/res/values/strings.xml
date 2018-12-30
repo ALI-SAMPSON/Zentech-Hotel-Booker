@@ -21,6 +21,10 @@
     <string name="add_rooms_sub_text" translatable="false">add rooms available to the system</string>
     <string name="delete_rooms" translatable="false">Delete Rooms</string>
     <string name="delete_rooms_sub_text" translatable="false">delete rooms which are not needed</string>
+    <string name="manage_rooms" translatable="false">Manage Rooms</string>
+    <string name="manage_rooms_sub_text" translatable="false">manage rooms available</string>
+    <string name="manage_users" translatable="false">Manage Users</string>
+    <string name="manage_users_sub_text" translatable="false">manage users available? See here</string>
     <string name="reset_password" translatable="false">Reset Password</string>
     <string name="reset_password_sub_text" translatable="false">Noticed any unauthorised access? then reset pass</string>
     <string name="edit_credentials" translatable="false">Edit Credentials</string>
@@ -61,6 +65,17 @@
     <string name="error_empty_price" translatable="false">This field cannot be left empty</string>
     <string name="error_text_phone_number" translatable="false">Telephone number is a required field</string>
     <string name="error_adding_room" translatable="false">Please Select Room Image from gallery</string>
+    <string name="no_rooms_added" translatable="false">
+        No Rooms added yet
+    </string>
+
+    <string name="no_users_added" translatable="false">
+        No Users available yet
+    </string>
+
+    <string name="no_payment_made" translatable="false">
+        No Payments made yet
+    </string>
 
     <!-- String progress dialog -->
     <string name="text_uploading_details" translatable="false">Uploading Details</string>
@@ -260,6 +275,8 @@
 
     <string name="title_room_details" translatable="false">Room Details</string>
 
+    <string name="title_add_rooms" translatable="false">Add Rooms</string>
+
     <string name="title_more_details" translatable="false">
        More Details
     </string>
@@ -342,5 +359,6 @@
     <string name="incorrect_username" translatable="false">
         Incorrect username. Please Try Again!
     </string>
+
 
 </resources>
