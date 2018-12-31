@@ -116,9 +116,10 @@ public class RecyclerViewAdapterManageRooms extends RecyclerView.Adapter<Recycle
                     //holder.reservations.setRoom_number(room_number);
 
                     // checks for reserved and non-reserved rooms
-                    holder.reservationRef.orderByChild("room_number")
-                            .equalTo(room_number)
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                    Query query = holder.reservationRef
+                            .orderByChild("room_number")
+                            .equalTo(room_number);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -137,7 +138,6 @@ public class RecyclerViewAdapterManageRooms extends RecyclerView.Adapter<Recycle
                                             holder.tv_room_booked.setVisibility(View.GONE);
                                         }
                                         */
-
 
                                 }
 
