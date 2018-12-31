@@ -365,7 +365,7 @@ public class ManageUsersActivity extends AppCompatActivity implements RecyclerVi
     // Methods implemented in the recyclerView for this activity
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(ManageUsersActivity.this," long click on a room to view options ",Toast.LENGTH_LONG).show();
+        Toast.makeText(ManageUsersActivity.this," long click on a user to view options ",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -394,7 +394,7 @@ public class ManageUsersActivity extends AppCompatActivity implements RecyclerVi
                 // getting text from EditText
                 final String password = editTextPassword.getText().toString();
 
-                adminRef.addValueEventListener(new ValueEventListener() {
+                adminRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 

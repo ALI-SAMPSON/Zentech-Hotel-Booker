@@ -392,7 +392,7 @@ public class ManageRoomsActivity extends AppCompatActivity implements RecyclerVi
                 // getting text from EditText
                 final String password = editTextPassword.getText().toString();
 
-                adminRef.addValueEventListener(new ValueEventListener() {
+                adminRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 

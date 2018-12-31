@@ -71,7 +71,7 @@ public class RecyclerViewAdapterManageUsers extends RecyclerView.Adapter<Recycle
          * or views
          */
         // animation to cardView
-        YoYo.with(Techniques.BounceInDown).playOn(holder.itemView);
+        YoYo.with(Techniques.ZoomOutUp).playOn(holder.itemView);
 
         // getting the input from the database and setting them to the textViews
         holder.username.setText(" Username : " + users.getUsername());
@@ -150,11 +150,11 @@ public class RecyclerViewAdapterManageUsers extends RecyclerView.Adapter<Recycle
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             //contextMenu.setHeaderTitle("Select Action");
-            MenuItem deleteRooms = contextMenu.add(Menu.NONE,1,1,"Delete User");
+            MenuItem deleteUser = contextMenu.add(Menu.NONE,1,1,"Delete User");
             MenuItem cancel = contextMenu.add(Menu.NONE,2,2, "Cancel");
 
 
-            deleteRooms.setOnMenuItemClickListener(this);
+            deleteUser.setOnMenuItemClickListener(this);
             cancel.setOnMenuItemClickListener(this);
 
         }

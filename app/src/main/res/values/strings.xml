@@ -22,9 +22,9 @@
     <string name="delete_rooms" translatable="false">Delete Rooms</string>
     <string name="delete_rooms_sub_text" translatable="false">delete rooms which are not needed</string>
     <string name="manage_rooms" translatable="false">Manage Rooms</string>
-    <string name="manage_rooms_sub_text" translatable="false">manage rooms available</string>
+    <string name="manage_rooms_sub_text" translatable="false">you can manage all rooms available here!</string>
     <string name="manage_users" translatable="false">Manage Users</string>
-    <string name="manage_users_sub_text" translatable="false">manage users available? See here</string>
+    <string name="manage_users_sub_text" translatable="false">manage users available? See here!</string>
     <string name="reset_password" translatable="false">Reset Password</string>
     <string name="reset_password_sub_text" translatable="false">Noticed any unauthorised access? then reset pass</string>
     <string name="edit_credentials" translatable="false">Edit Credentials</string>

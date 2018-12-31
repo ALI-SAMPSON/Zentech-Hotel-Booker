@@ -3,6 +3,7 @@ package io.zentechhotelbooker.activities;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 // search bar imported libraries
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -48,7 +49,7 @@ import io.zentechhotelbooker.models.Rooms;
 import io.zentechhotelbooker.models.Users;
 import maes.tech.intentanim.CustomIntent;
 
-
+@SuppressWarnings("ALL")
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener{
 
@@ -87,6 +88,8 @@ public class HomeActivity extends AppCompatActivity implements
 
     // Creating progressBar
     ProgressBar progressBar;
+
+    ProgressDialog progressDialog;
 
     // object to inflate the views of the navigation drawer
     private CircleImageView circleImageView;
@@ -203,6 +206,9 @@ public class HomeActivity extends AppCompatActivity implements
 
         // call to the method to load rooms from Firbase Database
         loadUploadedRoomDetails();
+
+        // change progressDialog style according to os build version
+        changeProgressDialogBackground();
 
     }
 
@@ -633,17 +639,33 @@ public class HomeActivity extends AppCompatActivity implements
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // logs current user out of the system
-                mAuth.signOut();
 
-                // finish the activity
-                finish();
+                progressDialog.show();
 
-                // starts the UserLoginActivity
-                startActivity(new Intent(HomeActivity.this,UserLoginActivity.class));
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                // Add fadein-to-fadeout animation to the activity
-                CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+                        // dismiss dialog
+                        progressDialog.dismiss();
+
+                        // logs current user out of the system
+                        mAuth.signOut();
+
+                        // starts the UserLoginActivity
+                        startActivity(new Intent(HomeActivity.this,UserLoginActivity.class));
+
+                        // Add fadein-to-fadeout animation to the activity
+                        CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+
+                        // finish the activity
+                        finish();
+
+                    }
+                },2000);
+
+
             }
         });
 
@@ -665,6 +687,28 @@ public class HomeActivity extends AppCompatActivity implements
         super.finish();
         // Add fadein-to-fadeout animation to the activity
         CustomIntent.customType(HomeActivity.this,"fadein-to-fadeout");
+    }
+
+    // method to change ProgressDialog style based on the android version of user's phone
+    private void changeProgressDialogBackground(){
+
+        // if the build sdk version >= android 5.0
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            //sets the background color according to android version
+            progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_DARK);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("");
+            progressDialog.setMessage("signing out...");
+        }
+        //else do this
+        else{
+            //sets the background color according to android version
+            progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_LIGHT);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("");
+            progressDialog.setMessage("signing out...");
+        }
+
     }
 
 }

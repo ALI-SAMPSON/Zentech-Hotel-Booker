@@ -255,7 +255,7 @@ public class AdminDashBoardActivity extends AppCompatActivity {
                                 finish();
 
                             }
-                        },3000);
+                        },2000);
 
 
                     }
